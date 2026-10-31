@@ -87,6 +87,12 @@
        - Used 100% original, untouched Facebook video thumbnail directly from Facebook Reel (`assets/thumbnails/ep06_production_debugging.jpg`) with zero added photos or modifications.
        - Wired embed URL and share URL into Set A and Set B modal triggers.
   - Verified with headless Chrome CDP: exact original thumbnails render cleanly, and clicking either video launches the high-res modal player with correct video stream (`gallery_reels_exact_original.png`, `gallery_modal_ep05.png`).
+- [x] **Created and Published Official GitHub Repository (`Imran7541/emran_project_protfolio`)**:
+  - Initialized local Git repository on `main` branch with strict `.gitignore` rules (protecting `.env`, debug captures, and runtime artifacts).
+  - Committed full portfolio codebase: `index.html`, `gallery.html`, `server.js`, `package.json`, `data/`, `assets/`, cutouts, SDD `specs/`, `notes/`, and `README.md`.
+  - Created public repository on GitHub via `gh repo create emran_project_protfolio --public --source=. --remote=origin --push`.
+  - Successfully pushed initial commit to `origin/main` (`https://github.com/Imran7541/emran_project_protfolio.git`).
+  - Verified remote repository view and metadata.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
