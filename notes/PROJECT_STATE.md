@@ -26,19 +26,12 @@
 - [x] **Full Multi-Device Responsive Architecture (Mobile, Tablet, Laptop, Desktop)**:
   - Formulated comprehensive SDD specification in `specs/responsive_design.md` and dependency-tracked execution plan in `tasks.md`.
   - Global CSS safeguards: `touch-action: pan-y`, `-webkit-text-size-adjust: 100%`, `overflow-x: hidden`, and fluid viewport clamping across `index.html`, `gallery.html`, and `contact.html`.
-  - **Mobile (< 640px)**:
-    - Engineered touch-friendly animated hamburger menu drawer (44px+ touch targets, `aria-expanded`, auto-close on link click).
-    - Refactored Hero Jensen Omega halo ring and portrait to fluid scale (`w-[270px] min-[400px]:w-[320px] sm:w-[420px] lg:w-[480px]`), eliminating horizontal overflow on 320px-375px screens.
-    - Stacked CTA buttons vertically on mobile and horizontally on `sm+`.
-    - Converted telemetry ribbon into responsive 2x2 grid.
-    - Sized form inputs to 16px font (`text-base`) to permanently prevent iOS Safari auto-zoom on focus.
-    - Sized modal player dynamically with `max-h-[92vh]` and responsive iframe heights.
-  - **Tablet (640px - 1023px)**:
-    - Balanced desktop navbar links (`gap-5 lg:gap-8`) preventing navbar collision on iPad portrait/landscape.
-    - 2-column project cards and balanced 2-column footer layout.
-  - **Laptop & Desktop (1024px - 1920px+)**:
-    - Preserved ultra-wide `max-w-7xl` container constraints, 4-column executive footer, and dual-lane infinite marquee.
   - Built automated headless Chrome verification test suite (`tests/verify_responsive.py`) verifying 18/18 viewports across all pages.
+- [x] **Clean Extensionless URLs Architecture (`/`, `/gallery`, `/contact`)**:
+  - Replaced all legacy `.html` links with clean extensionless paths (`gallery`, `contact`, `./`) across all navigation menus, drawers, and footers.
+  - Implemented client-side automatic URL bar canonicalizer (`history.replaceState`) in `index.html`, `gallery.html`, and `contact.html` that instantly strips `.html` if a user lands on legacy `.html` URLs.
+  - Implemented 301 Permanent Redirects on Node.js application server (`server.js`) mapping `/gallery.html` -> `/gallery`, `/contact.html` -> `/contact`, and `/index.html` -> `/`.
+  - Created resilient `404.html` with smart route reconciliation on GitHub Pages to gracefully handle trailing slash variations.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.

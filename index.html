@@ -40,12 +40,26 @@
   <!-- Three.js CDN for Ocean Abyss & Caustics WebGL -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <!-- Prevent browser auto-scroll jump to hash or cached scroll on refresh -->
+  <!-- Clean URL Canonicalizer & Scroll Restoration -->
   <script>
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
+
+    // Clean URL: Automatically strip .html and index.html from URL bar
+    (function() {
+      try {
+        var p = window.location.pathname;
+        if (p.endsWith('/index.html')) {
+          var clean = p.slice(0, -10) + (p.length === 11 ? '/' : '') + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, clean);
+        } else if (p.endsWith('.html')) {
+          var clean = p.slice(0, -5) + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, clean);
+        }
+      } catch (e) {}
+    })();
   </script>
 
   <style>
@@ -194,8 +208,8 @@
         <a href="#" class="hover:text-[#FF715B] transition-colors">Home</a>
         <a href="#about" class="hover:text-[#FF715B] transition-colors">About</a>
         <a href="#works" class="hover:text-[#FF715B] transition-colors">Project</a>
-        <a href="gallery.html" class="hover:text-[#FF715B] transition-colors">Gallery</a>
-        <a href="contact.html" class="hover:text-[#FF715B] transition-colors">Contact</a>
+        <a href="gallery" class="hover:text-[#FF715B] transition-colors">Gallery</a>
+        <a href="contact" class="hover:text-[#FF715B] transition-colors">Contact</a>
       </div>
 
       <!-- Mobile Hamburger Button (44px min tap target) -->
@@ -221,11 +235,11 @@
         <span>Project</span>
         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </a>
-      <a href="gallery.html" onclick="toggleMobileDrawer()" class="py-3.5 border-b border-white/5 flex items-center justify-between hover:text-[#FF715B] transition-colors">
+      <a href="gallery" onclick="toggleMobileDrawer()" class="py-3.5 border-b border-white/5 flex items-center justify-between hover:text-[#FF715B] transition-colors">
         <span>Gallery</span>
         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </a>
-      <a href="contact.html" onclick="toggleMobileDrawer()" class="py-3.5 flex items-center justify-between text-[#FF715B] font-semibold transition-colors">
+      <a href="contact" onclick="toggleMobileDrawer()" class="py-3.5 flex items-center justify-between text-[#FF715B] font-semibold transition-colors">
         <span>Contact</span>
         <svg class="w-4 h-4 text-[#FF715B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </a>
@@ -261,7 +275,7 @@
         <!-- Call To Action Buttons (Full-width mobile, inline sm+) -->
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-5 mt-2">
           <!-- Button 1: Solid Coral -->
-          <a href="contact.html" class="w-full sm:w-auto px-7 py-3.5 bg-[#FF715B] hover:bg-[#e65c47] text-white font-medium text-sm sm:text-base tracking-wide transition-all shadow-lg shadow-[#FF715B]/25 rounded-xl text-center">
+          <a href="contact" class="w-full sm:w-auto px-7 py-3.5 bg-[#FF715B] hover:bg-[#e65c47] text-white font-medium text-sm sm:text-base tracking-wide transition-all shadow-lg shadow-[#FF715B]/25 rounded-xl text-center">
             Got A Project?
           </a>
 
@@ -894,7 +908,7 @@
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
       
       <!-- Primary Open Contact Page Button -->
-      <a href="contact.html" class="px-8 py-4 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-sm tracking-wide transition-all shadow-xl shadow-accent/25 flex items-center gap-2.5 font-montserrat">
+      <a href="contact" class="px-8 py-4 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-sm tracking-wide transition-all shadow-xl shadow-accent/25 flex items-center gap-2.5 font-montserrat">
         <span>Open Contact & Inquiry Portal</span>
         <svg class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
       </a>
@@ -948,7 +962,7 @@
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span class="text-xs font-semibold text-emerald-300 font-montserrat">Available for Global Contracts & Roles</span>
           </div>
-          <a href="contact.html" class="px-5 py-2.5 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-xs tracking-wider uppercase font-montserrat transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
+          <a href="contact" class="px-5 py-2.5 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-xs tracking-wider uppercase font-montserrat transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
             <span>Get In Touch</span>
             <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </a>
@@ -965,8 +979,8 @@
             <li><a href="#" class="hover:text-accent transition-colors">Home Overview</a></li>
             <li><a href="#about" class="hover:text-accent transition-colors">About & Bio</a></li>
             <li><a href="#works" class="hover:text-accent transition-colors">Flagship Projects</a></li>
-            <li><a href="gallery.html" class="hover:text-accent transition-colors">Media & Reel Gallery</a></li>
-            <li><a href="contact.html" class="hover:text-accent transition-colors">Contact & Inquiries</a></li>
+            <li><a href="gallery" class="hover:text-accent transition-colors">Media & Reel Gallery</a></li>
+            <li><a href="contact" class="hover:text-accent transition-colors">Contact & Inquiries</a></li>
           </ul>
         </div>
 

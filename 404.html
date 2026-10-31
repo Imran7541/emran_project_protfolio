@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found | Emran Hosen</title>
+  
+  <!-- Smart Route Reconciler for GitHub Pages Clean URLs -->
+  <script>
+    (function() {
+      try {
+        var p = window.location.pathname;
+        // Check for trailing slashes or legacy .html extensions
+        if (p.endsWith('/gallery/') || p.endsWith('/gallery.html')) {
+          var clean = p.replace(/\/gallery(\/|\.html)?$/, '/gallery') + window.location.search + window.location.hash;
+          window.location.replace(clean);
+        } else if (p.endsWith('/contact/') || p.endsWith('/contact.html')) {
+          var clean = p.replace(/\/contact(\/|\.html)?$/, '/contact') + window.location.search + window.location.hash;
+          window.location.replace(clean);
+        } else if (p.endsWith('/index.html')) {
+          var clean = p.replace(/\/index\.html$/, '/') + window.location.search + window.location.hash;
+          window.location.replace(clean);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            montserrat: ['Montserrat', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            noir: '#0D151C',
+            accent: '#FF715B',
+            coralHover: '#ff8a78'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#121E27] text-white min-h-screen flex flex-col items-center justify-center p-6 font-montserrat relative overflow-hidden">
+  
+  <!-- Background Glow -->
+  <div class="absolute w-96 h-96 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none -top-20 -left-20"></div>
+  <div class="absolute w-96 h-96 rounded-full bg-blue-500/10 blur-3xl pointer-events-none -bottom-20 -right-20"></div>
+
+  <div class="relative z-10 max-w-lg w-full text-center">
+    
+    <!-- Status Badge -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-slate-400 mb-6">
+      <span class="w-2 h-2 rounded-full bg-[#FF715B] animate-pulse"></span>
+      <span>ERROR: PROTOCOL_ROUTE_NOT_FOUND</span>
+    </div>
+
+    <!-- 404 Headline -->
+    <h1 class="text-7xl sm:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-500 tracking-tight">
+      404
+    </h1>
+
+    <h2 class="text-xl sm:text-2xl font-bold mt-4 text-white">
+      Page Not Located
+    </h2>
+
+    <p class="text-slate-400 text-sm mt-3 leading-relaxed">
+      The requested route or asset has either moved, was retired, or does not exist on this cluster.
+    </p>
+
+    <!-- Navigation Actions -->
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="./" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-xs tracking-wider uppercase transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        <span>Back to Home</span>
+      </a>
+      <a href="gallery" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2">
+        <span>Media Gallery</span>
+      </a>
+      <a href="contact" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2">
+        <span>Contact</span>
+      </a>
+    </div>
+
+    <div class="mt-12 text-xs text-slate-600 font-mono">
+      Emran Hosen Portfolio Server · Zero-Trust Ingress
+    </div>
+
+  </div>
+
+</body>
+</html>

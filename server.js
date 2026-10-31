@@ -205,14 +205,31 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // ==================== STATIC FILE SERVING ====================
+  // ==================== STATIC FILE SERVING & CLEAN URL ROUTING ====================
+
+  // Clean URL Canonical Redirects (301 Permanent)
+  if (pathname === '/gallery.html') {
+    res.writeHead(301, { 'Location': '/gallery' + (parsedUrl.search || '') });
+    res.end();
+    return;
+  }
+  if (pathname === '/contact.html') {
+    res.writeHead(301, { 'Location': '/contact' + (parsedUrl.search || '') });
+    res.end();
+    return;
+  }
+  if (pathname === '/index.html') {
+    res.writeHead(301, { 'Location': '/' + (parsedUrl.search || '') });
+    res.end();
+    return;
+  }
 
   // Normalize route to file path
   if (pathname === '/' || pathname === '') {
     pathname = '/index.html';
-  } else if (pathname === '/gallery') {
+  } else if (pathname === '/gallery' || pathname === '/gallery/') {
     pathname = '/gallery.html';
-  } else if (pathname === '/contact') {
+  } else if (pathname === '/contact' || pathname === '/contact/') {
     pathname = '/contact.html';
   }
 
