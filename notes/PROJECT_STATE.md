@@ -92,7 +92,14 @@
   - Committed full portfolio codebase: `index.html`, `gallery.html`, `server.js`, `package.json`, `data/`, `assets/`, cutouts, SDD `specs/`, `notes/`, and `README.md`.
   - Created public repository on GitHub via `gh repo create emran_project_protfolio --public --source=. --remote=origin --push`.
   - Successfully pushed initial commit to `origin/main` (`https://github.com/Imran7541/emran_project_protfolio.git`).
-  - Verified remote repository view and metadata.
+- [x] **Deployed Live to GitHub Pages (`https://imran7541.github.io/emran_project_protfolio/`)**:
+  - Activated GitHub Pages on repository `Imran7541/emran_project_protfolio` using GitHub API (`branch: main`, `path: /`).
+  - Verified build completed successfully (`status: "built"`).
+  - Verified live public HTTP 200 responses:
+    - Home: `https://imran7541.github.io/emran_project_protfolio/` (HTTP/2 200 OK)
+    - Gallery: `https://imran7541.github.io/emran_project_protfolio/gallery.html` (HTTP/2 200 OK)
+    - Thumbnails: `https://imran7541.github.io/emran_project_protfolio/assets/thumbnails/ep01_will_ai_replace_devs.jpg` (HTTP/2 200 OK)
+  - Configured repository Homepage URL in GitHub's About section for one-click access.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
