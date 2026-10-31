@@ -212,6 +212,8 @@ const server = http.createServer((req, res) => {
     pathname = '/index.html';
   } else if (pathname === '/gallery') {
     pathname = '/gallery.html';
+  } else if (pathname === '/contact') {
+    pathname = '/contact.html';
   }
 
   // Sanitize path against directory traversal
@@ -251,6 +253,7 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`📡 Endpoints:`);
   console.log(`   - Home:     http://localhost:${PORT}/index.html`);
   console.log(`   - Gallery:  http://localhost:${PORT}/gallery.html`);
+  console.log(`   - Contact:  http://localhost:${PORT}/contact.html`);
   console.log(`   - Health:   http://localhost:${PORT}/api/health`);
   console.log(`   - Projects: http://localhost:${PORT}/api/projects`);
   console.log(`   - Agents:   http://localhost:${PORT}/api/agent/status`);

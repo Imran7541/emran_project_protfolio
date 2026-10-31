@@ -110,6 +110,22 @@
     - Coolify Dashboard: `http://localhost:8000/project/v7zcpgjgrgof6t21260vlegp/environment/j4ql5ylgs7jghjoqexxqkrpl/application/3lolil9okyxy5wz6ophjozt1`
   - Verified live HTTP 200 responses for Home (`index.html`), Gallery (`gallery.html`), and REST health check (`/api/health`).
 
+- [x] **Created Dedicated `contact.html` Page & Replaced Cluttered Home Form**:
+  - Removed the bulky project inquiry form from `index.html` to prevent visual clutter and awkward layout at the bottom of the homepage.
+  - Built dedicated, cinematic **`contact.html`** page matching the portfolio's Three.js WebGL Abyss aesthetic, featuring:
+    - Direct communication channels: Primary email with 1-click clipboard copy toast, WhatsApp Business direct chat link, Telegram message link, and real-time live local time clock in Dhaka (GMT+6).
+    - Interactive "Send Direct Project Inquiry" form powered by backend REST API `POST /api/contact` with instant client-side validation, encrypted transmission badge, and status acknowledgment.
+  - Replaced the homepage contact area with a refined, balanced CTA banner linking to `contact.html`.
+  - Updated navbar across `index.html`, `gallery.html`, and `contact.html` so `Contact` navigates to `contact.html`.
+  - Added `/contact` static route handling in `server.js`.
+
+- [x] **Engineered World-Class Executive Footer**:
+  - Upgraded the flimsy 1-line footer across all pages (`index.html`, `gallery.html`, and `contact.html`) to an executive multi-column layout.
+  - Prominent "Emran Hosen." brand logo, professional positioning tagline, and pulsing green availability badge (`Available for Global Contracts & Roles`).
+  - 4 clean structured columns: Navigation links, Core Engineering Expertise, Direct Contact details, and Social Ecosystem with authentic vector SVG icons for GitHub, LinkedIn, Facebook, and Email.
+  - Bottom sub-footer with Zero-Trust engineering watermark, technology stack acknowledgment, and smooth "Back to Top" scrolling action.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
+
 
