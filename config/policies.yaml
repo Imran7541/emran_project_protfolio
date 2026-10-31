@@ -1,0 +1,28 @@
+# Zero-Trust Security Policies & Structural Guardrails
+version: "1.0.0"
+project: "emran_project_protfolio"
+author: "Emran Hosen"
+
+server:
+  host: "0.0.0.0"
+  port: 5225
+  max_payload_bytes: 1048576 # 1MB limit for contact form payloads
+  rate_limit:
+    window_ms: 60000
+    max_requests_per_ip: 100
+
+cors:
+  allowed_origins:
+    - "*"
+  allowed_methods:
+    - "GET"
+    - "POST"
+    - "OPTIONS"
+  allowed_headers:
+    - "Content-Type"
+
+data_governance:
+  inquiries_path: "data/inquiries.jsonl"
+  projects_path: "data/projects.json"
+  append_only_logging: true
+  sanitization_required: true

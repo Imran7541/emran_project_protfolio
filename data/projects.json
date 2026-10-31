@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "slug": "ai-agents-hub",
+    "title": "AI-Agents-Hub: Multi-Cloud Persistent Gateway",
+    "category": "Autonomous Systems & Cloud Orchestration",
+    "period": "2026 Production",
+    "badge": "Autonomous Systems",
+    "status": "Live in Production",
+    "statusColor": "emerald",
+    "description": "24/7 cloud orchestration for autonomous agents (Hermes, OpenClaw, Strix) running on Render and Vercel. Ingests 248+ specialized engineering skills with real-time Discord & Telegram bidirectional gateways.",
+    "tags": ["Node.js 22", "Docker", "Render Cloud", "Discord.js", "NVIDIA NIM"],
+    "repoUrl": "https://github.com/Imran7541/AI-Agents-Hub",
+    "liveTelemetry": {
+      "skillsCount": 248,
+      "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+      "uptime": "24/7 Cloud Active"
+    }
+  },
+  {
+    "id": 2,
+    "slug": "next-label-3d",
+    "title": "Next Label: 400K Particle Interactive World",
+    "category": "Creative 3D Web & GLSL Shaders",
+    "period": "WebGL GPGPU",
+    "badge": "Creative 3D Web",
+    "status": "Award-Grade WebGL",
+    "statusColor": "purple",
+    "description": "High-performance WebGL showcase with 409,600 simultaneous particles morphing through four seasons. Zero third-party bloat, sub-50ms Edge streaming, and custom post-processing bloom shader pipeline.",
+    "tags": ["Three.js", "GLSL Shaders", "Web Audio", "GSAP"],
+    "repoUrl": "https://github.com/Imran7541/Next_Label_protfolio",
+    "liveTelemetry": {
+      "particles": 409600,
+      "fps": "60 FPS Fluid",
+      "pipeline": "Custom GLSL GPGPU"
+    }
+  },
+  {
+    "id": 3,
+    "slug": "autonomous-video-producer",
+    "title": "Autonomous Video Production Engine",
+    "category": "Generative Media & Automated Pipelines",
+    "period": "Automated Studio",
+    "badge": "Generative Media",
+    "status": "Full Automation Pipeline",
+    "statusColor": "cyan",
+    "description": "End-to-end programmatic video pipeline. Generates AI structured scripts, synthesizes neural voiceovers with Edge-TTS, drives Playwright headless web slides, and renders 1080x1920 MP4 reels via FFmpeg.",
+    "tags": ["TypeScript", "FFmpeg 2-Pass", "Playwright", "Edge TTS"],
+    "repoUrl": "https://github.com/Imran7541/as-sunnah-reel",
+    "liveTelemetry": {
+      "resolution": "1080x1920 60fps",
+      "editing": "Zero Manual Editing",
+      "audioEngine": "Neural TTS + ASS Subtitles"
+    }
+  },
+  {
+    "id": 4,
+    "slug": "enterprise-student-platform",
+    "title": "Enterprise Student-to-Career Platform",
+    "category": "Full-Stack SaaS & Cloud Architecture",
+    "period": "Cloud Architecture",
+    "badge": "Full-Stack SaaS",
+    "status": "SaaS Architecture",
+    "statusColor": "emerald",
+    "description": "High-concurrency lifecycle portal with division-level faceted search, real-time CV analytics, verified employer matrices, and Zero-Trust RBAC security with automated database backups.",
+    "tags": ["Next.js 15", "PostgreSQL", "Drizzle ORM", "Tailwind CSS"],
+    "repoUrl": "https://github.com/Imran7541/education",
+    "liveTelemetry": {
+      "framework": "Next.js 15 Turborepo",
+      "database": "PostgreSQL + Drizzle",
+      "security": "Zero-Trust RBAC"
+    }
+  }
+]

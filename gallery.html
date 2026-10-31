@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video & Media Gallery — Emran Hosen</title>
+  <meta name="description" content="Technical talks, AI workflow breakdowns, and engineering insights by Emran Hosen.">
+  
+  <!-- Google Fonts: Montserrat & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'Inter', 'sans-serif'],
+            montserrat: ['Montserrat', 'sans-serif'],
+            display: ['Montserrat', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            noir: '#0e171f',
+            card: '#162430',
+            accent: '#FF715B',
+            accentGlow: '#ff8a78',
+            coral: '#FF715B',
+            coralHover: '#e65c47',
+            navyBg: '#121E27',
+            emeraldLive: '#10b981'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Three.js CDN for Ocean Abyss & Caustics WebGL -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Prevent browser auto-scroll jump to hash or cached scroll on refresh -->
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
+
+  <style>
+    body {
+      background-color: #121E27;
+      color: #e2e8f0;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Glass Cards */
+    .bg-card {
+      background: rgba(22, 36, 48, 0.78) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    
+    /* Subtle Film Grain Overlay */
+    .film-grain {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .card-hover {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(255, 113, 91, 0.22);
+      border-color: rgba(255, 113, 91, 0.45) !important;
+    }
+
+    /* Glass Nav */
+    .glass-nav {
+      background: rgba(18, 30, 39, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Smooth Pulse */
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.1); }
+    }
+    .live-pulse {
+      animation: pulse-slow 2s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbars inside preview containers if needed */
+    iframe {
+      border-radius: 12px;
+    }
+
+    /* Bidirectional Infinite Carousels */
+    /* Serial 1: Facebook Reels (Right to Left) */
+    @keyframes gallery-scroll-left {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    /* Serial 2: LinkedIn Insights (Left to Right) */
+    @keyframes gallery-scroll-right {
+      0% {
+        transform: translate3d(-50%, 0, 0);
+      }
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    .animate-gallery-left {
+      animation: gallery-scroll-left 45s linear infinite;
+      will-change: transform;
+    }
+
+    .animate-gallery-right {
+      animation: gallery-scroll-right 50s linear infinite;
+      will-change: transform;
+    }
+
+    .gallery-track:hover {
+      animation-play-state: paused !important;
+    }
+
+    /* Soft Edge Gradient Vignettes */
+    .gallery-mask {
+      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+
+    /* High-Impact Media Card Hover */
+    .media-card {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .media-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: #FF715B !important;
+      box-shadow: 0 20px 40px -10px rgba(255, 113, 91, 0.3);
+    }
+
+    /* Video Play Icon Pulse */
+    .play-btn-glow {
+      box-shadow: 0 0 25px rgba(255, 113, 91, 0.45);
+      transition: all 0.3s ease;
+    }
+    .media-card:hover .play-btn-glow {
+      transform: scale(1.15);
+      box-shadow: 0 0 35px rgba(255, 113, 91, 0.7);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-gallery-left,
+      .animate-gallery-right {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="selection:bg-accent selection:text-white relative">
+
+  <!-- Grain Overlay -->
+  <div class="film-grain"></div>
+
+  <!-- WebGL Deep-Sea Background Canvas -->
+  <canvas id="webgl-bg" class="fixed inset-0 w-full h-full pointer-events-none z-[1] opacity-35"></canvas>
+
+  <div class="relative z-10">
+
+    <!-- ==================== 1. FLOATING NAVIGATION ==================== -->
+    <nav class="fixed top-0 left-0 right-0 z-40 glass-nav">
+      <div class="max-w-7xl mx-auto px-6 sm:px-12 h-20 flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <a href="index.html" class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white font-montserrat hover:opacity-90 transition-opacity whitespace-nowrap flex items-center gap-2">
+          <span>Emran Hosen</span>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-7 sm:gap-10 text-[15px] font-medium text-slate-200 font-montserrat">
+          <a href="index.html" class="hover:text-[#FF715B] transition-colors">Home</a>
+          <a href="index.html#about" class="hover:text-[#FF715B] transition-colors">About</a>
+          <a href="index.html#works" class="hover:text-[#FF715B] transition-colors">Project</a>
+          <a href="gallery.html" class="text-[#FF715B] font-semibold border-b-2 border-[#FF715B] pb-1">Gallery</a>
+          <a href="#contact" class="hover:text-[#FF715B] transition-colors">Contact</a>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="hidden md:flex items-center">
+          <a href="index.html" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-accent hover:text-accent text-xs font-semibold text-slate-300 transition-all flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span>Back to Home</span>
+          </a>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <div class="md:hidden flex items-center gap-3">
+          <a href="index.html" class="p-2 text-xs text-accent font-semibold flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span>Home</span>
+          </a>
+          <button id="mobile-menu-toggle" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')" class="p-2 text-slate-300 hover:text-white focus:outline-none" aria-label="Toggle navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Drawer -->
+      <div id="mobile-drawer" class="hidden md:hidden px-6 py-5 bg-[#121E27]/98 border-b border-white/10 flex flex-col gap-4 text-base font-medium text-slate-200 font-montserrat backdrop-blur-xl">
+        <a href="index.html" class="hover:text-[#FF715B] transition-colors">Home</a>
+        <a href="index.html#about" class="hover:text-[#FF715B] transition-colors">About</a>
+        <a href="index.html#works" class="hover:text-[#FF715B] transition-colors">Project</a>
+        <a href="gallery.html" class="text-[#FF715B] font-semibold">Gallery (Active)</a>
+        <a href="#contact" onclick="document.getElementById('mobile-drawer').classList.add('hidden')" class="hover:text-[#FF715B] transition-colors">Contact</a>
+      </div>
+    </nav>
+
+    <!-- ==================== 2. GALLERY HERO HEADER ==================== -->
+    <header class="pt-36 sm:pt-44 pb-12 px-6 max-w-7xl mx-auto">
+      <div class="flex flex-col items-center text-center">
+        
+        <!-- Live Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-semibold mb-5 shadow-lg shadow-accent/5">
+          <span class="w-2 h-2 rounded-full bg-accent live-pulse"></span>
+          <span>Official Media & Tech Vault</span>
+        </div>
+
+        <h1 class="font-montserrat text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl">
+          Tech Talks & AI Workflows
+        </h1>
+
+        <p class="mt-4 text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed font-light">
+          Explore my latest video breakdowns on autonomous AI agents, practical engineering workflows, and system architecture across Facebook and LinkedIn.
+        </p>
+
+        <!-- Quick Filter Tabs -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <button onclick="filterSerial('all')" data-serial="all" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-[#FF715B] text-white border border-[#FF715B] shadow-lg shadow-accent/20">
+            All Content (10)
+          </button>
+          <button onclick="filterSerial('facebook')" data-serial="facebook" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 flex items-center gap-2">
+            <svg class="w-4 h-4 text-blue-500 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Facebook Reels (6)</span>
+          </button>
+          <button onclick="filterSerial('linkedin')" data-serial="linkedin" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 flex items-center gap-2">
+            <svg class="w-4 h-4 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>LinkedIn Insights (4)</span>
+          </button>
+          <button onclick="filterSerial('youtube')" data-serial="youtube" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 flex items-center gap-2">
+            <svg class="w-4 h-4 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span>YouTube Series</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ==================== 3. SERIAL 1: FACEBOOK REELS ==================== -->
+    <section id="serial-facebook" class="py-12 px-6 max-w-7xl mx-auto border-t border-white/5 transition-opacity duration-300 scroll-mt-24">
+      
+      <!-- Serial Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-2">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Serial 1 • Short-Form Video Series</span>
+          </div>
+          <h2 class="font-montserrat text-2xl sm:text-3xl font-bold text-white">Facebook Reels: AI & Career Insights</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-montserrat">
+            <span class="w-2 h-2 rounded-full bg-blue-400 live-pulse"></span>
+            Right to Left Motion • Infinite Loop
+          </span>
+          <span class="text-slate-400 text-xs hidden sm:inline">(Hover to pause • Click to watch)</span>
+        </div>
+      </div>
+
+      <!-- Continuous Right-to-Left Motion Track -->
+      <div class="gallery-mask overflow-hidden py-4 -mx-6 px-6">
+        <div class="gallery-track flex gap-6 w-max animate-gallery-left">
+          
+          <!-- ========== SET A (ORIGINAL CARDS 1-6) ========== -->
+          <!-- Card 1 -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1689852442742183%2F&show_text=false&width=340&t=0', 'কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)', 'https://www.facebook.com/share/v/1FxXPzNdX6/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep01_will_ai_replace_devs.jpg" alt="Episode 01 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 01
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Career Strategy</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1689852442742183%2F&show_text=false&width=340&t=0', 'কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)', 'https://www.facebook.com/share/v/1FxXPzNdX6/', true)">
+                  কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  AI যুগে সফটওয়্যার ইঞ্জিনিয়ারদের মূল শক্তি শুধু কোডিং নয়, সিস্টেম আর্কিটেকচার ও রিয়েল বিজনেস ভ্যালু ডেলিভারি।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1689852442742183%2F&show_text=false&width=340&t=0', 'কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)', 'https://www.facebook.com/share/v/1FxXPzNdX6/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1FxXPzNdX6/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1814594043188520%2F&show_text=false&width=340&t=0', 'AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা', 'https://www.facebook.com/share/v/19cJURTLRx/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep03_why_hire_engineers.jpg" alt="Episode 02 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 02
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Agentic Workflow</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1814594043188520%2F&show_text=false&width=340&t=0', 'AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা', 'https://www.facebook.com/share/v/19cJURTLRx/', true)">
+                  AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  AI কোডিং অ্যাসিস্ট্যান্ট বনাম এন্ড-টু-এন্ড অটোমেটেড ইঞ্জিনিয়ারিং পাইপলাইন পরিচালনা করার বাস্তব টেকনিক্যাল কৌশল।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1814594043188520%2F&show_text=false&width=340&t=0', 'AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা', 'https://www.facebook.com/share/v/19cJURTLRx/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/19cJURTLRx/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1815913116397254%2F&show_text=false&width=340&t=0', 'কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?', 'https://www.facebook.com/share/v/196LcgEHfV/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep02_development_workflow.jpg" alt="Episode 03 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 03
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Hiring & Market</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1815913116397254%2F&show_text=false&width=340&t=0', 'কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?', 'https://www.facebook.com/share/v/196LcgEHfV/', true)">
+                  কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  রিয়েল-ওয়ার্ল্ড সফটওয়্যার মেইনটেন্যান্স, মিশন-ক্রিটিক্যাল সিকিউরিটি এবং ডোমেইন এক্সপার্টাইজের গভীর প্রয়োজনীয়তা।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1815913116397254%2F&show_text=false&width=340&t=0', 'কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?', 'https://www.facebook.com/share/v/196LcgEHfV/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/196LcgEHfV/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2986051105095540%2F&show_text=false&width=340&t=0', 'এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন', 'https://www.facebook.com/share/v/1E8q5gPabY/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep04_coding_assistant_design.jpg" alt="Episode 04 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 04
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Full-Stack Design</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2986051105095540%2F&show_text=false&width=340&t=0', 'এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন', 'https://www.facebook.com/share/v/1E8q5gPabY/', true)">
+                  এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  কপি-পেস্ট কোডিংয়ের বাইরে গিয়ে সিস্টেম আর্কিটেকচার ও জিরো-ট্রাস্ট কোডিং স্ট্যান্ডার্ড তৈরি করে প্রোডাক্টিভিটি বৃদ্ধি।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2986051105095540%2F&show_text=false&width=340&t=0', 'এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন', 'https://www.facebook.com/share/v/1E8q5gPabY/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1E8q5gPabY/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1789443445598568%2F&show_text=false&width=340&t=0', 'বড় প্রম্পট নয়, প্রয়োজন সঠিক Context: AI-কে দিয়ে Production-Ready কাজ', 'https://www.facebook.com/share/v/1Guapgh1PZ/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep05_context_engineering.jpg" alt="Episode 05 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 05
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Context Engineering</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1789443445598568%2F&show_text=false&width=340&t=0', 'বড় প্রম্পট নয়, প্রয়োজন সঠিক Context: AI-কে দিয়ে Production-Ready কাজ', 'https://www.facebook.com/share/v/1Guapgh1PZ/', true)">
+                  বড় প্রম্পট নয়, প্রয়োজন সঠিক Context
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  কনটেক্সট ছাড়া বড় প্রম্পট মানেই জেনেরিক আউটপুট! Project Structure, DB Schema এবং স্পষ্ট প্রত্যাশা দিয়ে AI আউটপুট ১০ গুণ ফাস্ট করার ৩টি নিয়ম।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1789443445598568%2F&show_text=false&width=340&t=0', 'বড় প্রম্পট নয়, প্রয়োজন সঠিক Context: AI-কে দিয়ে Production-Ready কাজ', 'https://www.facebook.com/share/v/1Guapgh1PZ/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1Guapgh1PZ/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1437967031757450%2F&show_text=false&width=340&t=0', 'Build Successful তবুও Production Fail! AI Agent দিয়ে Root Cause Analysis', 'https://www.facebook.com/share/v/1CSQNPuiKu/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep06_production_debugging.jpg" alt="Episode 06 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 06
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Forensic Debugging</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1437967031757450%2F&show_text=false&width=340&t=0', 'Build Successful তবুও Production Fail! AI Agent দিয়ে Root Cause Analysis', 'https://www.facebook.com/share/v/1CSQNPuiKu/', true)">
+                  Build Successful তবুও Production Fail!
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  কোড ঠিক আছে, বিল্ড পাস—তবুও সমস্যা কোথায়? কীভাবে AI Agent গিটহাব রেপো বিশ্লেষণ করে প্রোডাকশন এরর শনাক্ত, কোড ফিক্স ও সল্যুশন নিশ্চিত করে।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1437967031757450%2F&show_text=false&width=340&t=0', 'Build Successful তবুও Production Fail! AI Agent দিয়ে Root Cause Analysis', 'https://www.facebook.com/share/v/1CSQNPuiKu/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1CSQNPuiKu/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========== SET B (DUPLICATE CARDS 1-6 FOR SEAMLESS 100% INFINITE LOOP) ========== -->
+          <!-- Card 1 Dupl -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1689852442742183%2F&show_text=false&width=340&t=0', 'কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)', 'https://www.facebook.com/share/v/1FxXPzNdX6/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep01_will_ai_replace_devs.jpg" alt="Episode 01 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 01
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Career Strategy</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1689852442742183%2F&show_text=false&width=340&t=0', 'কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)', 'https://www.facebook.com/share/v/1FxXPzNdX6/', true)">
+                  কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  AI যুগে সফটওয়্যার ইঞ্জিনিয়ারদের মূল শক্তি শুধু কোডিং নয়, সিস্টেম আর্কিটেকচার ও রিয়েল বিজনেস ভ্যালু ডেলিভারি।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1689852442742183%2F&show_text=false&width=340&t=0', 'কি ডেভেলপারদের চাকরি খাবে? (Will AI Replace Developers?)', 'https://www.facebook.com/share/v/1FxXPzNdX6/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1FxXPzNdX6/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 Dupl -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1814594043188520%2F&show_text=false&width=340&t=0', 'AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা', 'https://www.facebook.com/share/v/19cJURTLRx/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep03_why_hire_engineers.jpg" alt="Episode 02 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 02
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Agentic Workflow</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1814594043188520%2F&show_text=false&width=340&t=0', 'AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা', 'https://www.facebook.com/share/v/19cJURTLRx/', true)">
+                  AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  AI কোডিং অ্যাসিস্ট্যান্ট বনাম এন্ড-টু-এন্ড অটোমেটেড ইঞ্জিনিয়ারিং পাইপলাইন পরিচালনা করার বাস্তব টেকনিক্যাল কৌশল।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1814594043188520%2F&show_text=false&width=340&t=0', 'AI দিয়ে শুধু কোড নয়, পুরো Development Workflow পরিচালনা', 'https://www.facebook.com/share/v/19cJURTLRx/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/19cJURTLRx/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 Dupl -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1815913116397254%2F&show_text=false&width=340&t=0', 'কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?', 'https://www.facebook.com/share/v/196LcgEHfV/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep02_development_workflow.jpg" alt="Episode 03 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 03
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Hiring & Market</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1815913116397254%2F&show_text=false&width=340&t=0', 'কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?', 'https://www.facebook.com/share/v/196LcgEHfV/', true)">
+                  কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  রিয়েল-ওয়ার্ল্ড সফটওয়্যার মেইনটেন্যান্স, মিশন-ক্রিটিক্যাল সিকিউরিটি এবং ডোমেইন এক্সপার্টাইজের গভীর প্রয়োজনীয়তা।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1815913116397254%2F&show_text=false&width=340&t=0', 'কোম্পানিগুলো কেন এআই যুগেও সফটওয়্যার ইঞ্জিনিয়ার নিয়োগ দেবে?', 'https://www.facebook.com/share/v/196LcgEHfV/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/196LcgEHfV/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 Dupl -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2986051105095540%2F&show_text=false&width=340&t=0', 'এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন', 'https://www.facebook.com/share/v/1E8q5gPabY/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep04_coding_assistant_design.jpg" alt="Episode 04 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 04
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Full-Stack Design</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2986051105095540%2F&show_text=false&width=340&t=0', 'এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন', 'https://www.facebook.com/share/v/1E8q5gPabY/', true)">
+                  এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  কপি-পেস্ট কোডিংয়ের বাইরে গিয়ে সিস্টেম আর্কিটেকচার ও জিরো-ট্রাস্ট কোডিং স্ট্যান্ডার্ড তৈরি করে প্রোডাক্টিভিটি বৃদ্ধি।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2986051105095540%2F&show_text=false&width=340&t=0', 'এআই কোডিং অ্যাসিস্ট্যান্ট বনাম ফুলস্ট্যাক সিস্টেম ডিজাইন', 'https://www.facebook.com/share/v/1E8q5gPabY/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1E8q5gPabY/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 Dupl -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1789443445598568%2F&show_text=false&width=340&t=0', 'বড় প্রম্পট নয়, প্রয়োজন সঠিক Context: AI-কে দিয়ে Production-Ready কাজ', 'https://www.facebook.com/share/v/1Guapgh1PZ/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep05_context_engineering.jpg" alt="Episode 05 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 05
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Context Engineering</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1789443445598568%2F&show_text=false&width=340&t=0', 'বড় প্রম্পট নয়, প্রয়োজন সঠিক Context: AI-কে দিয়ে Production-Ready কাজ', 'https://www.facebook.com/share/v/1Guapgh1PZ/', true)">
+                  বড় প্রম্পট নয়, প্রয়োজন সঠিক Context
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  কনটেক্সট ছাড়া বড় প্রম্পট মানেই জেনেরিক আউটপুট! Project Structure, DB Schema এবং স্পষ্ট প্রত্যাশা দিয়ে AI আউটপুট ১০ গুণ ফাস্ট করার ৩টি নিয়ম।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1789443445598568%2F&show_text=false&width=340&t=0', 'বড় প্রম্পট নয়, প্রয়োজন সঠিক Context: AI-কে দিয়ে Production-Ready কাজ', 'https://www.facebook.com/share/v/1Guapgh1PZ/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1Guapgh1PZ/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 Dupl -->
+          <div class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+            
+            <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1437967031757450%2F&show_text=false&width=340&t=0', 'Build Successful তবুও Production Fail! AI Agent দিয়ে Root Cause Analysis', 'https://www.facebook.com/share/v/1CSQNPuiKu/', true)">
+              <!-- Real Video Poster Thumbnail -->
+              <img src="assets/thumbnails/ep06_production_debugging.jpg" alt="Episode 06 Thumbnail" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+              <!-- Dark vignette gradient for contrast -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                  Episode 06
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                  <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+                <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">Forensic Debugging</span>
+                <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Reel
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-3 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1437967031757450%2F&show_text=false&width=340&t=0', 'Build Successful তবুও Production Fail! AI Agent দিয়ে Root Cause Analysis', 'https://www.facebook.com/share/v/1CSQNPuiKu/', true)">
+                  Build Successful তবুও Production Fail!
+                </h3>
+                <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                  কোড ঠিক আছে, বিল্ড পাস—তবুও সমস্যা কোথায়? কীভাবে AI Agent গিটহাব রেপো বিশ্লেষণ করে প্রোডাকশন এরর শনাক্ত, কোড ফিক্স ও সল্যুশন নিশ্চিত করে।
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+                <button onclick="openVideoModal('https://www.facebook.com/plugins/video.php?height=600&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1437967031757450%2F&show_text=false&width=340&t=0', 'Build Successful তবুও Production Fail! AI Agent দিয়ে Root Cause Analysis', 'https://www.facebook.com/share/v/1CSQNPuiKu/', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span>Watch Reel</span>
+                </button>
+                <a href="https://www.facebook.com/share/v/1CSQNPuiKu/" target="_blank" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="Open on Facebook">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. SERIAL 2: LINKEDIN FEATURED POSTS ==================== -->
+    <section id="serial-linkedin" class="py-14 px-6 max-w-7xl mx-auto border-t border-white/5 transition-opacity duration-300 scroll-mt-24">
+      
+      <!-- Serial Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold mb-2">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>Serial 2 • Professional Case Studies</span>
+          </div>
+          <h2 class="font-montserrat text-2xl sm:text-3xl font-bold text-white">LinkedIn Articles & Automation Workflows</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-300 text-xs font-montserrat">
+            <span class="w-2 h-2 rounded-full bg-sky-400 live-pulse"></span>
+            Left to Right Motion • Infinite Loop
+          </span>
+          <span class="text-slate-400 text-xs hidden sm:inline">(Hover to pause • Click to preview)</span>
+        </div>
+      </div>
+
+      <!-- Continuous Left-to-Right Motion Track -->
+      <div class="gallery-mask overflow-hidden py-4 -mx-6 px-6">
+        <div class="gallery-track flex gap-6 w-max animate-gallery-right">
+          
+          <!-- ========== SET A (ORIGINAL CARDS 1-4) ========== -->
+          <!-- LinkedIn Card 1 -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">Workflow Engineering</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'From Manual Work to Autonomous AI Automation', 'https://lnkd.in/p/gz5ge7zu', false)">
+                From Manual Work to Autonomous AI Automation
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Build Smarter Systems, Not More Busywork. Connecting APIs, CRMs, and autonomous AI agents to eliminate repetitive friction.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#aiautomation</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#n8n</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#agentic</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'From Manual Work to Autonomous AI Automation', 'https://lnkd.in/p/gz5ge7zu', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://lnkd.in/p/gz5ge7zu" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>Read Article</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- LinkedIn Card 2 -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">Architecture</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516856050273120256', 'Agentic Engineering & Disciplined Vibe Coding', 'https://lnkd.in/p/g8DdSN3w', false)">
+                Agentic Engineering & Disciplined Vibe Coding
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Combining rapid generative prototyping with architectural rigor: autonomous test harnesses, fault isolation, and verifiable resilience.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#vibecoding</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#architecture</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#testing</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516856050273120256', 'Agentic Engineering & Disciplined Vibe Coding', 'https://lnkd.in/p/g8DdSN3w', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://lnkd.in/p/g8DdSN3w" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>Read Article</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- LinkedIn Card 3 -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">System Innovation</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516355286220050432', 'Next-Gen Software Pipelines & Autonomous Systems', 'https://lnkd.in/p/gqDXbicY', false)">
+                Next-Gen Software Pipelines & Autonomous Systems
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Modern full-stack paradigms, automated test-driven development, and orchestrating intelligent agents into existing codebases.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#softwaredev</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#pipeline</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#automation</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516355286220050432', 'Next-Gen Software Pipelines & Autonomous Systems', 'https://lnkd.in/p/gqDXbicY', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://lnkd.in/p/gqDXbicY" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>Read Article</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- LinkedIn Card 4 -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">Cloud Security</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'Zero-Trust Agentic Guardrails & Production Resilience', 'https://www.linkedin.com/in/imran-fullstack/', false)">
+                Zero-Trust Agentic Guardrails & Production Resilience
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Deploying LLM agents in mission-critical environments with deterministic policy enforcement and human-in-the-loop checkpoints.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#zerotrust</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#security</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#llmops</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'Zero-Trust Agentic Guardrails & Production Resilience', 'https://www.linkedin.com/in/imran-fullstack/', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://www.linkedin.com/in/imran-fullstack/" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>View Profile</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- ========== SET B (DUPLICATE CARDS 1-4 FOR SEAMLESS 100% INFINITE LOOP) ========== -->
+          <!-- LinkedIn Card 1 Dupl -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">Workflow Engineering</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'From Manual Work to Autonomous AI Automation', 'https://lnkd.in/p/gz5ge7zu', false)">
+                From Manual Work to Autonomous AI Automation
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Build Smarter Systems, Not More Busywork. Connecting APIs, CRMs, and autonomous AI agents to eliminate repetitive friction.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#aiautomation</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#n8n</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#agentic</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'From Manual Work to Autonomous AI Automation', 'https://lnkd.in/p/gz5ge7zu', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://lnkd.in/p/gz5ge7zu" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>Read Article</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- LinkedIn Card 2 Dupl -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">Architecture</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516856050273120256', 'Agentic Engineering & Disciplined Vibe Coding', 'https://lnkd.in/p/g8DdSN3w', false)">
+                Agentic Engineering & Disciplined Vibe Coding
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Combining rapid generative prototyping with architectural rigor: autonomous test harnesses, fault isolation, and verifiable resilience.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#vibecoding</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#architecture</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#testing</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516856050273120256', 'Agentic Engineering & Disciplined Vibe Coding', 'https://lnkd.in/p/g8DdSN3w', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://lnkd.in/p/g8DdSN3w" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>Read Article</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- LinkedIn Card 3 Dupl -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">System Innovation</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516355286220050432', 'Next-Gen Software Pipelines & Autonomous Systems', 'https://lnkd.in/p/gqDXbicY', false)">
+                Next-Gen Software Pipelines & Autonomous Systems
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Modern full-stack paradigms, automated test-driven development, and orchestrating intelligent agents into existing codebases.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#softwaredev</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#pipeline</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#automation</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7516355286220050432', 'Next-Gen Software Pipelines & Autonomous Systems', 'https://lnkd.in/p/gqDXbicY', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://lnkd.in/p/gqDXbicY" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>Read Article</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- LinkedIn Card 4 Dupl -->
+          <div class="media-card w-[340px] sm:w-[380px] h-[360px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-6 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group" aria-hidden="true">
+            <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 font-semibold font-montserrat text-[11px]">
+                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>Case Study</span>
+                </span>
+                <span class="text-slate-400 text-xs font-montserrat">Cloud Security</span>
+              </div>
+
+              <h3 class="font-montserrat text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'Zero-Trust Agentic Guardrails & Production Resilience', 'https://www.linkedin.com/in/imran-fullstack/', false)">
+                Zero-Trust Agentic Guardrails & Production Resilience
+              </h3>
+
+              <p class="mt-2.5 text-slate-300 text-xs leading-relaxed font-light line-clamp-3">
+                Deploying LLM agents in mission-critical environments with deterministic policy enforcement and human-in-the-loop checkpoints.
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#zerotrust</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#security</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/5 font-mono">#llmops</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+              <button onclick="openVideoModal('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7517228502379626496', 'Zero-Trust Agentic Guardrails & Production Resilience', 'https://www.linkedin.com/in/imran-fullstack/', false)" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <span>Preview Embed</span>
+              </button>
+              <a href="https://www.linkedin.com/in/imran-fullstack/" target="_blank" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/25 text-xs font-bold font-montserrat transition-all flex items-center gap-1.5">
+                <span>View Profile</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. SERIAL 3: YOUTUBE MASTERCLASS (UPCOMING) ==================== -->
+    <section id="serial-youtube" class="py-16 px-6 max-w-7xl mx-auto border-t border-white/5 transition-opacity duration-300 scroll-mt-24">
+      
+      <div class="p-8 sm:p-12 rounded-3xl bg-card border border-white/5 card-hover relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+        
+        <div class="relative z-10 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-500/10 border border-red-500/25 text-red-400 text-xs font-semibold mb-4">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span>Serial 3 • Long-Form Video Courses</span>
+          </div>
+
+          <h2 class="font-montserrat text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+            YouTube Masterclass Series & Architectural Deep Dives
+          </h2>
+          
+          <p class="mt-4 text-slate-300 text-sm leading-relaxed font-light">
+            In-depth multi-hour tutorials covering autonomous agent orchestration, WebGL 3D web applications, zero-trust security architecture, and end-to-end full-stack engineering.
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-red-500"></span> 4K Ultra HD
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-accent"></span> Production Code Repos
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Case Studies
+            </span>
+          </div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center">
+          <div class="w-24 h-24 rounded-3xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 mb-5 shadow-2xl group-hover:scale-110 transition-transform">
+            <svg class="w-12 h-12 fill-current ml-1" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          
+          <a href="https://youtube.com" target="_blank" class="px-8 py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-xl shadow-red-600/20 flex items-center gap-2">
+            <span>Subscribe Channel</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+          <span class="text-[11px] text-slate-500 mt-2 font-medium">Recording in progress</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==================== 6. FAST CLIENT CONNECT (FOOTER) ==================== -->
+    <section id="contact" class="py-24 px-6 max-w-4xl mx-auto text-center relative border-t border-white/5 scroll-mt-24">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-6">
+        <span>Direct Collaboration</span>
+      </div>
+
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white leading-tight">
+        Have a project or technical inquiry? <br>
+        <span class="bg-gradient-to-r from-accent to-purple-400 bg-clip-text text-transparent">Let's build it together.</span>
+      </h2>
+
+      <p class="mt-6 text-slate-400 text-sm max-w-xl mx-auto leading-relaxed font-light">
+        Whether you need autonomous AI workflows, an interactive 3D web experience, or modern full-stack development—I am open for collaboration.
+      </p>
+
+      <!-- Communication Hub Buttons -->
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        
+        <!-- Primary Email -->
+        <a href="mailto:imrandt2001@gmail.com" class="px-8 py-4 rounded-xl bg-white text-noir font-bold text-sm hover:bg-slate-200 transition-all shadow-xl shadow-white/10 flex items-center gap-2.5">
+          <svg class="w-4 h-4 text-noir" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          <span>Send Email Directly</span>
+        </a>
+
+        <!-- WhatsApp Button -->
+        <a href="https://wa.me/8801900000000" target="_blank" class="px-6 py-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold text-sm hover:bg-emerald-500/20 transition-all flex items-center gap-2">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span>Chat on WhatsApp</span>
+        </a>
+
+        <!-- Telegram Button -->
+        <a href="https://t.me/imran_7541" target="_blank" class="px-6 py-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold text-sm hover:bg-cyan-500/20 transition-all flex items-center gap-2">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.197 1.006.128.832.942z"/></svg>
+          <span>Telegram Message</span>
+        </a>
+
+      </div>
+
+      <!-- Quick Feedback Toast -->
+      <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 px-5 py-3 rounded-xl bg-white text-noir font-bold text-xs shadow-2xl flex items-center gap-2 pointer-events-none opacity-0 transition-opacity duration-300 z-50">
+        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span>Email address copied to clipboard!</span>
+      </div>
+
+      <!-- ==================== CINEMATIC VIDEO & EMBED MODAL ==================== -->
+      <div id="video-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-2xl transition-all duration-300 opacity-0 pointer-events-none" onclick="handleBackdropClick(event)">
+        <div id="modal-container" class="relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95">
+          <!-- Modal Header -->
+          <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-white/[0.03]">
+            <div class="flex items-center gap-2 overflow-hidden pr-3">
+              <span id="modal-badge" class="px-2.5 py-0.5 rounded-full bg-[#FF715B]/15 border border-[#FF715B]/30 text-[#FF715B] text-[10px] font-bold uppercase tracking-wider font-montserrat flex-shrink-0">
+                Facebook Reel
+              </span>
+              <h4 id="modal-title" class="text-xs sm:text-sm font-semibold text-white font-montserrat truncate">
+                Video Player
+              </h4>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <a id="modal-external-link" href="#" target="_blank" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium font-montserrat transition-all flex items-center gap-1.5" title="Open Original Post">
+                <span>Open</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+              <button onclick="closeVideoModal()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors focus:outline-none" aria-label="Close modal">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Modal Player Container -->
+          <div id="modal-player-wrap" class="relative w-full bg-black flex items-center justify-center overflow-hidden min-h-[320px]">
+            <!-- Skeleton Loader / Spinner -->
+            <div id="modal-loader" class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950 text-slate-400 z-0">
+              <div class="w-8 h-8 border-2 border-[#FF715B]/20 border-t-[#FF715B] rounded-full animate-spin"></div>
+              <span class="text-xs font-montserrat">Loading video stream...</span>
+            </div>
+            <iframe id="modal-iframe" src="" class="w-full h-[520px] sm:h-[600px] border-none relative z-10" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright & Social Links -->
+      <div class="mt-20 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div>© 2026 Emran Hosen. All rights reserved.</div>
+        <div class="flex items-center gap-6">
+          <a href="https://github.com/Imran7541" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+          <a href="https://www.linkedin.com/in/imran-fullstack/" target="_blank" class="hover:text-white transition-colors">LinkedIn</a>
+          <a href="https://www.facebook.com" target="_blank" class="hover:text-white transition-colors">Facebook</a>
+          <a href="mailto:imrandt2001@gmail.com" class="hover:text-white transition-colors">Email</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Client-side Scripts -->
+  <script>
+    // Cinematic Video & Embed Modal Controller
+    function openVideoModal(embedSrc, title, extUrl, isPortrait = true) {
+      const modal = document.getElementById('video-modal');
+      const container = document.getElementById('modal-container');
+      const modalTitle = document.getElementById('modal-title');
+      const modalExtLink = document.getElementById('modal-external-link');
+      const modalIframe = document.getElementById('modal-iframe');
+      const modalLoader = document.getElementById('modal-loader');
+      const modalBadge = document.getElementById('modal-badge');
+
+      if (!modal) return;
+
+      modalTitle.textContent = title;
+      modalExtLink.href = extUrl || '#';
+      modalBadge.textContent = isPortrait ? 'Facebook Reel' : 'LinkedIn Insight';
+
+      if (isPortrait) {
+        container.className = "relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100";
+        modalIframe.className = "w-full h-[520px] sm:h-[600px] border-none relative z-10";
+      } else {
+        container.className = "relative w-full max-w-3xl bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100";
+        modalIframe.className = "w-full h-[480px] sm:h-[540px] border-none relative z-10";
+      }
+
+      modalLoader.style.display = 'flex';
+      modalIframe.onload = () => {
+        modalLoader.style.display = 'none';
+      };
+      modalIframe.src = embedSrc;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('video-modal');
+      const modalIframe = document.getElementById('modal-iframe');
+      const container = document.getElementById('modal-container');
+      if (!modal) return;
+
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      if (container) {
+        container.classList.remove('scale-100');
+        container.classList.add('scale-95');
+      }
+
+      setTimeout(() => {
+        if (modalIframe) modalIframe.src = '';
+        document.body.style.overflow = '';
+      }, 250);
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'video-modal') {
+        closeVideoModal();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeVideoModal();
+      }
+    });
+
+    // Copy Email Toast Helper
+    function copyEmail() {
+      navigator.clipboard.writeText('imrandt2001@gmail.com').then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('opacity-0');
+        setTimeout(() => {
+          toast.classList.add('opacity-0');
+        }, 2500);
+      });
+    }
+
+    // Serial Filter Logic: All, Facebook, LinkedIn, YouTube
+    function filterSerial(platform) {
+      const fbSection = document.getElementById('serial-facebook');
+      const liSection = document.getElementById('serial-linkedin');
+      const ytSection = document.getElementById('serial-youtube');
+      const buttons = document.querySelectorAll('.serial-filter-btn');
+
+      // Update button active state
+      buttons.forEach(btn => {
+        if (btn.dataset.serial === platform) {
+          btn.classList.add('bg-[#FF715B]', 'text-white', 'border-[#FF715B]', 'shadow-lg', 'shadow-accent/20');
+          btn.classList.remove('bg-white/5', 'text-slate-300', 'border-white/10');
+        } else {
+          btn.classList.remove('bg-[#FF715B]', 'text-white', 'border-[#FF715B]', 'shadow-lg', 'shadow-accent/20');
+          btn.classList.add('bg-white/5', 'text-slate-300', 'border-white/10');
+        }
+      });
+
+      // Show/Hide serialized sections
+      if (platform === 'all') {
+        fbSection.style.display = 'block';
+        liSection.style.display = 'block';
+        ytSection.style.display = 'block';
+      } else if (platform === 'facebook') {
+        fbSection.style.display = 'block';
+        liSection.style.display = 'none';
+        ytSection.style.display = 'none';
+      } else if (platform === 'linkedin') {
+        fbSection.style.display = 'none';
+        liSection.style.display = 'block';
+        ytSection.style.display = 'none';
+      } else if (platform === 'youtube') {
+        fbSection.style.display = 'none';
+        liSection.style.display = 'none';
+        ytSection.style.display = 'block';
+      }
+    }
+
+    // Clean URL hash and force starting at the top on initial load or refresh
+    function handleInitialScroll() {
+      window.scrollTo(0, 0);
+      if (window.location.hash) {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      }
+    }
+    window.addEventListener('DOMContentLoaded', handleInitialScroll);
+    window.addEventListener('load', handleInitialScroll);
+    window.addEventListener('pageshow', handleInitialScroll);
+
+    // Smooth In-Page Anchor Navigation
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+          }
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    });
+
+    // --- Next Label Inspired Ocean Abyss & Caustics WebGL Engine (No Jellyfish) ---
+    (function initDeepSeaEngine() {
+      const canvas = document.getElementById('webgl-bg');
+      if (!canvas || typeof THREE === 'undefined') return;
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x121E27, 0.002);
+
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 4, 32);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // 1. Ocean Bed Dunes & Caustics Shader Plane
+      const dunesVertexShader = `
+        varying vec3 vWorld;
+        varying vec2 vUv;
+        uniform float uTime;
+        void main() {
+          vUv = uv;
+          vec3 pos = position;
+          pos.z += sin(pos.x * 0.08 + uTime * 0.25) * 1.8 + cos(pos.y * 0.08 + uTime * 0.2) * 1.4;
+          vec4 worldPos = modelMatrix * vec4(pos, 1.0);
+          vWorld = worldPos.xyz;
+          gl_Position = projectionMatrix * viewMatrix * worldPos;
+        }
+      `;
+
+      const dunesFragmentShader = `
+        varying vec3 vWorld;
+        varying vec2 vUv;
+        uniform float uTime;
+        void main() {
+          vec2 cUv = vUv * 24.0;
+          float c1 = sin(cUv.x + uTime * 0.6) * cos(cUv.y + uTime * 0.5);
+          float c2 = sin(cUv.x * 1.4 - uTime * 0.4) * cos(cUv.y * 1.4 + uTime * 0.7);
+          float caustics = clamp(pow((c1 + c2) * 0.5 + 0.5, 2.8) * 1.3, 0.0, 1.0);
+          vec3 baseColor = vec3(0.045, 0.078, 0.115);
+          vec3 causticColor = vec3(0.18, 0.38, 0.48);
+          vec3 col = mix(baseColor, causticColor, caustics * 0.4);
+          float dist = length(vWorld - vec3(0.0, 0.0, 32.0));
+          float depthFactor = clamp((dist - 10.0) / 70.0, 0.0, 0.85);
+          col = mix(col, vec3(0.07, 0.118, 0.153), depthFactor);
+          gl_FragColor = vec4(col, 0.85);
+        }
+      `;
+
+      const dunesGeo = new THREE.PlaneGeometry(160, 120, 90, 70);
+      const dunesMat = new THREE.ShaderMaterial({
+        vertexShader: dunesVertexShader,
+        fragmentShader: dunesFragmentShader,
+        uniforms: { uTime: { value: 0 } },
+        wireframe: false,
+        transparent: true
+      });
+      const dunesMesh = new THREE.Mesh(dunesGeo, dunesMat);
+      dunesMesh.rotation.x = -Math.PI / 2.3;
+      dunesMesh.position.set(0, -14, -10);
+      scene.add(dunesMesh);
+
+      // 2. Volumetric Plankton / Marine Snow Particles
+      const planktonCount = 700;
+      const planktonGeo = new THREE.BufferGeometry();
+      const planktonPos = new Float32Array(planktonCount * 3);
+      for (let i = 0; i < planktonCount * 3; i += 3) {
+        planktonPos[i] = (Math.random() - 0.5) * 80;
+        planktonPos[i + 1] = (Math.random() - 0.5) * 60;
+        planktonPos[i + 2] = (Math.random() - 0.5) * 60;
+      }
+      planktonGeo.setAttribute('position', new THREE.BufferAttribute(planktonPos, 3));
+      const planktonMat = new THREE.PointsMaterial({
+        color: 0x93c5fd,
+        size: 0.18,
+        transparent: true,
+        opacity: 0.55,
+        blending: THREE.AdditiveBlending
+      });
+      const planktonMesh = new THREE.Points(planktonGeo, planktonMat);
+      scene.add(planktonMesh);
+
+      // 3. Ambient Floating Coral Dust (Subtle warmth)
+      const coralDustCount = 180;
+      const coralDustGeo = new THREE.BufferGeometry();
+      const coralDustPos = new Float32Array(coralDustCount * 3);
+      for (let i = 0; i < coralDustCount * 3; i += 3) {
+        coralDustPos[i] = (Math.random() - 0.5) * 70;
+        coralDustPos[i + 1] = (Math.random() - 0.5) * 50;
+        coralDustPos[i + 2] = (Math.random() - 0.5) * 50;
+      }
+      coralDustGeo.setAttribute('position', new THREE.BufferAttribute(coralDustPos, 3));
+      const coralDustMat = new THREE.PointsMaterial({
+        color: 0xFF715B,
+        size: 0.22,
+        transparent: true,
+        opacity: 0.4,
+        blending: THREE.AdditiveBlending
+      });
+      const coralDustMesh = new THREE.Points(coralDustGeo, coralDustMat);
+      scene.add(coralDustMesh);
+
+      // Animation Loop
+      let clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+        dunesMat.uniforms.uTime.value = elapsedTime;
+
+        // Plankton slow upward drift
+        const pArr = planktonGeo.attributes.position.array;
+        for (let i = 1; i < planktonCount * 3; i += 3) {
+          pArr[i] += 0.015;
+          if (pArr[i] > 30) pArr[i] = -30;
+        }
+        planktonGeo.attributes.position.needsUpdate = true;
+
+        // Coral dust gentle floating wave
+        const cArr = coralDustGeo.attributes.position.array;
+        for (let i = 1; i < coralDustCount * 3; i += 3) {
+          cArr[i] += 0.01;
+          if (cArr[i] > 25) cArr[i] = -25;
+        }
+        coralDustGeo.attributes.position.needsUpdate = true;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Window Resize Listener
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      });
+    })();
+  </script>
+</body>
+</html>

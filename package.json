@@ -1,0 +1,11 @@
+{
+  "name": "emran-cinematic-portfolio",
+  "version": "1.0.0",
+  "description": "Emran Hosen — Software Developer Portfolio Application Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Emran Hosen",
+  "license": "MIT"
+}

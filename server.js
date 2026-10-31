@@ -1,0 +1,258 @@
+/**
+ * Emran Hosen — Cinematic Portfolio Application Server
+ * High-performance, zero-dependency Node.js HTTP server delivering:
+ * - Dynamic REST APIs (/api/health, /api/projects, /api/agent/status, /api/contact)
+ * - Static asset streaming for WebGL Abyss and Media Gallery
+ * - Persistent contact inquiry logging
+ */
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const url = require('url');
+
+const PORT = process.env.PORT || 5225;
+const PUBLIC_DIR = __dirname;
+const DATA_DIR = path.join(__dirname, 'data');
+const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.jsonl');
+const PROJECTS_FILE = path.join(DATA_DIR, 'projects.json');
+
+// Ensure data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// MIME Types Map
+const MIME_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.mp4': 'video/mp4',
+  '.mp3': 'audio/mpeg',
+  '.wav': 'audio/wav',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.ttf': 'font/ttf'
+};
+
+// Helper: Count loaded skills dynamically from AI-Agents-Hub
+function getLoadedSkillsCount() {
+  const hubSkillsDir = '/home/emran/Documents/AI-Agents-Hub/skills';
+  try {
+    if (fs.existsSync(hubSkillsDir)) {
+      return fs.readdirSync(hubSkillsDir).length;
+    }
+  } catch (e) {
+    // Fallback if not readable
+  }
+  return 248;
+}
+
+// Start Server
+const server = http.createServer((req, res) => {
+  const parsedUrl = url.parse(req.url, true);
+  let pathname = parsedUrl.pathname;
+
+  // Set standard CORS headers for APIs
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight OPTIONS
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
+  // ==================== REST API ROUTING ====================
+
+  // 1. GET /api/health
+  if (pathname === '/api/health' && req.method === 'GET') {
+    const mem = process.memoryUsage();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      status: 'healthy',
+      service: 'Emran Hosen Portfolio Server',
+      owner: 'Emran Hosen',
+      port: PORT,
+      uptime_seconds: Math.floor(process.uptime()),
+      memory_mb: {
+        rss: (mem.rss / 1024 / 1024).toFixed(1),
+        heapUsed: (mem.heapUsed / 1024 / 1024).toFixed(1)
+      },
+      environment: process.env.NODE_ENV || 'production',
+      timestamp: new Date().toISOString()
+    }));
+    return;
+  }
+
+  // 2. GET /api/projects (Flagship Works)
+  if (pathname === '/api/projects' && req.method === 'GET') {
+    try {
+      if (fs.existsSync(PROJECTS_FILE)) {
+        const raw = fs.readFileSync(PROJECTS_FILE, 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(raw);
+        return;
+      }
+    } catch (err) {
+      console.error('Error reading projects.json:', err);
+    }
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Failed to load projects' }));
+    return;
+  }
+
+  // 3. GET /api/agent/status (Live AI Agents Hub Telemetry)
+  if (pathname === '/api/agent/status' && req.method === 'GET') {
+    const skillsCount = getLoadedSkillsCount();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      status: 'online',
+      gateway: 'Multi-Cloud Persistent Gateway (Render/Railway)',
+      hermes_agent: {
+        status: 'active',
+        model: 'nvidia/nemotron-3.5-super-vl-120b-a12b',
+        skills_loaded: skillsCount,
+        memory_store: 'SQLite WAL'
+      },
+      openclaw: {
+        status: 'ready',
+        version: '2026.5.7'
+      },
+      strix_security: {
+        status: 'ready',
+        version: '1.7.0'
+      },
+      timestamp: new Date().toISOString()
+    }));
+    return;
+  }
+
+  // 4. POST /api/contact (Handle Inquiries)
+  if (pathname === '/api/contact' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk;
+      // 1MB limit for security
+      if (body.length > 1e6) {
+        req.destroy();
+      }
+    });
+
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body || '{}');
+        const name = (data.name || '').trim();
+        const email = (data.email || '').trim();
+        const service = (data.service || 'Autonomous AI & Workflow Automation').trim();
+        const message = (data.message || '').trim();
+
+        // Validation
+        if (!name || name.length < 2 || name.length > 100) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'Please enter a valid name (2–100 characters).' }));
+          return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'Please provide a valid email address.' }));
+          return;
+        }
+
+        if (!message || message.length < 5 || message.length > 2000) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'Message must be between 5 and 2,000 characters.' }));
+          return;
+        }
+
+        // Record inquiry
+        const inquiryRecord = {
+          id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+          name,
+          email,
+          service,
+          message,
+          ip: req.socket.remoteAddress || 'unknown',
+          receivedAt: new Date().toISOString()
+        };
+
+        fs.appendFileSync(INQUIRIES_FILE, JSON.stringify(inquiryRecord) + '\n', 'utf-8');
+
+        console.log(`📩 [INQUIRY RECEIVED] From: ${name} <${email}> | Service: ${service}`);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ok: true,
+          message: 'Thank you! Your message has been received. Emran Hosen will connect with you within 12 hours.',
+          inquiryId: inquiryRecord.id
+        }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'Invalid JSON payload.' }));
+      }
+    });
+    return;
+  }
+
+  // ==================== STATIC FILE SERVING ====================
+
+  // Normalize route to file path
+  if (pathname === '/' || pathname === '') {
+    pathname = '/index.html';
+  } else if (pathname === '/gallery') {
+    pathname = '/gallery.html';
+  }
+
+  // Sanitize path against directory traversal
+  const safeSuffix = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');
+  const filePath = path.join(PUBLIC_DIR, safeSuffix);
+
+  // Check if file exists within PUBLIC_DIR
+  if (!filePath.startsWith(PUBLIC_DIR)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain' });
+    res.end('403 Forbidden');
+    return;
+  }
+
+  fs.stat(filePath, (err, stats) => {
+    if (err || !stats.isFile()) {
+      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end('<h1>404 Not Found</h1><p>The requested file does not exist on Emran Hosen Portfolio Server.</p>');
+      return;
+    }
+
+    const ext = path.extname(filePath).toLowerCase();
+    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Content-Length': stats.size,
+      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400'
+    });
+
+    const readStream = fs.createReadStream(filePath);
+    readStream.pipe(res);
+  });
+});
+
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Emran Hosen Portfolio Application Server listening on http://0.0.0.0:${PORT}`);
+  console.log(`📡 Endpoints:`);
+  console.log(`   - Home:     http://localhost:${PORT}/index.html`);
+  console.log(`   - Gallery:  http://localhost:${PORT}/gallery.html`);
+  console.log(`   - Health:   http://localhost:${PORT}/api/health`);
+  console.log(`   - Projects: http://localhost:${PORT}/api/projects`);
+  console.log(`   - Agents:   http://localhost:${PORT}/api/agent/status`);
+  console.log(`   - Contact:  http://localhost:${PORT}/api/contact (POST)`);
+});
