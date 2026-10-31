@@ -50,11 +50,17 @@
   </script>
 
   <style>
-    body {
+    html, body {
       background-color: #121E27;
       color: #e2e8f0;
       font-family: 'Montserrat', sans-serif;
       overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      position: relative;
+      touch-action: pan-y;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* Glass Cards */
@@ -187,15 +193,15 @@
 
     <!-- ==================== 1. FLOATING NAVIGATION ==================== -->
     <nav class="fixed top-0 left-0 right-0 z-40 glass-nav">
-      <div class="max-w-7xl mx-auto px-6 sm:px-12 h-20 flex items-center justify-between">
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
         
         <!-- Brand Logo -->
-        <a href="index.html" class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white font-montserrat hover:opacity-90 transition-opacity whitespace-nowrap flex items-center gap-2">
-          <span>Emran Hosen</span>
+        <a href="index.html" class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white font-montserrat hover:opacity-90 transition-opacity whitespace-nowrap flex items-center gap-1">
+          <span>Emran Hosen</span><span class="text-accent text-3xl leading-none">.</span>
         </a>
 
         <!-- Desktop Links -->
-        <div class="hidden md:flex items-center gap-7 sm:gap-10 text-[15px] font-medium text-slate-200 font-montserrat">
+        <div class="hidden md:flex items-center gap-5 lg:gap-8 xl:gap-10 text-sm lg:text-[15px] font-medium text-slate-200 font-montserrat">
           <a href="index.html" class="hover:text-[#FF715B] transition-colors">Home</a>
           <a href="index.html#about" class="hover:text-[#FF715B] transition-colors">About</a>
           <a href="index.html#works" class="hover:text-[#FF715B] transition-colors">Project</a>
@@ -212,24 +218,40 @@
         </div>
 
         <!-- Mobile Hamburger Button -->
-        <div class="md:hidden flex items-center gap-3">
-          <a href="index.html" class="p-2 text-xs text-accent font-semibold flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <div class="md:hidden flex items-center gap-2.5">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-accent font-semibold flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             <span>Home</span>
           </a>
-          <button id="mobile-menu-toggle" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')" class="p-2 text-slate-300 hover:text-white focus:outline-none" aria-label="Toggle navigation">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <button id="mobile-menu-toggle" onclick="toggleMobileDrawer()" class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-slate-300 hover:text-white hover:border-accent transition-all focus:outline-none" aria-label="Toggle navigation" aria-expanded="false">
+            <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
       </div>
 
       <!-- Mobile Drawer -->
-      <div id="mobile-drawer" class="hidden md:hidden px-6 py-5 bg-[#121E27]/98 border-b border-white/10 flex flex-col gap-4 text-base font-medium text-slate-200 font-montserrat backdrop-blur-xl">
-        <a href="index.html" class="hover:text-[#FF715B] transition-colors">Home</a>
-        <a href="index.html#about" class="hover:text-[#FF715B] transition-colors">About</a>
-        <a href="index.html#works" class="hover:text-[#FF715B] transition-colors">Project</a>
-        <a href="gallery.html" class="text-[#FF715B] font-semibold">Gallery (Active)</a>
-        <a href="contact.html" onclick="document.getElementById('mobile-drawer').classList.add('hidden')" class="hover:text-[#FF715B] transition-colors">Contact</a>
+      <div id="mobile-drawer" class="hidden md:hidden px-5 py-3 bg-[#121E27]/98 border-b border-white/10 flex flex-col text-sm font-medium text-slate-200 font-montserrat backdrop-blur-2xl transition-all duration-300">
+        <a href="index.html" onclick="toggleMobileDrawer()" class="py-3.5 border-b border-white/5 flex items-center justify-between hover:text-[#FF715B] transition-colors">
+          <span>Home</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="index.html#about" onclick="toggleMobileDrawer()" class="py-3.5 border-b border-white/5 flex items-center justify-between hover:text-[#FF715B] transition-colors">
+          <span>About</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="index.html#works" onclick="toggleMobileDrawer()" class="py-3.5 border-b border-white/5 flex items-center justify-between hover:text-[#FF715B] transition-colors">
+          <span>Project</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="gallery.html" onclick="toggleMobileDrawer()" class="py-3.5 border-b border-white/5 flex items-center justify-between text-[#FF715B] font-semibold transition-colors">
+          <span>Gallery (Active)</span>
+          <svg class="w-4 h-4 text-[#FF715B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="contact.html" onclick="toggleMobileDrawer()" class="py-3.5 flex items-center justify-between hover:text-[#FF715B] transition-colors">
+          <span>Contact</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </nav>
 
@@ -1391,10 +1413,10 @@
 
       <!-- ==================== CINEMATIC VIDEO & EMBED MODAL ==================== -->
       <div id="video-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-2xl transition-all duration-300 opacity-0 pointer-events-none" onclick="handleBackdropClick(event)">
-        <div id="modal-container" class="relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95">
+        <div id="modal-container" class="relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95 max-h-[92vh]">
           <!-- Modal Header -->
-          <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-white/[0.03]">
-            <div class="flex items-center gap-2 overflow-hidden pr-3">
+          <div class="px-4 sm:px-5 py-3 border-b border-white/10 flex items-center justify-between bg-white/[0.03]">
+            <div class="flex items-center gap-2 overflow-hidden pr-2">
               <span id="modal-badge" class="px-2.5 py-0.5 rounded-full bg-[#FF715B]/15 border border-[#FF715B]/30 text-[#FF715B] text-[10px] font-bold uppercase tracking-wider font-montserrat flex-shrink-0">
                 Facebook Reel
               </span>
@@ -1403,24 +1425,24 @@
               </h4>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
-              <a id="modal-external-link" href="#" target="_blank" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium font-montserrat transition-all flex items-center gap-1.5" title="Open Original Post">
+              <a id="modal-external-link" href="#" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium font-montserrat transition-all flex items-center gap-1.5" title="Open Original Post">
                 <span>Open</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
               </a>
-              <button onclick="closeVideoModal()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors focus:outline-none" aria-label="Close modal">
+              <button onclick="closeVideoModal()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors focus:outline-none cursor-pointer" aria-label="Close modal">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
           </div>
           
           <!-- Modal Player Container -->
-          <div id="modal-player-wrap" class="relative w-full bg-black flex items-center justify-center overflow-hidden min-h-[320px]">
+          <div id="modal-player-wrap" class="relative w-full bg-black flex items-center justify-center overflow-hidden min-h-[300px]">
             <!-- Skeleton Loader / Spinner -->
             <div id="modal-loader" class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950 text-slate-400 z-0">
               <div class="w-8 h-8 border-2 border-[#FF715B]/20 border-t-[#FF715B] rounded-full animate-spin"></div>
               <span class="text-xs font-montserrat">Loading video stream...</span>
             </div>
-            <iframe id="modal-iframe" src="" class="w-full h-[520px] sm:h-[600px] border-none relative z-10" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <iframe id="modal-iframe" src="" class="w-full h-[400px] min-[400px]:h-[480px] sm:h-[560px] max-h-[calc(90vh-60px)] border-none relative z-10" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
           </div>
         </div>
       </div>
@@ -1430,10 +1452,10 @@
 
   <!-- ==================== PREMIUM EXECUTIVE FOOTER ==================== -->
   <footer class="border-t border-white/10 bg-[#0B131A]/95 backdrop-blur-2xl relative z-20">
-    <div class="max-w-7xl mx-auto px-6 sm:px-12 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-8 sm:pb-12">
       
       <!-- Top Row: Brand & Live Availability Badge -->
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-12 border-b border-white/[0.08]">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 pb-10 sm:pb-12 border-b border-white/[0.08]">
         <div class="max-w-md">
           <a href="index.html" class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-montserrat flex items-center gap-1">
             <span>Emran Hosen</span><span class="text-accent text-3xl leading-none">.</span>
@@ -1444,20 +1466,20 @@
         </div>
 
         <!-- Live Status Pill & Quick Action -->
-        <div class="flex flex-wrap items-center gap-4">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
           <div class="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2.5">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span class="text-xs font-semibold text-emerald-300 font-montserrat">Available for Global Contracts & Roles</span>
           </div>
-          <a href="contact.html" class="px-5 py-2.5 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-xs tracking-wider uppercase font-montserrat transition-all shadow-lg shadow-accent/20 flex items-center gap-2">
+          <a href="contact.html" class="px-5 py-2.5 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-xs tracking-wider uppercase font-montserrat transition-all shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
             <span>Get In Touch</span>
             <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </a>
         </div>
       </div>
 
-      <!-- Middle Grid: 4 Structured Columns -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 py-12 border-b border-white/[0.08] text-sm font-montserrat">
+      <!-- Middle Grid: 4 Structured Columns (Responsive 1-Col Mobile, 2-Col Tablet, 4-Col Desktop) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 py-10 sm:py-12 border-b border-white/[0.08] text-sm font-montserrat">
         
         <!-- Col 1: Navigation -->
         <div>
@@ -1497,12 +1519,6 @@
               <a href="https://wa.me/8801900000000" target="_blank" class="hover:text-emerald-400 transition-colors flex items-center gap-2">
                 <svg class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                 <span>WhatsApp Business</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://t.me/imran_7541" target="_blank" class="hover:text-cyan-400 transition-colors flex items-center gap-2">
-                <svg class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.197 1.006.128.832.942z"/></svg>
-                <span>Telegram: @imran_7541</span>
               </a>
             </li>
             <li class="flex items-center gap-2 text-slate-500">
@@ -1558,6 +1574,28 @@
 
   <!-- Client-side Scripts -->
   <script>
+    function toggleMobileDrawer() {
+      const drawer = document.getElementById('mobile-drawer');
+      const toggleBtn = document.getElementById('mobile-menu-toggle');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      const closeIcon = document.getElementById('close-icon');
+      
+      if (!drawer) return;
+      const isHidden = drawer.classList.contains('hidden');
+      
+      if (isHidden) {
+        drawer.classList.remove('hidden');
+        if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+        if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
+        if (closeIcon) closeIcon.classList.remove('hidden');
+      } else {
+        drawer.classList.add('hidden');
+        if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+        if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
+        if (closeIcon) closeIcon.classList.add('hidden');
+      }
+    }
+
     // Cinematic Video & Embed Modal Controller
     function openVideoModal(embedSrc, title, extUrl, isPortrait = true) {
       const modal = document.getElementById('video-modal');
@@ -1575,11 +1613,11 @@
       modalBadge.textContent = isPortrait ? 'Facebook Reel' : 'LinkedIn Insight';
 
       if (isPortrait) {
-        container.className = "relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100";
-        modalIframe.className = "w-full h-[520px] sm:h-[600px] border-none relative z-10";
+        container.className = "relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100 max-h-[92vh]";
+        modalIframe.className = "w-full h-[380px] min-[400px]:h-[460px] sm:h-[540px] max-h-[calc(90vh-60px)] border-none relative z-10";
       } else {
-        container.className = "relative w-full max-w-3xl bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100";
-        modalIframe.className = "w-full h-[480px] sm:h-[540px] border-none relative z-10";
+        container.className = "relative w-full max-w-3xl bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100 max-h-[92vh]";
+        modalIframe.className = "w-full h-[320px] sm:h-[440px] md:h-[500px] max-h-[calc(90vh-60px)] border-none relative z-10";
       }
 
       modalLoader.style.display = 'flex';
