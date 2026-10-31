@@ -101,5 +101,15 @@
     - Thumbnails: `https://imran7541.github.io/emran_project_protfolio/assets/thumbnails/ep01_will_ai_replace_devs.jpg` (HTTP/2 200 OK)
   - Configured repository Homepage URL in GitHub's About section for one-click access.
 
+- [x] **Deployed Live to CoolLabs (Coolify v4.5.3 Container Runtime)**:
+  - Connected repository `Imran7541/emran_project_protfolio` to local CoolLabs (Coolify) instance via Coolify API (`POST /api/v1/applications/public`).
+  - Container built using Nixpacks (`Node.js v22` runtime) and launched container `3lolil9okyxy5wz6ophjozt1-20261031T084922` running on exposed port 5225.
+  - Configured direct host port mapping `8088:5225` and Traefik reverse proxy routing with FQDNs:
+    - `http://portfolio.127.0.0.1.sslip.io` (via Traefik reverse proxy on port 80 -> HTTP 200 OK)
+    - `http://127.0.0.1:8088` (direct container host mapping -> HTTP 200 OK)
+    - Coolify Dashboard: `http://localhost:8000/project/v7zcpgjgrgof6t21260vlegp/environment/j4ql5ylgs7jghjoqexxqkrpl/application/3lolil9okyxy5wz6ophjozt1`
+  - Verified live HTTP 200 responses for Home (`index.html`), Gallery (`gallery.html`), and REST health check (`/api/health`).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
+
