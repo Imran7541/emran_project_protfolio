@@ -39,6 +39,11 @@
   - Added full support for widescreen (16:9) YouTube masterclasses and vertical (9:16) YouTube Shorts in the cinematic modal player.
   - Formulated SDD specification in `specs/015-interactive-video-management.md` and automated test suite in `tests/test_video_management.py` (100% passing).
 
+- [x] **Resolved GitHub Pages HTTP 429 "Rate Limit Exceeded" / Edge Fastly CDN Throttling**:
+  - Forensically diagnosed edge rate limit (`retry-after: 0`, Fastly Varnish `cache-ccu...-CCU`) triggered on shared ISP CGNAT IP (`103.238.115.33`, Green Link Networks, Dhaka) caused by high burst volume and static host 404 API calls (`/api/videos`, `/api/health`, `/api/agent/status`).
+  - Added environment guards (`window.location.hostname.includes('github.io')`) across `gallery.html`, `index.html`, and `contact.html` to eliminate all unnecessary 404 network fetches on static hosting while maintaining seamless `localStorage` operation.
+  - Verified edge rate limit expiration with HTTP 200 responses across all live endpoints on `imran7541.github.io`.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 
