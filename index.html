@@ -1102,6 +1102,8 @@
 
     // Dynamic Live Telemetry Hydration (/api/health and /api/agent/status)
     async function loadTelemetry() {
+      // Skip on static host to eliminate unnecessary 404 requests to GitHub Pages
+      if (window.location.hostname.includes('github.io') || window.location.protocol === 'file:') return;
       try {
         const [healthRes, agentRes] = await Promise.all([
           fetch('/api/health').catch(() => null),

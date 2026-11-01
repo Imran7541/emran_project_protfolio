@@ -2189,16 +2189,19 @@
         console.warn('localStorage write error:', e);
       }
 
-      // 2. Server-side Persistence (attempt POST /api/videos)
-      fetch('/api/videos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newVideo)
-      }).then(res => res.json()).then(data => {
-        console.log('Video saved to server:', data);
-      }).catch(err => {
-        console.log('Static host / server offline, saved locally to localStorage:', err);
-      });
+      // 2. Server-side Persistence (attempt POST /api/videos if running on backend server)
+      const isStaticHost = window.location.hostname.includes('github.io') || window.location.protocol === 'file:';
+      if (!isStaticHost) {
+        fetch('/api/videos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newVideo)
+        }).then(res => res.json()).then(data => {
+          console.log('Video saved to server:', data);
+        }).catch(err => {
+          console.log('Server offline, saved locally to localStorage:', err);
+        });
+      }
 
       // 3. Render Card in DOM immediately
       injectVideoCardIntoDOM(newVideo);
@@ -2260,8 +2263,10 @@
         localStorage.setItem('emran_custom_videos', JSON.stringify(customVideos));
       } catch (err) {}
 
-      // 2. Remove from server if reachable
-      fetch(`/api/videos/${videoId}`, { method: 'DELETE' }).catch(() => {});
+      // 2. Remove from server if reachable (skip on GitHub Pages / static)
+      if (!isStaticHost) {
+        fetch(`/api/videos/${videoId}`, { method: 'DELETE' }).catch(() => {});
+      }
 
       // 3. Remove from DOM
       document.querySelectorAll(`[data-video-id="${videoId}"]`).forEach(el => {
@@ -2493,23 +2498,25 @@
         console.warn('localStorage read error:', e);
       }
 
-      // 2. Load from server (/api/videos) if online
-      fetch('/api/videos')
-        .then(res => res.json())
-        .then(serverVideos => {
-          if (Array.isArray(serverVideos)) {
-            serverVideos.filter(v => v.isCustom).forEach(v => {
-              if (!document.querySelector(`[data-video-id="${v.id}"]`)) {
-                injectVideoCardIntoDOM(v);
-              }
-            });
-          }
-          updateFilterCounters();
-        })
-        .catch(err => {
-          // If offline or on static GitHub Pages, localStorage is already loaded!
-          updateFilterCounters();
-        });
+      // 2. Load from server (/api/videos) if online and not on static host (prevents 404 & rate limits on GitHub Pages)
+      const isStatic = window.location.hostname.includes('github.io') || window.location.protocol === 'file:';
+      if (!isStatic) {
+        fetch('/api/videos')
+          .then(res => res.json())
+          .then(serverVideos => {
+            if (Array.isArray(serverVideos)) {
+              serverVideos.filter(v => v.isCustom).forEach(v => {
+                if (!document.querySelector(`[data-video-id="${v.id}"]`)) {
+                  injectVideoCardIntoDOM(v);
+                }
+              });
+            }
+            updateFilterCounters();
+          })
+          .catch(err => {
+            updateFilterCounters();
+          });
+      }
 
       updateFilterCounters();
 
