@@ -1813,6 +1813,8 @@
 
   <!-- Client-side Scripts -->
   <script>
+    const isStaticHost = window.location.hostname.includes('github.io') || window.location.protocol === 'file:';
+
     function toggleMobileDrawer() {
       const drawer = document.getElementById('mobile-drawer');
       const toggleBtn = document.getElementById('mobile-menu-toggle');
@@ -2080,7 +2082,7 @@
           }
         } else if (currentSelectedPlatform === 'facebook') {
           prevPlat.textContent = 'Reel • 9:16';
-          if (!thumb) thumb = 'assets/thumbnails/ep05_prompt_vs_context.png';
+          if (!thumb) thumb = 'assets/thumbnails/ep05_context_engineering.jpg';
         } else {
           prevPlat.textContent = 'Article • Post';
           if (!thumb) thumb = 'assets/thumbnails/li01_autonomous_systems.jpg';
@@ -2153,7 +2155,7 @@
       } else if (currentSelectedPlatform === 'facebook') {
         isPortrait = true;
         embedSrc = `https://www.facebook.com/plugins/video.php?height=600&href=${encodeURIComponent(rawUrl)}&show_text=false&width=340&t=0`;
-        if (!finalThumb) finalThumb = 'assets/thumbnails/ep05_prompt_vs_context.png';
+        if (!finalThumb) finalThumb = 'assets/thumbnails/ep05_context_engineering.jpg';
       } else {
         isPortrait = false;
         if (rawUrl.includes('/embed/')) {
@@ -2239,8 +2241,10 @@
       } else if (video.platform === 'facebook') {
         const track = document.getElementById('facebook-track');
         if (track) {
-          const cardHtml = buildFacebookCardHtml(video);
+          const cardHtml = buildFacebookCardHtml(video, false);
           track.insertAdjacentHTML('afterbegin', cardHtml);
+          const duplHtml = buildFacebookCardHtml(video, true);
+          track.insertAdjacentHTML('beforeend', duplHtml);
         }
       } else if (video.platform === 'linkedin') {
         const track = document.getElementById('linkedin-track');
@@ -2268,8 +2272,8 @@
         fetch(`/api/videos/${videoId}`, { method: 'DELETE' }).catch(() => {});
       }
 
-      // 3. Remove from DOM
-      document.querySelectorAll(`[data-video-id="${videoId}"]`).forEach(el => {
+      // 3. Remove from DOM (both original and marquee clone)
+      document.querySelectorAll(`[data-video-id="${videoId}"], [data-duplicate-of="${videoId}"]`).forEach(el => {
         el.style.transition = 'all 0.3s ease';
         el.style.opacity = '0';
         el.style.transform = 'scale(0.8)';
@@ -2336,10 +2340,11 @@
       `;
     }
 
-    function buildFacebookCardHtml(v) {
+    function buildFacebookCardHtml(v, isDuplicate = false) {
       const safeTitle = v.title.replace(/'/g, "\\'");
+      const idAttr = isDuplicate ? `data-duplicate-of="${v.id}" aria-hidden="true"` : `data-video-id="${v.id}"`;
       return `
-        <div data-video-id="${v.id}" class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+        <div ${idAttr} class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
           <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
           
           <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', true)">
@@ -2592,8 +2597,14 @@
         history.replaceState(null, document.title, window.location.pathname + window.location.search);
       }
     }
-    window.addEventListener('DOMContentLoaded', handleInitialScroll);
-    window.addEventListener('DOMContentLoaded', initGalleryVideos);
+    // Robust initialization: Execute immediately if DOM is already ready, or on DOMContentLoaded
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', handleInitialScroll);
+      window.addEventListener('DOMContentLoaded', initGalleryVideos);
+    } else {
+      handleInitialScroll();
+      initGalleryVideos();
+    }
     window.addEventListener('load', handleInitialScroll);
     window.addEventListener('pageshow', handleInitialScroll);
 
