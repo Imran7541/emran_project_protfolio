@@ -31,7 +31,14 @@
   - Replaced all legacy `.html` links with clean extensionless paths (`gallery`, `contact`, `./`) across all navigation menus, drawers, and footers.
   - Implemented client-side automatic URL bar canonicalizer (`history.replaceState`) in `index.html`, `gallery.html`, and `contact.html` that instantly strips `.html` if a user lands on legacy `.html` URLs.
   - Implemented 301 Permanent Redirects on Node.js application server (`server.js`) mapping `/gallery.html` -> `/gallery`, `/contact.html` -> `/contact`, and `/index.html` -> `/`.
-  - Created resilient `404.html` with smart route reconciliation on GitHub Pages to gracefully handle trailing slash variations.
+- [x] **Interactive Video Management Portal (Facebook, YouTube, LinkedIn)**:
+  - Added "+ Add Video to Gallery" primary action button with glowing coral accent and individual "+ Add Reel", "+ Add Post", "+ Add YouTube" micro-triggers across section headers.
+  - Engineered executive glassmorphic modal `#add-video-modal` with platform selection tabs, smart URL auto-detection, real-time live card preview, and form validation.
+  - Implemented hybrid dual-engine persistence: REST backend endpoints in `server.js` (`GET /api/videos`, `POST /api/videos`, `DELETE /api/videos/:id`) writing to `data/videos.json`, with seamless fallback to browser `localStorage` ensuring full functionality on static GitHub Pages.
+  - Dynamic card injection engine that automatically appends newly published videos to Facebook and LinkedIn motion tracks, and populates the responsive YouTube showcase grid in `#serial-youtube`.
+  - Added full support for widescreen (16:9) YouTube masterclasses and vertical (9:16) YouTube Shorts in the cinematic modal player.
+  - Formulated SDD specification in `specs/015-interactive-video-management.md` and automated test suite in `tests/test_video_management.py` (100% passing).
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
+

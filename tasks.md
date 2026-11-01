@@ -25,3 +25,14 @@
 - [x] T012 Run tests/verify_responsive.py across 360x640, 390x844, 768x1024, 1280x800, and 1920x1080 viewports and generate visual screenshot artifacts
 - [x] T013 Commit and push responsive updates to origin main on GitHub
 - [x] T014 Verify live deployments on GitHub Pages and Coolify
+
+## Phase 7: Interactive Video Management Portal (Spec 015)
+- [x] T015 [US4] Create initial video dataset `data/videos.json` seeding all 6 Facebook Reels, 4 LinkedIn Insights, and template schema
+- [x] T016 [US4] Add REST API endpoints `GET /api/videos`, `POST /api/videos`, and `DELETE /api/videos/:id` with input validation in `server.js`
+- [x] T017 [US4] Add "+ Add Video" action button to gallery header filter bar and individual section headers in `gallery.html`
+- [x] T018 [US4] Build executive glassmorphic modal `#add-video-modal` with platform selection (Facebook, YouTube, LinkedIn), smart URL auto-detection, live preview, and form fields in `gallery.html`
+- [x] T019 [US4] Implement hybrid client-side persistence and dynamic rendering engine (supports both Node.js backend and GitHub Pages `localStorage`) with real-time DOM card injection in `gallery.html`
+- [x] T020 [US4] Implement dynamic YouTube video showcase grid in `#serial-youtube` and dynamic filter tab counters in `gallery.html`
+- [x] T021 [US4] Create automated test suite in `tests/test_video_management.py` to verify API persistence, URL parsing, and modal UI
+- [x] T022 [US4] Commit, push to `origin main`, sync Coolify container, and verify live on GitHub Pages
+

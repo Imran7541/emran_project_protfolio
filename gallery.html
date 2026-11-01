@@ -287,24 +287,36 @@
           Explore my latest video breakdowns on autonomous AI agents, practical engineering workflows, and system architecture across Facebook and LinkedIn.
         </p>
 
-        <!-- Quick Filter Tabs -->
+        <!-- Quick Filter Tabs & Add Video Action Bar -->
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
           <button onclick="filterSerial('all')" data-serial="all" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-[#FF715B] text-white border border-[#FF715B] shadow-lg shadow-accent/20">
-            All Content (10)
+            <span id="filter-all-label">All Content (10)</span>
           </button>
           <button onclick="filterSerial('facebook')" data-serial="facebook" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 flex items-center gap-2">
             <svg class="w-4 h-4 text-blue-500 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            <span>Facebook Reels (6)</span>
+            <span id="filter-fb-label">Facebook Reels (6)</span>
           </button>
           <button onclick="filterSerial('linkedin')" data-serial="linkedin" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 flex items-center gap-2">
             <svg class="w-4 h-4 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-            <span>LinkedIn Insights (4)</span>
+            <span id="filter-li-label">LinkedIn Insights (4)</span>
           </button>
           <button onclick="filterSerial('youtube')" data-serial="youtube" class="serial-filter-btn px-5 py-2.5 rounded-xl text-xs font-semibold font-montserrat transition-all bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 flex items-center gap-2">
             <svg class="w-4 h-4 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            <span>YouTube Series</span>
+            <span id="filter-yt-label">YouTube Series (0)</span>
           </button>
         </div>
+
+        <!-- Executive Add Video Action Trigger -->
+        <div class="mt-6 flex items-center justify-center">
+          <button onclick="openAddVideoModal()" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-[#FF715B] to-[#ff8a78] hover:from-[#e65c47] hover:to-[#FF715B] text-white font-bold text-xs sm:text-sm tracking-wide transition-all shadow-xl shadow-accent/25 hover:shadow-accent/40 flex items-center gap-2.5 font-montserrat group hover:scale-[1.03] active:scale-[0.98] border border-white/20 cursor-pointer">
+            <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:rotate-90 transition-transform duration-300">
+              <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+            <span>+ Add Video to Gallery</span>
+            <span class="px-2 py-0.5 rounded-md bg-black/30 text-[10px] font-mono uppercase tracking-wider text-white/90">FB • YouTube • LinkedIn</span>
+          </button>
+        </div>
+
 
       </div>
     </header>
@@ -321,7 +333,11 @@
           </div>
           <h2 class="font-montserrat text-2xl sm:text-3xl font-bold text-white">Facebook Reels: AI & Career Insights</h2>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <button onclick="openAddVideoModal('facebook')" class="px-3.5 py-1.5 rounded-xl bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 hover:text-white border border-blue-500/30 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5 cursor-pointer shadow-lg shadow-blue-500/10">
+            <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Add Reel</span>
+          </button>
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-montserrat">
             <span class="w-2 h-2 rounded-full bg-blue-400 live-pulse"></span>
             Right to Left Motion • Infinite Loop
@@ -332,7 +348,7 @@
 
       <!-- Continuous Right-to-Left Motion Track -->
       <div class="gallery-mask overflow-hidden py-4 -mx-6 px-6">
-        <div class="gallery-track flex gap-6 w-max animate-gallery-left">
+        <div id="facebook-track" class="gallery-track flex gap-6 w-max animate-gallery-left">
           
           <!-- ========== SET A (ORIGINAL CARDS 1-6) ========== -->
           <!-- Card 1 -->
@@ -988,7 +1004,11 @@
           </div>
           <h2 class="font-montserrat text-2xl sm:text-3xl font-bold text-white">LinkedIn Articles & Automation Workflows</h2>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <button onclick="openAddVideoModal('linkedin')" class="px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 hover:text-white border border-sky-500/30 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5 cursor-pointer shadow-lg shadow-sky-500/10">
+            <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Add Post</span>
+          </button>
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-300 text-xs font-montserrat">
             <span class="w-2 h-2 rounded-full bg-sky-400 live-pulse"></span>
             Left to Right Motion • Infinite Loop
@@ -999,7 +1019,7 @@
 
       <!-- Continuous Left-to-Right Motion Track -->
       <div class="gallery-mask overflow-hidden py-4 -mx-6 px-6">
-        <div class="gallery-track flex gap-6 w-max animate-gallery-right">
+        <div id="linkedin-track" class="gallery-track flex gap-6 w-max animate-gallery-right">
           
           <!-- ========== SET A (ORIGINAL CARDS 1-4) ========== -->
           <!-- LinkedIn Card 1 -->
@@ -1327,18 +1347,41 @@
       </div>
     </section>
 
-    <!-- ==================== 5. SERIAL 3: YOUTUBE MASTERCLASS (UPCOMING) ==================== -->
+    <!-- ==================== 5. SERIAL 3: YOUTUBE MASTERCLASS ==================== -->
     <section id="serial-youtube" class="py-16 px-6 max-w-7xl mx-auto border-t border-white/5 transition-opacity duration-300 scroll-mt-24">
       
-      <div class="p-8 sm:p-12 rounded-3xl bg-card border border-white/5 card-hover relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+      <!-- YouTube Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-500/10 border border-red-500/25 text-red-400 text-xs font-semibold mb-2">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span>Serial 3 • Video Masterclasses</span>
+          </div>
+          <h2 class="font-montserrat text-2xl sm:text-3xl font-bold text-white">YouTube Architecture & Masterclasses</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="openAddVideoModal('youtube')" class="px-3.5 py-1.5 rounded-xl bg-red-600/15 hover:bg-red-600/25 text-red-400 hover:text-white border border-red-500/30 text-xs font-semibold font-montserrat transition-all flex items-center gap-1.5 cursor-pointer shadow-lg shadow-red-600/10">
+            <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Add YouTube Video</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dynamic YouTube Video Cards Grid -->
+      <div id="youtube-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 hidden">
+        <!-- Injected dynamically via client engine -->
+      </div>
+
+      <!-- YouTube Masterclass Channel Banner -->
+      <div id="youtube-empty-banner" class="p-8 sm:p-12 rounded-3xl bg-card border border-white/5 card-hover relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
         
         <div class="relative z-10 max-w-2xl">
           <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-500/10 border border-red-500/25 text-red-400 text-xs font-semibold mb-4">
             <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            <span>Serial 3 • Long-Form Video Courses</span>
+            <span>Production Video Channel</span>
           </div>
 
-          <h2 class="font-montserrat text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+          <h2 class="font-montserrat text-2xl sm:text-3xl font-extrabold text-white leading-tight">
             YouTube Masterclass Series & Architectural Deep Dives
           </h2>
           
@@ -1360,8 +1403,8 @@
         </div>
 
         <div class="relative z-10 flex flex-col items-center">
-          <div class="w-24 h-24 rounded-3xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 mb-5 shadow-2xl group-hover:scale-110 transition-transform">
-            <svg class="w-12 h-12 fill-current ml-1" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 mb-5 shadow-2xl group-hover:scale-110 transition-transform">
+            <svg class="w-10 h-10 sm:w-12 sm:h-12 fill-current ml-1" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           </div>
           
           <a href="https://youtube.com" target="_blank" class="px-8 py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-xl shadow-red-600/20 flex items-center gap-2">
@@ -1460,6 +1503,188 @@
           </div>
         </div>
       </div>
+
+      <!-- ==================== EXECUTIVE ADD VIDEO INGESTION MODAL ==================== -->
+      <div id="add-video-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-2xl transition-all duration-300 opacity-0 pointer-events-none" onclick="handleAddModalBackdropClick(event)">
+        <div id="add-modal-container" class="relative w-full max-w-2xl bg-[#0e171f] border border-white/20 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95 max-h-[92vh] z-20">
+          
+          <!-- Modal Header -->
+          <div class="px-5 sm:px-6 py-4 border-b border-white/10 flex items-center justify-between bg-white/[0.04]">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-accent/20 border border-accent/40 flex items-center justify-center text-accent">
+                <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </div>
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-white font-montserrat">
+                  Add Video to Media Vault
+                </h3>
+                <p class="text-[11px] text-slate-400 font-light font-montserrat">
+                  Publish Facebook Reels, YouTube Videos/Shorts, or LinkedIn Insights
+                </p>
+              </div>
+            </div>
+            <button onclick="closeAddVideoModal()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors focus:outline-none cursor-pointer" aria-label="Close modal">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+
+          <!-- Modal Form Body (Scrollable) -->
+          <div class="p-5 sm:p-6 overflow-y-auto max-h-[calc(90vh-130px)] space-y-5 text-left bg-[#0e171f]">
+            
+            <!-- 1. Platform Selector -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-2">
+                1. Select Platform
+              </label>
+              <div class="grid grid-cols-3 gap-2.5">
+                <button type="button" onclick="selectPlatformTab('facebook')" id="tab-platform-facebook" class="platform-tab-btn py-3 px-3 rounded-2xl border transition-all flex flex-col items-center gap-1.5 text-center bg-blue-500/15 border-blue-500/50 text-white shadow-lg shadow-blue-500/10 cursor-pointer">
+                  <svg class="w-5 h-5 text-blue-400 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  <span class="text-xs font-bold font-montserrat">Facebook Reel</span>
+                  <span class="text-[10px] text-slate-400">9:16 Portrait</span>
+                </button>
+
+                <button type="button" onclick="selectPlatformTab('youtube')" id="tab-platform-youtube" class="platform-tab-btn py-3 px-3 rounded-2xl border transition-all flex flex-col items-center gap-1.5 text-center bg-white/5 border-white/10 text-slate-300 hover:border-white/20 cursor-pointer">
+                  <svg class="w-5 h-5 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  <span class="text-xs font-bold font-montserrat">YouTube</span>
+                  <span class="text-[10px] text-slate-400">16:9 / Shorts</span>
+                </button>
+
+                <button type="button" onclick="selectPlatformTab('linkedin')" id="tab-platform-linkedin" class="platform-tab-btn py-3 px-3 rounded-2xl border transition-all flex flex-col items-center gap-1.5 text-center bg-white/5 border-white/10 text-slate-300 hover:border-white/20 cursor-pointer">
+                  <svg class="w-5 h-5 text-sky-400 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span class="text-xs font-bold font-montserrat">LinkedIn</span>
+                  <span class="text-[10px] text-slate-400">Insight Post</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Video URL Input -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="add-input-url" class="text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat">
+                  2. Video / Share Link <span class="text-accent">*</span>
+                </label>
+                <span id="add-platform-detected-badge" class="text-[11px] font-mono text-blue-400 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> Facebook Reel
+                </span>
+              </div>
+              <div class="relative">
+                <input type="url" id="add-input-url" oninput="handleUrlInputChange()" placeholder="e.g. https://www.facebook.com/share/v/... or https://youtu.be/..." class="w-full px-4 py-3 rounded-xl bg-[#162430] border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-montserrat transition-all">
+              </div>
+              <p class="mt-1.5 text-[11px] text-slate-400 font-light font-montserrat">
+                Paste any link from Facebook Reels, YouTube videos/Shorts, or LinkedIn Insights.
+              </p>
+            </div>
+
+            <!-- 3. Video Title Input -->
+            <div>
+              <label for="add-input-title" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-1.5">
+                3. Video Title <span class="text-accent">*</span>
+              </label>
+              <input type="text" id="add-input-title" oninput="updateAddModalPreview()" placeholder="e.g. Autonomous AI Agent Orchestration in Production" class="w-full px-4 py-3 rounded-xl bg-[#162430] border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-montserrat transition-all">
+            </div>
+
+            <!-- 4. Category & Episode Badge (2 Columns) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="add-input-category" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-1.5">
+                  4. Topic / Category
+                </label>
+                <input type="text" id="add-input-category" list="category-suggestions" oninput="updateAddModalPreview()" placeholder="e.g. Autonomous Agents" value="Autonomous Agents" class="w-full px-4 py-3 rounded-xl bg-[#162430] border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-montserrat transition-all">
+                <datalist id="category-suggestions">
+                  <option value="Autonomous Agents">
+                  <option value="System Architecture">
+                  <option value="Workflow Automation">
+                  <option value="Career Strategy">
+                  <option value="Full-Stack Engineering">
+                  <option value="Zero-Trust Security">
+                </datalist>
+              </div>
+
+              <div>
+                <label for="add-input-episode" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-1.5">
+                  Badge / Episode Label
+                </label>
+                <input type="text" id="add-input-episode" oninput="updateAddModalPreview()" placeholder="e.g. Episode 07" value="Episode 07" class="w-full px-4 py-3 rounded-xl bg-[#162430] border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-montserrat transition-all">
+              </div>
+            </div>
+
+            <!-- 5. Summary / Description -->
+            <div>
+              <label for="add-input-summary" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-1.5">
+                5. Summary / Key Insights
+              </label>
+              <textarea id="add-input-summary" rows="2" oninput="updateAddModalPreview()" placeholder="Brief sentence on what is taught or demonstrated in this video..." class="w-full px-4 py-2.5 rounded-xl bg-[#162430] border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-montserrat transition-all resize-none"></textarea>
+            </div>
+
+            <!-- 6. Optional Thumbnail URL -->
+            <div>
+              <label for="add-input-thumbnail" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-1.5">
+                Thumbnail Poster (Optional)
+              </label>
+              <input type="url" id="add-input-thumbnail" oninput="updateAddModalPreview()" placeholder="Auto-generated for YouTube, or enter custom image URL" class="w-full px-4 py-2.5 rounded-xl bg-[#162430] border border-white/15 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-mono transition-all">
+            </div>
+
+            <!-- 7. Live Card Preview -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 font-montserrat mb-2 flex items-center justify-between">
+                <span>Card Live Preview</span>
+                <span class="text-[10px] text-accent font-mono">Real-Time Render</span>
+              </label>
+              
+              <div class="p-4 rounded-2xl bg-[#080e14] border border-white/10 flex items-center justify-center">
+                <div id="preview-card-wrap" class="w-full max-w-sm rounded-2xl bg-[#162430] border border-white/15 p-4 flex flex-col gap-3 shadow-xl">
+                  <div class="relative w-full h-36 rounded-xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-3">
+                    <img id="preview-thumb-img" src="assets/thumbnails/ep05_prompt_vs_context.png" onerror="this.src='assets/thumbnails/ep05_prompt_vs_context.png'" alt="Card Preview" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+                    <div class="flex items-center justify-between z-10">
+                      <span id="preview-badge-episode" class="px-2 py-0.5 rounded-full bg-[#FF715B] text-white font-bold text-[9px] uppercase tracking-wider font-montserrat">
+                        Episode 07
+                      </span>
+                      <span id="preview-badge-platform" class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[9px] font-mono border border-white/10">
+                        Reel • 9:16
+                      </span>
+                    </div>
+                    <div class="z-10 flex items-center justify-between text-[10px] text-slate-200 font-medium">
+                      <span id="preview-badge-category" class="bg-black/70 px-2 py-0.5 rounded backdrop-blur-md border border-white/10">Autonomous Agents</span>
+                      <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2 py-0.5 rounded backdrop-blur-md">
+                        Preview
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 id="preview-text-title" class="text-xs font-bold text-white font-montserrat line-clamp-1">
+                      Video Title Preview
+                    </h4>
+                    <p id="preview-text-summary" class="mt-1 text-[11px] text-slate-300 font-light line-clamp-2">
+                      Brief summary will be displayed here in the gallery vault.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="add-modal-error" class="hidden p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-montserrat flex items-center gap-2">
+              <svg class="w-4 h-4 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span id="add-modal-error-msg">Please enter valid video information.</span>
+            </div>
+
+          </div>
+
+          <!-- Modal Footer Actions -->
+          <div class="px-5 sm:px-6 py-4 border-t border-white/10 bg-white/[0.02] flex items-center justify-between gap-3">
+            <button type="button" onclick="closeAddVideoModal()" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-semibold font-montserrat transition-all cursor-pointer">
+              Cancel
+            </button>
+            <button type="button" id="add-submit-btn" onclick="submitAddVideoForm()" class="px-6 py-2.5 rounded-xl bg-accent hover:bg-coralHover text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-accent/25 flex items-center gap-2 cursor-pointer font-montserrat">
+              <span id="add-submit-spinner" class="hidden w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+              <span id="add-submit-text">Publish Video to Gallery ✨</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
     </section>
 
   </div>
@@ -1624,14 +1849,16 @@
 
       modalTitle.textContent = title;
       modalExtLink.href = extUrl || '#';
-      modalBadge.textContent = isPortrait ? 'Facebook Reel' : 'LinkedIn Insight';
 
       if (isPortrait) {
+        modalBadge.textContent = embedSrc.includes('youtube') ? 'YouTube Shorts' : 'Facebook Reel';
         container.className = "relative w-full max-w-sm sm:max-w-md bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100 max-h-[92vh]";
         modalIframe.className = "w-full h-[380px] min-[400px]:h-[460px] sm:h-[540px] max-h-[calc(90vh-60px)] border-none relative z-10";
       } else {
-        container.className = "relative w-full max-w-3xl bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100 max-h-[92vh]";
-        modalIframe.className = "w-full h-[320px] sm:h-[440px] md:h-[500px] max-h-[calc(90vh-60px)] border-none relative z-10";
+        const isYt = embedSrc.includes('youtube') || embedSrc.includes('youtu.be');
+        modalBadge.textContent = isYt ? 'YouTube Player (16:9)' : 'LinkedIn Insight';
+        container.className = "relative w-full max-w-4xl bg-[#121E27] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-100 max-h-[92vh]";
+        modalIframe.className = "w-full h-[320px] sm:h-[440px] md:h-[520px] max-h-[calc(90vh-60px)] border-none relative z-10";
       }
 
       modalLoader.style.display = 'flex';
@@ -1673,17 +1900,643 @@
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeVideoModal();
+        closeAddVideoModal();
       }
     });
+
+    // ==================== INTERACTIVE ADD VIDEO PORTAL ENGINE ====================
+    let currentSelectedPlatform = 'facebook';
+
+    function openAddVideoModal(preferredPlatform) {
+      const modal = document.getElementById('add-video-modal');
+      const container = document.getElementById('add-modal-container');
+      if (!modal) return;
+
+      if (preferredPlatform) {
+        selectPlatformTab(preferredPlatform);
+      } else {
+        selectPlatformTab(currentSelectedPlatform || 'facebook');
+      }
+
+      // Reset error
+      const errBox = document.getElementById('add-modal-error');
+      if (errBox) errBox.classList.add('hidden');
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      if (container) {
+        container.classList.remove('scale-95');
+        container.classList.add('scale-100');
+      }
+      document.body.style.overflow = 'hidden';
+
+      // Focus URL input
+      setTimeout(() => {
+        const urlInput = document.getElementById('add-input-url');
+        if (urlInput) urlInput.focus();
+      }, 100);
+    }
+
+    function closeAddVideoModal() {
+      const modal = document.getElementById('add-video-modal');
+      const container = document.getElementById('add-modal-container');
+      if (!modal) return;
+
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      if (container) {
+        container.classList.remove('scale-100');
+        container.classList.add('scale-95');
+      }
+      document.body.style.overflow = '';
+    }
+
+    function handleAddModalBackdropClick(e) {
+      if (e.target.id === 'add-video-modal') {
+        closeAddVideoModal();
+      }
+    }
+
+    function selectPlatformTab(platform) {
+      currentSelectedPlatform = platform;
+      const fbBtn = document.getElementById('tab-platform-facebook');
+      const ytBtn = document.getElementById('tab-platform-youtube');
+      const liBtn = document.getElementById('tab-platform-linkedin');
+      const badge = document.getElementById('add-platform-detected-badge');
+      const episodeInput = document.getElementById('add-input-episode');
+      const urlInput = document.getElementById('add-input-url');
+
+      const tabs = [
+        { id: 'facebook', btn: fbBtn, color: 'blue-500', name: 'Facebook Reel' },
+        { id: 'youtube', btn: ytBtn, color: 'red-500', name: 'YouTube Video' },
+        { id: 'linkedin', btn: liBtn, color: 'sky-400', name: 'LinkedIn Insight' }
+      ];
+
+      tabs.forEach(t => {
+        if (!t.btn) return;
+        if (t.id === platform) {
+          t.btn.className = `platform-tab-btn py-3 px-3 rounded-2xl border transition-all flex flex-col items-center gap-1.5 text-center bg-${t.id === 'youtube' ? 'red-600/20 border-red-500/50' : (t.id === 'facebook' ? 'blue-500/15 border-blue-500/50' : 'sky-500/15 border-sky-500/50')} text-white shadow-lg cursor-pointer`;
+        } else {
+          t.btn.className = "platform-tab-btn py-3 px-3 rounded-2xl border transition-all flex flex-col items-center gap-1.5 text-center bg-white/5 border-white/10 text-slate-300 hover:border-white/20 cursor-pointer";
+        }
+      });
+
+      if (badge) {
+        if (platform === 'facebook') {
+          badge.className = "text-[11px] font-mono text-blue-400 flex items-center gap-1";
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> Facebook Reel (9:16)';
+          if (episodeInput && (!episodeInput.value || episodeInput.value.startsWith('Insight') || episodeInput.value.startsWith('YouTube'))) {
+            episodeInput.value = 'Episode 07';
+          }
+          if (urlInput && !urlInput.value) urlInput.placeholder = 'e.g. https://www.facebook.com/share/v/... or https://www.facebook.com/reel/...';
+        } else if (platform === 'youtube') {
+          badge.className = "text-[11px] font-mono text-red-400 flex items-center gap-1";
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> YouTube Masterclass (16:9)';
+          if (episodeInput && (!episodeInput.value || episodeInput.value.startsWith('Episode') || episodeInput.value.startsWith('Insight'))) {
+            episodeInput.value = 'Masterclass';
+          }
+          if (urlInput && !urlInput.value) urlInput.placeholder = 'e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...';
+        } else if (platform === 'linkedin') {
+          badge.className = "text-[11px] font-mono text-sky-400 flex items-center gap-1";
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span> LinkedIn Insight';
+          if (episodeInput && (!episodeInput.value || episodeInput.value.startsWith('Episode') || episodeInput.value.startsWith('Masterclass'))) {
+            episodeInput.value = 'Insight #05';
+          }
+          if (urlInput && !urlInput.value) urlInput.placeholder = 'e.g. https://www.linkedin.com/posts/...';
+        }
+      }
+
+      updateAddModalPreview();
+    }
+
+    function handleUrlInputChange() {
+      const urlInput = document.getElementById('add-input-url');
+      if (!urlInput) return;
+      const rawUrl = urlInput.value.trim();
+
+      // Smart auto-detection based on entered URL
+      if (rawUrl.includes('youtube.com') || rawUrl.includes('youtu.be')) {
+        if (currentSelectedPlatform !== 'youtube') {
+          selectPlatformTab('youtube');
+        }
+        // Extract YouTube ID and auto-fill thumbnail
+        const match = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+        const thumbInput = document.getElementById('add-input-thumbnail');
+        if (match && match[1] && thumbInput) {
+          thumbInput.value = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+        }
+      } else if (rawUrl.includes('facebook.com') || rawUrl.includes('fb.watch')) {
+        if (currentSelectedPlatform !== 'facebook') {
+          selectPlatformTab('facebook');
+        }
+      } else if (rawUrl.includes('linkedin.com') || rawUrl.includes('lnkd.in')) {
+        if (currentSelectedPlatform !== 'linkedin') {
+          selectPlatformTab('linkedin');
+        }
+      }
+
+      updateAddModalPreview();
+    }
+
+    function updateAddModalPreview() {
+      const titleInput = document.getElementById('add-input-title');
+      const catInput = document.getElementById('add-input-category');
+      const epInput = document.getElementById('add-input-episode');
+      const sumInput = document.getElementById('add-input-summary');
+      const thumbInput = document.getElementById('add-input-thumbnail');
+      const urlInput = document.getElementById('add-input-url');
+
+      const prevTitle = document.getElementById('preview-text-title');
+      const prevCat = document.getElementById('preview-badge-category');
+      const prevEp = document.getElementById('preview-badge-episode');
+      const prevSum = document.getElementById('preview-text-summary');
+      const prevThumb = document.getElementById('preview-thumb-img');
+      const prevPlat = document.getElementById('preview-badge-platform');
+
+      const title = (titleInput && titleInput.value.trim()) || 'Video Title Preview';
+      const category = (catInput && catInput.value.trim()) || 'Autonomous Agents';
+      const episode = (epInput && epInput.value.trim()) || 'Episode 07';
+      const summary = (sumInput && sumInput.value.trim()) || 'Key insights and engineering breakdown will appear here in the media vault.';
+      const rawUrl = (urlInput && urlInput.value.trim()) || '';
+      let thumb = (thumbInput && thumbInput.value.trim()) || '';
+
+      if (prevTitle) prevTitle.textContent = title;
+      if (prevCat) prevCat.textContent = category;
+      if (prevEp) prevEp.textContent = episode;
+      if (prevSum) prevSum.textContent = summary;
+
+      // Platform badge
+      if (prevPlat) {
+        if (currentSelectedPlatform === 'youtube') {
+          const isShorts = rawUrl.includes('/shorts/');
+          prevPlat.textContent = isShorts ? 'Shorts • 9:16' : 'YouTube • 16:9';
+          if (!thumb) {
+            const match = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+            if (match && match[1]) {
+              thumb = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+            } else {
+              thumb = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
+            }
+          }
+        } else if (currentSelectedPlatform === 'facebook') {
+          prevPlat.textContent = 'Reel • 9:16';
+          if (!thumb) thumb = 'assets/thumbnails/ep05_prompt_vs_context.png';
+        } else {
+          prevPlat.textContent = 'Article • Post';
+          if (!thumb) thumb = 'assets/thumbnails/li01_autonomous_systems.jpg';
+        }
+      }
+
+      if (prevThumb && thumb) {
+        prevThumb.src = thumb;
+      }
+    }
+
+    // Submit and ingest new video
+    function submitAddVideoForm() {
+      const titleInput = document.getElementById('add-input-title');
+      const urlInput = document.getElementById('add-input-url');
+      const catInput = document.getElementById('add-input-category');
+      const epInput = document.getElementById('add-input-episode');
+      const sumInput = document.getElementById('add-input-summary');
+      const thumbInput = document.getElementById('add-input-thumbnail');
+      const errorBox = document.getElementById('add-modal-error');
+      const errorMsg = document.getElementById('add-modal-error-msg');
+      const submitBtn = document.getElementById('add-submit-btn');
+      const submitSpinner = document.getElementById('add-submit-spinner');
+      const submitText = document.getElementById('add-submit-text');
+
+      const title = (titleInput && titleInput.value.trim()) || '';
+      const rawUrl = (urlInput && urlInput.value.trim()) || '';
+      const category = (catInput && catInput.value.trim()) || 'Technical Talk';
+      const episode = (epInput && epInput.value.trim()) || (currentSelectedPlatform === 'facebook' ? 'Reel' : (currentSelectedPlatform === 'youtube' ? 'YouTube' : 'Insight'));
+      const summary = (sumInput && sumInput.value.trim()) || 'Video walkthrough and technical breakdown by Emran Hosen.';
+      let customThumbnail = (thumbInput && thumbInput.value.trim()) || '';
+
+      // Validation
+      if (!title || title.length < 2) {
+        if (errorBox && errorMsg) {
+          errorMsg.textContent = 'Please enter a video title (at least 2 characters).';
+          errorBox.classList.remove('hidden');
+        }
+        if (titleInput) titleInput.focus();
+        return;
+      }
+
+      if (!rawUrl || (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://'))) {
+        if (errorBox && errorMsg) {
+          errorMsg.textContent = 'Please enter a valid HTTP or HTTPS video URL.';
+          errorBox.classList.remove('hidden');
+        }
+        if (urlInput) urlInput.focus();
+        return;
+      }
+
+      if (errorBox) errorBox.classList.add('hidden');
+      if (submitSpinner) submitSpinner.classList.remove('hidden');
+      if (submitText) submitText.textContent = 'Publishing...';
+      if (submitBtn) submitBtn.disabled = true;
+
+      // Smart URL parsing
+      let embedSrc = '';
+      let isPortrait = false;
+      let finalThumb = customThumbnail;
+
+      if (currentSelectedPlatform === 'youtube') {
+        const match = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+        const videoId = match ? match[1] : '';
+        isPortrait = rawUrl.includes('/shorts/');
+        embedSrc = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : rawUrl;
+        if (!finalThumb) {
+          finalThumb = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
+        }
+      } else if (currentSelectedPlatform === 'facebook') {
+        isPortrait = true;
+        embedSrc = `https://www.facebook.com/plugins/video.php?height=600&href=${encodeURIComponent(rawUrl)}&show_text=false&width=340&t=0`;
+        if (!finalThumb) finalThumb = 'assets/thumbnails/ep05_prompt_vs_context.png';
+      } else {
+        isPortrait = false;
+        if (rawUrl.includes('/embed/')) {
+          embedSrc = rawUrl;
+        } else {
+          const match = rawUrl.match(/urn:li:(?:ugcPost|share|activity):(\d+)/);
+          embedSrc = (match && match[1]) ? `https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:${match[1]}` : rawUrl;
+        }
+        if (!finalThumb) finalThumb = 'assets/thumbnails/li01_autonomous_systems.jpg';
+      }
+
+      const newVideo = {
+        id: 'vid-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 4),
+        platform: currentSelectedPlatform,
+        title: title,
+        url: rawUrl,
+        embedSrc: embedSrc,
+        thumbnail: finalThumb,
+        category: category,
+        episode: episode,
+        summary: summary,
+        isPortrait: isPortrait,
+        isCustom: true,
+        createdAt: new Date().toISOString()
+      };
+
+      // 1. Client-side Persistence (localStorage) - Guarantees zero-failure on GitHub Pages
+      try {
+        const customVideos = JSON.parse(localStorage.getItem('emran_custom_videos') || '[]');
+        customVideos.unshift(newVideo);
+        localStorage.setItem('emran_custom_videos', JSON.stringify(customVideos));
+      } catch (e) {
+        console.warn('localStorage write error:', e);
+      }
+
+      // 2. Server-side Persistence (attempt POST /api/videos)
+      fetch('/api/videos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newVideo)
+      }).then(res => res.json()).then(data => {
+        console.log('Video saved to server:', data);
+      }).catch(err => {
+        console.log('Static host / server offline, saved locally to localStorage:', err);
+      });
+
+      // 3. Render Card in DOM immediately
+      injectVideoCardIntoDOM(newVideo);
+      updateFilterCounters();
+
+      // Reset Form and Close
+      setTimeout(() => {
+        if (submitSpinner) submitSpinner.classList.add('hidden');
+        if (submitText) submitText.textContent = 'Publish Video to Gallery ✨';
+        if (submitBtn) submitBtn.disabled = false;
+        
+        // Clear input values
+        if (titleInput) titleInput.value = '';
+        if (urlInput) urlInput.value = '';
+        if (sumInput) sumInput.value = '';
+        if (thumbInput) thumbInput.value = '';
+
+        closeAddVideoModal();
+        showFeedbackToast('Video successfully added to gallery!');
+
+        // Switch filter to newly added platform so user immediately sees their card!
+        filterSerial(newVideo.platform);
+      }, 350);
+    }
+
+    // Inject video card into corresponding section
+    function injectVideoCardIntoDOM(video) {
+      if (video.platform === 'youtube') {
+        const grid = document.getElementById('youtube-cards-grid');
+        if (grid) {
+          grid.classList.remove('hidden');
+          const cardHtml = buildYouTubeCardHtml(video);
+          grid.insertAdjacentHTML('afterbegin', cardHtml);
+        }
+      } else if (video.platform === 'facebook') {
+        const track = document.getElementById('facebook-track');
+        if (track) {
+          const cardHtml = buildFacebookCardHtml(video);
+          track.insertAdjacentHTML('afterbegin', cardHtml);
+        }
+      } else if (video.platform === 'linkedin') {
+        const track = document.getElementById('linkedin-track');
+        if (track) {
+          const cardHtml = buildLinkedInCardHtml(video);
+          track.insertAdjacentHTML('afterbegin', cardHtml);
+        }
+      }
+    }
+
+    // Delete custom added video
+    function deleteCustomVideo(videoId, e) {
+      if (e) e.stopPropagation();
+      if (!confirm('Are you sure you want to remove this video from your gallery?')) return;
+
+      // 1. Remove from localStorage
+      try {
+        let customVideos = JSON.parse(localStorage.getItem('emran_custom_videos') || '[]');
+        customVideos = customVideos.filter(v => v.id !== videoId);
+        localStorage.setItem('emran_custom_videos', JSON.stringify(customVideos));
+      } catch (err) {}
+
+      // 2. Remove from server if reachable
+      fetch(`/api/videos/${videoId}`, { method: 'DELETE' }).catch(() => {});
+
+      // 3. Remove from DOM
+      document.querySelectorAll(`[data-video-id="${videoId}"]`).forEach(el => {
+        el.style.transition = 'all 0.3s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'scale(0.8)';
+        setTimeout(() => el.remove(), 300);
+      });
+
+      setTimeout(() => {
+        updateFilterCounters();
+        showFeedbackToast('Video removed from gallery.');
+      }, 350);
+    }
+
+    function buildYouTubeCardHtml(v) {
+      const safeTitle = v.title.replace(/'/g, "\\'");
+      return `
+        <div data-video-id="${v.id}" class="media-card rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group card-hover">
+          <div class="relative w-full h-44 rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-3.5 cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', ${v.isPortrait})">
+            <img src="${v.thumbnail}" alt="${v.title}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-slate-950/50 pointer-events-none"></div>
+            
+            <div class="flex items-center justify-between z-10">
+              <span class="px-2.5 py-1 rounded-full bg-red-600 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                ${v.episode || 'YouTube'}
+              </span>
+              ${v.isCustom ? `<button onclick="deleteCustomVideo('${v.id}', event)" class="p-1.5 rounded-lg bg-black/70 hover:bg-red-600 text-slate-300 hover:text-white transition-colors cursor-pointer border border-white/10" title="Delete Video"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : ''}
+            </div>
+
+            <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <div class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-2xl shadow-red-600/50 transition-transform duration-300 group-hover:scale-115">
+                <svg class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+
+            <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+              <span class="bg-black/70 px-2 py-0.5 rounded-lg backdrop-blur-md border border-white/10">${v.category}</span>
+              <span class="text-white font-semibold flex items-center gap-1 bg-red-600/80 px-2 py-0.5 rounded-lg backdrop-blur-md">
+                <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                ${v.isPortrait ? 'Shorts' : 'Watch'}
+              </span>
+            </div>
+          </div>
+
+          <div class="pt-3 flex flex-col justify-between flex-1">
+            <div>
+              <h3 class="text-sm font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-red-400 transition-colors cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', ${v.isPortrait})">
+                ${v.title}
+              </h3>
+              <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                ${v.summary}
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+              <button onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', ${v.isPortrait})" class="px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition-all shadow-md shadow-red-600/20 flex items-center gap-1.5 font-montserrat cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <span>Play Video</span>
+              </button>
+              <a href="${v.url}" target="_blank" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium font-montserrat transition-all flex items-center gap-1.5" title="Open on YouTube">
+                <span>YouTube</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildFacebookCardHtml(v) {
+      const safeTitle = v.title.replace(/'/g, "\\'");
+      return `
+        <div data-video-id="${v.id}" class="media-card w-[290px] sm:w-[320px] h-[450px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+          <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#FF715B]/10 blur-3xl pointer-events-none group-hover:bg-[#FF715B]/20 transition-all duration-500"></div>
+          
+          <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', true)">
+            <img src="${v.thumbnail}" alt="${v.title}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+            <div class="flex items-center justify-between z-10">
+              <span class="px-2.5 py-1 rounded-full bg-[#FF715B]/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                ${v.episode || 'Reel'}
+              </span>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Reel • 9:16
+                </span>
+                ${v.isCustom ? `<button onclick="deleteCustomVideo('${v.id}', event)" class="p-1 rounded-md bg-black/70 hover:bg-red-600 text-slate-300 hover:text-white transition-colors cursor-pointer border border-white/10" title="Delete Video"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : ''}
+              </div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <div class="w-14 h-14 rounded-full bg-[#FF715B] text-white flex items-center justify-center play-btn-glow shadow-2xl shadow-[#FF715B]/50 transition-transform duration-300 group-hover:scale-115">
+                <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+              <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">${v.category}</span>
+              <span class="text-white font-semibold flex items-center gap-1 bg-blue-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Reel
+              </span>
+            </div>
+          </div>
+
+          <div class="pt-3 flex flex-col justify-between flex-1">
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-[#FF715B] transition-colors cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', true)">
+                ${v.title}
+              </h3>
+              <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                ${v.summary}
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+              <button onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', true)" class="px-3.5 py-2 rounded-xl bg-[#FF715B] hover:bg-[#e65c47] text-white font-bold text-xs transition-all shadow-md shadow-accent/20 flex items-center gap-1.5 font-montserrat cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <span>Watch Reel</span>
+              </button>
+              <a href="${v.url}" target="_blank" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium font-montserrat transition-all flex items-center gap-1.5" title="Open Post on Facebook">
+                <span>Facebook</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildLinkedInCardHtml(v) {
+      const safeTitle = v.title.replace(/'/g, "\\'");
+      return `
+        <div data-video-id="${v.id}" class="media-card w-[310px] sm:w-[350px] h-[470px] flex-shrink-0 rounded-3xl bg-[#162531]/90 border border-white/10 p-5 flex flex-col justify-between relative overflow-hidden backdrop-blur-md group">
+          <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-sky-500/10 blur-3xl pointer-events-none group-hover:bg-sky-500/20 transition-all duration-500"></div>
+          
+          <div class="relative w-full h-[220px] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 flex flex-col justify-between p-4 cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', false)">
+            <img src="${v.thumbnail}" alt="${v.title}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/60 pointer-events-none"></div>
+
+            <div class="flex items-center justify-between z-10">
+              <span class="px-2.5 py-1 rounded-full bg-sky-500/90 text-white font-bold text-[10px] uppercase tracking-wider font-montserrat shadow-md">
+                ${v.episode || 'Insight'}
+              </span>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-md bg-black/70 text-slate-200 text-[10px] font-mono backdrop-blur-md border border-white/10">
+                  Article • 16:9
+                </span>
+                ${v.isCustom ? `<button onclick="deleteCustomVideo('${v.id}', event)" class="p-1 rounded-md bg-black/70 hover:bg-red-600 text-slate-300 hover:text-white transition-colors cursor-pointer border border-white/10" title="Delete Video"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : ''}
+              </div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <div class="w-14 h-14 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-2xl shadow-sky-500/50 transition-transform duration-300 group-hover:scale-115">
+                <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="z-10 flex items-center justify-between text-[11px] text-slate-200 font-medium">
+              <span class="bg-black/70 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">${v.category}</span>
+              <span class="text-white font-semibold flex items-center gap-1 bg-sky-600/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                Post
+              </span>
+            </div>
+          </div>
+
+          <div class="pt-3 flex flex-col justify-between flex-1">
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-white font-montserrat leading-snug line-clamp-2 group-hover:text-sky-400 transition-colors cursor-pointer" onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', false)">
+                ${v.title}
+              </h3>
+              <p class="mt-2 text-slate-300 text-xs leading-relaxed font-light line-clamp-2">
+                ${v.summary}
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+              <button onclick="openVideoModal('${v.embedSrc}', '${safeTitle}', '${v.url}', false)" class="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs transition-all shadow-md shadow-sky-500/20 flex items-center gap-1.5 font-montserrat cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <span>Preview Insight</span>
+              </button>
+              <a href="${v.url}" target="_blank" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium font-montserrat transition-all flex items-center gap-1.5" title="Open Post on LinkedIn">
+                <span>LinkedIn</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Dynamic Filter Counters
+    function updateFilterCounters() {
+      const fbCards = document.querySelectorAll('#facebook-track > [data-video-id], #facebook-track > .media-card').length;
+      // Note: facebook-track has original cards + set clones in static HTML. Let's count unique cards.
+      const uniqueFbCount = new Set(Array.from(document.querySelectorAll('#facebook-track .media-card h3')).map(el => el.textContent.trim())).size;
+      const uniqueLiCount = new Set(Array.from(document.querySelectorAll('#linkedin-track .media-card h3')).map(el => el.textContent.trim())).size;
+      const ytCardsCount = document.querySelectorAll('#youtube-cards-grid > [data-video-id]').length;
+
+      const totalCount = uniqueFbCount + uniqueLiCount + ytCardsCount;
+
+      const allLabel = document.getElementById('filter-all-label');
+      const fbLabel = document.getElementById('filter-fb-label');
+      const liLabel = document.getElementById('filter-li-label');
+      const ytLabel = document.getElementById('filter-yt-label');
+
+      if (allLabel) allLabel.textContent = `All Content (${totalCount})`;
+      if (fbLabel) fbLabel.textContent = `Facebook Reels (${uniqueFbCount})`;
+      if (liLabel) liLabel.textContent = `LinkedIn Insights (${uniqueLiCount})`;
+      if (ytLabel) ytLabel.textContent = `YouTube Series (${ytCardsCount})`;
+
+      // Show/hide youtube empty banner if youtube videos exist
+      const ytGrid = document.getElementById('youtube-cards-grid');
+      if (ytGrid && ytCardsCount > 0) {
+        ytGrid.classList.remove('hidden');
+      }
+    }
+
+    // Initialize gallery videos on load (loads custom videos from localStorage and/or server)
+    function initGalleryVideos() {
+      // 1. Load from localStorage
+      try {
+        const customVideos = JSON.parse(localStorage.getItem('emran_custom_videos') || '[]');
+        if (Array.isArray(customVideos)) {
+          customVideos.forEach(v => {
+            // Avoid duplicate injection if already present
+            if (!document.querySelector(`[data-video-id="${v.id}"]`)) {
+              injectVideoCardIntoDOM(v);
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('localStorage read error:', e);
+      }
+
+      // 2. Load from server (/api/videos) if online
+      fetch('/api/videos')
+        .then(res => res.json())
+        .then(serverVideos => {
+          if (Array.isArray(serverVideos)) {
+            serverVideos.filter(v => v.isCustom).forEach(v => {
+              if (!document.querySelector(`[data-video-id="${v.id}"]`)) {
+                injectVideoCardIntoDOM(v);
+              }
+            });
+          }
+          updateFilterCounters();
+        })
+        .catch(err => {
+          // If offline or on static GitHub Pages, localStorage is already loaded!
+          updateFilterCounters();
+        });
+
+      updateFilterCounters();
+
+      // Support deep link or query param: ?openAdd=1 or ?add=1
+      try {
+        if (window.location.search.includes('openAdd=1') || window.location.search.includes('add=1')) {
+          openAddVideoModal();
+        }
+      } catch (e) {}
+    }
+
+    // Custom Toast Notification
+    function showFeedbackToast(msg) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      const span = toast.querySelector('span');
+      if (span) span.textContent = msg;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 2800);
+    }
 
     // Copy Email Toast Helper
     function copyEmail() {
       navigator.clipboard.writeText('imrandt2001@gmail.com').then(() => {
-        const toast = document.getElementById('toast');
-        toast.classList.remove('opacity-0');
-        setTimeout(() => {
-          toast.classList.add('opacity-0');
-        }, 2500);
+        showFeedbackToast('Email address copied to clipboard!');
       });
     }
 
@@ -1733,6 +2586,7 @@
       }
     }
     window.addEventListener('DOMContentLoaded', handleInitialScroll);
+    window.addEventListener('DOMContentLoaded', initGalleryVideos);
     window.addEventListener('load', handleInitialScroll);
     window.addEventListener('pageshow', handleInitialScroll);
 
