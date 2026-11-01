@@ -354,7 +354,7 @@
     </div>
 
     <!-- Live System Telemetry Ribbon (Connected to Node.js Backend API) -->
-    <div class="mb-12 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs font-mono">
+    <div class="mb-8 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs font-mono">
       <div class="flex items-center gap-2">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
         <span class="text-slate-400 hidden min-[480px]:inline">Backend:</span>
@@ -370,26 +370,43 @@
       </div>
       <div class="flex items-center gap-2">
         <span class="text-cyan-400 font-semibold flex-shrink-0">🛡️</span>
-        <span class="text-slate-400 hidden min-[480px]:inline">Security:</span>
-        <span class="text-emerald-400 font-semibold text-[11px] sm:text-xs">Zero-Trust</span>
+        <span class="text-slate-400 hidden min-[480px]:inline">Portfolio:</span>
+        <span class="text-emerald-400 font-semibold text-[11px] sm:text-xs">3 OSS • 3 Private</span>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Project Filter Bar: All Works vs Public Open-Source vs Enterprise Private Systems -->
+    <div class="mb-10 flex flex-wrap items-center justify-center sm:justify-start gap-2.5 font-montserrat">
+      <button onclick="filterProjects('all')" id="btn-filter-proj-all" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#FF715B] text-white border border-[#FF715B] shadow-lg shadow-accent/20 transition-all cursor-pointer">
+        All Flagship Works (6)
+      </button>
+      <button onclick="filterProjects('public')" id="btn-filter-proj-public" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 transition-all cursor-pointer flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <span>Public Open Source (3)</span>
+      </button>
+      <button onclick="filterProjects('private')" id="btn-filter-proj-private" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 transition-all cursor-pointer flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span>Enterprise Private Systems (3)</span>
+      </button>
+    </div>
+
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
       
-      <!-- Project 1: AI Agents Hub -->
-      <div class="p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group">
+      <!-- Project 1: AI Agents Hub (Public) -->
+      <div data-project-type="public" class="project-card p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
         <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-2xl group-hover:bg-indigo-500/20 transition-all"></div>
         <div>
-          <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
-            <span class="px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold">Autonomous Systems</span>
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Public Open Source
+            </span>
             <span>2026 Production</span>
           </div>
           <h3 class="font-display text-2xl font-bold text-white group-hover:text-accent transition-colors">
             AI-Agents-Hub: Multi-Cloud Persistent Gateway
           </h3>
           <p class="mt-3 text-slate-400 text-sm leading-relaxed">
-            24/7 cloud orchestration for autonomous agents (Hermes, OpenClaw, Strix) running on Render and Vercel. Ingests 240+ specialized engineering skills with real-time Discord & Telegram bidirectional gateways.
+            24/7 cloud orchestration for autonomous agents (Hermes, OpenClaw, Strix) running on Render and Vercel. Ingests 248+ specialized engineering skills with real-time Discord & Telegram bidirectional gateways.
           </p>
 
           <div class="mt-6 flex flex-wrap gap-2">
@@ -401,7 +418,7 @@
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between font-montserrat">
           <a href="https://github.com/Imran7541/AI-Agents-Hub" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-white hover:text-accent transition-colors">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             <span>GitHub Repository</span>
@@ -412,12 +429,14 @@
         </div>
       </div>
 
-      <!-- Project 2: Next Label 3D GPGPU Portfolio -->
-      <div class="p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group">
+      <!-- Project 2: Next Label 3D GPGPU Portfolio (Public) -->
+      <div data-project-type="public" class="project-card p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
         <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
         <div>
-          <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
-            <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 font-semibold">Creative 3D Web</span>
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Public Open Source
+            </span>
             <span>WebGL GPGPU</span>
           </div>
           <h3 class="font-display text-2xl font-bold text-white group-hover:text-purple-400 transition-colors">
@@ -435,7 +454,7 @@
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between font-montserrat">
           <a href="https://github.com/Imran7541/Next_Label_protfolio" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-white hover:text-purple-400 transition-colors">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             <span>GitHub Repository</span>
@@ -444,12 +463,14 @@
         </div>
       </div>
 
-      <!-- Project 3: Autonomous Video Producer -->
-      <div class="p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group">
+      <!-- Project 3: Autonomous Video Producer (Public) -->
+      <div data-project-type="public" class="project-card p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
         <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
         <div>
-          <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
-            <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 font-semibold">Generative Media</span>
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> Public Open Source
+            </span>
             <span>Automated Studio</span>
           </div>
           <h3 class="font-display text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">
@@ -467,7 +488,7 @@
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between font-montserrat">
           <a href="https://github.com/Imran7541/as-sunnah-reel" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             <span>GitHub Repository</span>
@@ -478,19 +499,22 @@
         </div>
       </div>
 
-      <!-- Project 4: Enterprise Student-to-Career Platform -->
-      <div class="p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group">
+      <!-- Project 4: Enterprise Student-to-Career Platform (Private Enterprise Monorepo) -->
+      <div data-project-type="private" class="project-card p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
         <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
         <div>
-          <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
-            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold">Full-Stack SaaS</span>
-            <span>Cloud Architecture</span>
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>Enterprise Private System</span>
+            </span>
+            <span class="text-[11px] text-amber-400/90 font-mono">Client Confidential (NDA)</span>
           </div>
           <h3 class="font-display text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors">
             Enterprise Student-to-Career Platform
           </h3>
           <p class="mt-3 text-slate-400 text-sm leading-relaxed">
-            High-concurrency lifecycle portal with division-level faceted search, real-time CV analytics, verified employer matrices, and Zero-Trust RBAC security with automated database backups.
+            High-concurrency student-to-career ecosystem with division-level faceted search, real-time CV analytics, verified employer matrices, and Zero-Trust RBAC security with automated database backups.
           </p>
 
           <div class="mt-6 flex flex-wrap gap-2">
@@ -501,13 +525,88 @@
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
-          <a href="https://github.com/Imran7541/education" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-white hover:text-emerald-400 transition-colors">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            <span>GitHub Repository</span>
-          </a>
+        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between font-montserrat">
+          <div class="inline-flex items-center gap-1.5 text-xs text-slate-400">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Private Monorepo Core</span>
+          </div>
           <span class="text-xs text-emerald-400 flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live Monorepo
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live Client SaaS
+          </span>
+        </div>
+      </div>
+
+      <!-- Project 5: Autonomous Multi-Agent FinTech Settlement Core (Private Enterprise Core) -->
+      <div data-project-type="private" class="project-card p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-2xl group-hover:bg-accent/20 transition-all"></div>
+        <div>
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>Enterprise Private System</span>
+            </span>
+            <span class="text-[11px] text-amber-400/90 font-mono">Commercial Core (NDA)</span>
+          </div>
+          <h3 class="font-display text-2xl font-bold text-white group-hover:text-accent transition-colors">
+            Autonomous Multi-Agent FinTech Settlement Core
+          </h3>
+          <p class="mt-3 text-slate-400 text-sm leading-relaxed">
+            Distributed financial reconciliation engine coordinating autonomous payment verification agents across bKash, Nagad, and Stripe APIs. Real-time idempotent ledger, fraud anomaly detection, and automated audit logs.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Node.js Microservices</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Redis Streams</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">PostgreSQL</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">AES-256</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Zero-Trust API</span>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between font-montserrat">
+          <div class="inline-flex items-center gap-1.5 text-xs text-slate-400">
+            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Proprietary Financial Core</span>
+          </div>
+          <span class="text-xs text-emerald-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> &lt; 120ms Latency
+          </span>
+        </div>
+      </div>
+
+      <!-- Project 6: Spatial WebGL 3D Showroom (Private Enterprise) -->
+      <div data-project-type="private" class="project-card p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+        <div>
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 font-semibold flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>Enterprise Private System</span>
+            </span>
+            <span class="text-[11px] text-amber-400/90 font-mono">Commercial Engine (NDA)</span>
+          </div>
+          <h3 class="font-display text-2xl font-bold text-white group-hover:text-purple-400 transition-colors">
+            Real-Time Spatial 3D Showroom & Configurator
+          </h3>
+          <p class="mt-3 text-slate-400 text-sm leading-relaxed">
+            Bespoke 3D spatial product configurator with real-time PBR material swap, dynamic soft shadows, HDRI lighting rotation, and procedural camera tracks. Optimized for mobile WebGL with 60 FPS performance.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Three.js</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">GLSL Shaders</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Web Audio API</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">GSAP Motion</span>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between font-montserrat">
+          <div class="inline-flex items-center gap-1.5 text-xs text-slate-400">
+            <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Proprietary 3D Engine</span>
+          </div>
+          <span class="text-xs text-purple-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> 60 FPS Fluid
           </span>
         </div>
       </div>
@@ -1096,6 +1195,44 @@
           setTimeout(() => {
             toast.classList.add('opacity-0');
           }, 2500);
+        }
+      });
+    }
+
+    // Project Category Filter (All, Public Open Source, Enterprise Private)
+    function filterProjects(type) {
+      const cards = document.querySelectorAll('.project-card');
+      const btnAll = document.getElementById('btn-filter-proj-all');
+      const btnPublic = document.getElementById('btn-filter-proj-public');
+      const btnPrivate = document.getElementById('btn-filter-proj-private');
+
+      const allBtns = [btnAll, btnPublic, btnPrivate];
+      allBtns.forEach(btn => {
+        if (!btn) return;
+        btn.classList.remove('bg-[#FF715B]', 'text-white', 'border-[#FF715B]', 'shadow-lg', 'shadow-accent/20');
+        btn.classList.add('bg-white/5', 'text-slate-300', 'border-white/10');
+      });
+
+      const activeBtn = type === 'public' ? btnPublic : (type === 'private' ? btnPrivate : btnAll);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-[#FF715B]', 'text-white', 'border-[#FF715B]', 'shadow-lg', 'shadow-accent/20');
+        activeBtn.classList.remove('bg-white/5', 'text-slate-300', 'border-white/10');
+      }
+
+      cards.forEach(card => {
+        const cardType = card.dataset.projectType;
+        if (type === 'all' || cardType === type) {
+          card.style.display = 'flex';
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+          }, 10);
+        } else {
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.96)';
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 200);
         }
       });
     }

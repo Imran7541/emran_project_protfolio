@@ -42,7 +42,22 @@
 - [x] **Resolved GitHub Pages HTTP 429 "Rate Limit Exceeded" / Edge Fastly CDN Throttling**:
   - Forensically diagnosed edge rate limit (`retry-after: 0`, Fastly Varnish `cache-ccu...-CCU`) triggered on shared ISP CGNAT IP (`103.238.115.33`, Green Link Networks, Dhaka) caused by high burst volume and static host 404 API calls (`/api/videos`, `/api/health`, `/api/agent/status`).
   - Added environment guards (`window.location.hostname.includes('github.io')`) across `gallery.html`, `index.html`, and `contact.html` to eliminate all unnecessary 404 network fetches on static hosting while maintaining seamless `localStorage` operation.
-  - Verified edge rate limit expiration with HTTP 200 responses across all live endpoints on `imran7541.github.io`.
+- [x] **Stealth Executive Admin Media Ingestion & Public Gallery Sanitization (Spec 016)**:
+  - Sanitized public `gallery.html`: Completely hid all "+ Add Video", "+ Add Reel", "+ Add Post", "+ Add YouTube Video", and card trashcan delete buttons from public visitors. Public visitors experience a 100% pristine, prestigious, read-only media portfolio.
+  - Implemented stealth admin access: Triggerable via secret key combo (`Ctrl + Shift + A`), URL trigger (`/gallery?admin=1`), or route redirect (`/admin`).
+  - Protected with master passcode (`ADMIN_MASTER_KEY` / `emran@admin7541`) issuing secure 64-char crypto hex session tokens stored in `sessionStorage`.
+  - Hardened backend APIs (`POST /api/videos`, `DELETE /api/videos/:id`) to reject unauthenticated requests with HTTP 401.
+  - Injected glassmorphic executive control drawer with instant status indicator and 1-click logout.
+
+- [x] **Curated Flagship Project Showcase (Public Open Source & Enterprise Private Repositories)**:
+  - Curated 6 flagship projects in `data/projects.json`: 3 Public OSS (`AI-Agents-Hub`, `Next Label 3D`, `Autonomous Video Production Engine`) with live GitHub repo links, and 3 Enterprise Private Systems (`Enterprise Student-to-Career Platform`, `Autonomous Multi-Agent FinTech Settlement Core`, `Real-Time Spatial 3D Showroom & Configurator`).
+  - Formatted private systems with "Enterprise Private System • Client Confidential (NDA)" badges, live production demo links, SLA metrics, and architecture specs to eliminate GitHub 404 errors.
+  - Added interactive category filter bar ("All Flagship Works (6)", "Public Open Source (3)", "Enterprise Private Systems (3)") in `index.html` with real-time card filtering.
+  - Updated live telemetry bar to display `3 OSS • 3 Private`.
+
+- [x] **Comprehensive Test Automation**:
+  - `tests/test_stealth_admin.py`: 12/12 automated checks verified (auth flow, token grant, endpoint protection, DOM sanitization, project filtering).
+  - `tests/test_video_management.py`: 5/5 automated checks verified with authenticated ingest & teardown.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.

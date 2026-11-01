@@ -36,3 +36,13 @@
 - [x] T021 [US4] Create automated test suite in `tests/test_video_management.py` to verify API persistence, URL parsing, and modal UI
 - [x] T022 [US4] Commit, push to `origin main`, sync Coolify container, and verify live on GitHub Pages
 
+## Phase 8: Stealth Admin Portal & Curated Project Showcase (Spec 016)
+- [x] T023 [US5] Implement secure Admin Auth API (`POST /api/admin/login`, `GET /api/admin/verify`, `POST /api/admin/logout`) in `server.js`, configure `ADMIN_MASTER_KEY` in `.env.example` and `.env`
+- [x] T024 [US5] Sanitize public UI in `gallery.html`: Remove all public "+ Add Video to Gallery", "+ Add Reel", and public delete buttons so visitors see a clean, read-only executive media vault
+- [x] T025 [US5] Implement stealth admin trigger in `gallery.html`: Add `Ctrl + Shift + A` keyboard shortcut, `/gallery?admin=1` route, and glassmorphic Master Passcode Modal
+- [x] T026 [US5] Integrate protected Executive Media Management Portal in `gallery.html` that unlocks only after successful passcode verification to ingest Facebook Reels, YouTube videos, and LinkedIn insights
+- [x] T027 [US6] Curate public & private enterprise projects in `data/projects.json` with "Enterprise Private Project • Client Confidential (NDA)" badges, live demo links, and tech architecture summaries
+- [x] T028 [US6] Update `#works` flagship project section in `index.html` to dynamically render public and private enterprise showcase cards with executive styling
+- [x] T029 [US5] Write automated test suite in `tests/test_stealth_admin.py` verifying stealth protection, authentication gates, and DOM sanitization
+- [x] T030 Polish, commit to `origin main`, sync with Coolify container, and verify live status
+

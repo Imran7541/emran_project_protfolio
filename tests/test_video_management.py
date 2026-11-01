@@ -16,10 +16,30 @@ import sys
 
 BASE_URL = os.environ.get("TEST_BASE_URL", "http://127.0.0.1:5225")
 
-def make_request(path, method="GET", data=None):
+ADMIN_TOKEN = None
+
+def get_admin_token():
+    global ADMIN_TOKEN
+    if ADMIN_TOKEN:
+        return ADMIN_TOKEN
+    login_url = f"{BASE_URL}/api/admin/login"
+    req = urllib.request.Request(login_url, method="POST")
+    req.add_header("Content-Type", "application/json")
+    req.data = json.dumps({"passcode": "emran@admin7541"}).encode("utf-8")
+    handler = urllib.request.ProxyHandler({})
+    opener = urllib.request.build_opener(handler)
+    with opener.open(req, timeout=10) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+        ADMIN_TOKEN = data.get("token")
+        return ADMIN_TOKEN
+
+def make_request(path, method="GET", data=None, auth=False):
     url = f"{BASE_URL}{path}"
     req = urllib.request.Request(url, method=method)
     req.add_header("Content-Type", "application/json")
+    if auth:
+        token = get_admin_token()
+        req.add_header("Authorization", f"Bearer {token}")
     if data:
         json_bytes = json.dumps(data).encode("utf-8")
         req.data = json_bytes
@@ -47,7 +67,7 @@ def test_api_suite():
         "episode": "Masterclass #1",
         "summary": "Deep dive into multi-agent systems and stateful DAG execution."
     }
-    status, res = make_request("/api/videos", method="POST", data=yt_payload)
+    status, res = make_request("/api/videos", method="POST", data=yt_payload, auth=True)
     assert status == 201, f"Expected 201, got {status}"
     assert res.get("ok") is True
     video = res.get("video", {})
@@ -65,7 +85,7 @@ def test_api_suite():
         "category": "Debugging & RCA",
         "episode": "Reel #08"
     }
-    status, res = make_request("/api/videos", method="POST", data=fb_payload)
+    status, res = make_request("/api/videos", method="POST", data=fb_payload, auth=True)
     assert status == 201, f"Expected 201, got {status}"
     video = res.get("video", {})
     assert video.get("platform") == "facebook"
@@ -75,9 +95,9 @@ def test_api_suite():
     print(f"✅ POST Facebook Reel ingested: ID={fb_id}")
 
     print("\n--- 4. Testing DELETE /api/videos/:id ---")
-    status, del_yt = make_request(f"/api/videos/{yt_id}", method="DELETE")
+    status, del_yt = make_request(f"/api/videos/{yt_id}", method="DELETE", auth=True)
     assert status == 200 and del_yt.get("ok") is True
-    status, del_fb = make_request(f"/api/videos/{fb_id}", method="DELETE")
+    status, del_fb = make_request(f"/api/videos/{fb_id}", method="DELETE", auth=True)
     assert status == 200 and del_fb.get("ok") is True
     print(f"✅ Successfully deleted test videos {yt_id} and {fb_id}")
 

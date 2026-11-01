@@ -10,6 +10,29 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const crypto = require('crypto');
+
+// Zero-dependency .env loader
+if (fs.existsSync(path.join(__dirname, '.env'))) {
+  try {
+    const envContent = fs.readFileSync(path.join(__dirname, '.env'), 'utf-8');
+    envContent.split('\n').forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx > 0) {
+          const key = trimmed.slice(0, eqIdx).trim();
+          const val = trimmed.slice(eqIdx + 1).trim();
+          if (!process.env[key]) {
+            process.env[key] = val;
+          }
+        }
+      }
+    });
+  } catch (e) {
+    console.warn('Could not read .env file:', e.message);
+  }
+}
 
 const PORT = process.env.PORT || 5225;
 const PUBLIC_DIR = __dirname;
@@ -17,6 +40,35 @@ const DATA_DIR = path.join(__dirname, 'data');
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.jsonl');
 const PROJECTS_FILE = path.join(DATA_DIR, 'projects.json');
 const VIDEOS_FILE = path.join(DATA_DIR, 'videos.json');
+const ADMIN_MASTER_KEY = process.env.ADMIN_MASTER_KEY || 'emran@admin7541';
+
+// In-memory zero-trust admin session registry (Token -> Expiration)
+const adminSessions = new Map();
+const SESSION_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+// Helper: Verify admin authorization from request headers or query
+function isRequestAdminAuthenticated(req) {
+  const authHeader = req.headers['authorization'] || '';
+  let token = '';
+  if (authHeader.startsWith('Bearer ')) {
+    token = authHeader.slice(7).trim();
+  } else if (req.headers['x-admin-token']) {
+    token = req.headers['x-admin-token'].trim();
+  } else if (req.headers['x-admin-passcode'] === ADMIN_MASTER_KEY) {
+    return true; // Direct master passcode header accepted for automated pipelines
+  }
+
+  if (!token) return false;
+
+  const session = adminSessions.get(token);
+  if (!session) return false;
+
+  if (Date.now() > session.expiresAt) {
+    adminSessions.delete(token);
+    return false;
+  }
+  return true;
+}
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -122,8 +174,8 @@ const server = http.createServer((req, res) => {
 
   // Set standard CORS headers for APIs
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-token, x-admin-passcode');
 
   // Handle preflight OPTIONS
   if (req.method === 'OPTIONS') {
@@ -133,6 +185,90 @@ const server = http.createServer((req, res) => {
   }
 
   // ==================== REST API ROUTING ====================
+
+  // 0. ADMIN AUTHENTICATION APIs
+  // 0a. POST /api/admin/login
+  if (pathname === '/api/admin/login' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > 1e5) req.destroy();
+    });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body || '{}');
+        const passcode = (data.passcode || '').trim();
+
+        if (!passcode || passcode !== ADMIN_MASTER_KEY) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            ok: false,
+            authenticated: false,
+            error: 'Invalid master passcode. Access denied.'
+          }));
+          return;
+        }
+
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiresAt = Date.now() + SESSION_DURATION_MS;
+        adminSessions.set(token, { createdAt: Date.now(), expiresAt });
+
+        console.log(`🔐 [ADMIN AUTH] Master session granted. Token: ${token.slice(0, 8)}...`);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ok: true,
+          authenticated: true,
+          token,
+          expiresAt,
+          message: 'Admin session authenticated successfully.'
+        }));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'Invalid JSON payload.' }));
+      }
+    });
+    return;
+  }
+
+  // 0b. GET /api/admin/verify
+  if (pathname === '/api/admin/verify' && req.method === 'GET') {
+    const isAuth = isRequestAdminAuthenticated(req);
+    if (isAuth) {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        ok: true,
+        authenticated: true,
+        role: 'admin',
+        message: 'Admin session is active and valid.'
+      }));
+    } else {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        ok: false,
+        authenticated: false,
+        error: 'Unauthorized or expired session.'
+      }));
+    }
+    return;
+  }
+
+  // 0c. POST /api/admin/logout
+  if (pathname === '/api/admin/logout' && req.method === 'POST') {
+    const authHeader = req.headers['authorization'] || '';
+    let token = '';
+    if (authHeader.startsWith('Bearer ')) {
+      token = authHeader.slice(7).trim();
+    } else if (req.headers['x-admin-token']) {
+      token = req.headers['x-admin-token'].trim();
+    }
+    if (token) {
+      adminSessions.delete(token);
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true, message: 'Admin session terminated.' }));
+    return;
+  }
 
   // 1. GET /api/health
   if (pathname === '/api/health' && req.method === 'GET') {
@@ -286,8 +422,17 @@ const server = http.createServer((req, res) => {
     }
   }
 
-  // 6. POST /api/videos (Ingest new video from Facebook, YouTube, LinkedIn)
+  // 6. POST /api/videos (Ingest new video from Facebook, YouTube, LinkedIn - Admin Protected)
   if (pathname === '/api/videos' && req.method === 'POST') {
+    if (!isRequestAdminAuthenticated(req)) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        ok: false,
+        error: 'Unauthorized: Admin authentication required to ingest videos.'
+      }));
+      return;
+    }
+
     let body = '';
     req.on('data', chunk => {
       body += chunk;
@@ -368,8 +513,17 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 7. DELETE /api/videos/:id or POST /api/videos/delete (Remove custom video)
+  // 7. DELETE /api/videos/:id or POST /api/videos/delete (Remove custom video - Admin Protected)
   if ((pathname.startsWith('/api/videos/') && req.method === 'DELETE') || (pathname === '/api/videos/delete' && req.method === 'POST')) {
+    if (!isRequestAdminAuthenticated(req)) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        ok: false,
+        error: 'Unauthorized: Admin authentication required to delete videos.'
+      }));
+      return;
+    }
+
     const handleRemoval = (targetId) => {
       if (!targetId) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -420,6 +574,13 @@ const server = http.createServer((req, res) => {
   }
 
   // ==================== STATIC FILE SERVING & CLEAN URL ROUTING ====================
+
+  // Admin stealth quick redirect
+  if (pathname === '/admin' || pathname === '/admin/') {
+    res.writeHead(302, { 'Location': '/gallery?admin=1' });
+    res.end();
+    return;
+  }
 
   // Clean URL Canonical Redirects (301 Permanent)
   if (pathname === '/gallery.html') {

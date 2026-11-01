@@ -19,22 +19,23 @@ VIEWPORTS = [
 ]
 
 PAGES = [
-    {"name": "Home Overview", "path": "index.html"},
-    {"name": "Media & Reel Gallery", "path": "gallery.html"},
-    {"name": "Direct Inquiries & Contact", "path": "contact.html"},
+    {"name": "Home Overview", "path": ""},
+    {"name": "Media & Reel Gallery", "path": "gallery"},
+    {"name": "Direct Inquiries & Contact", "path": "contact"},
 ]
 
 BASE_URL = os.environ.get("TEST_BASE_URL", "http://127.0.0.1:5225")
 
 def check_viewport_render(page_path, vp):
-    url = f"{BASE_URL}/{page_path}"
+    url = f"{BASE_URL}/{page_path}" if page_path else BASE_URL
     cmd = [
         "/usr/bin/google-chrome",
         "--headless=new",
         "--no-sandbox",
         "--disable-gpu",
+        "--disable-webgl",
+        "--no-proxy-server",
         f"--window-size={vp['width']},{vp['height']}",
-        "--run-all-compositor-stages-before-draw",
         "--dump-dom",
         url
     ]
