@@ -148,6 +148,7 @@ function dispatchDiscordNotification(inquiry) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'User-Agent': 'Emran-Portfolio-Webhook/1.0',
           'Content-Length': Buffer.byteLength(embedPayload)
         },
         timeout: 4000
