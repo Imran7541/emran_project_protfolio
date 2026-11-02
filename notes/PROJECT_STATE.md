@@ -69,7 +69,14 @@
     5. `Autonomous Multi-Agent FinTech Settlement Core`: Real-time bKash/Nagad/Stripe ledger reconciliation matrix (`assets/fintech_settlement_preview.png`).
     6. `Real-Time Spatial 3D Showroom & Configurator`: WebGL Three.js PBR configurator studio (`assets/spatial_showroom_preview.png`).
   - Synced changes to Coolify live container (`3lolil9okyxy5wz6ophjozt1-20261031T093304`, port 8088) and pushed to GitHub `origin main`.
-  - Verified 12/12 checks in `tests/test_stealth_admin.py` and 5/5 checks in `tests/test_video_management.py`.
+- [x] **Eliminated GitHub Pages 404 Loop & Rate Limit Exceeded on `/gallery` (Spec 019)**:
+  - Forensic Root Cause: `gallery.html` used client-side `history.replaceState` stripping `.html` to `/gallery`. Because GitHub Pages is purely static and lacks server-side routing, page reloads or navigations to `/gallery` resulted in a 404. Fastly CDN on GitHub Pages detects rapid 404 bursts from shared ISP CGNAT IPs (`103.238.115.33`) and triggers an automatic temporary `429 Rate limit exceeded` block.
+  - Multi-Layer Permanent Fix:
+    1. Created physical directory static routes `gallery/index.html` and `contact/index.html` with instant `window.location.replace` so GitHub Pages physically returns `HTTP 200 OK` rather than 404.
+    2. Updated `gallery.html`, `index.html`, and `contact.html` to guard `replaceState`: on `github.io`, `.html` extensions are strictly preserved so browser refreshes never hit 404.
+    3. Reconciled client DOM links on GitHub Pages (`DOMContentLoaded`) to map clean links (`gallery`, `contact`) directly to `.html` endpoints.
+    4. Hardened `404.html` smart reconciler to redirect extensionless routes (`/gallery`, `/contact`) to real `.html` files instead of looping.
+  - Synced to Coolify container (`3lolil9okyxy5wz6ophjozt1-20261031T093304`) and pushed to GitHub `origin main`.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
