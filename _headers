@@ -1,0 +1,19 @@
+# Cloudflare Pages Edge Security & Caching Headers
+
+# Global static rules
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# Static assets caching (1 year immutable for hashed / 1 day for assets)
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Edge API rules
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization, x-admin-token, x-admin-passcode
+  X-Content-Type-Options: nosniff

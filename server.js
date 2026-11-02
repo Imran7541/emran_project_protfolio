@@ -7,6 +7,7 @@
  */
 
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
@@ -40,7 +41,184 @@ const DATA_DIR = path.join(__dirname, 'data');
 const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.jsonl');
 const PROJECTS_FILE = path.join(DATA_DIR, 'projects.json');
 const VIDEOS_FILE = path.join(DATA_DIR, 'videos.json');
+const AI_KNOWLEDGE_FILE = path.join(DATA_DIR, 'ai-knowledge.json');
 const ADMIN_MASTER_KEY = process.env.ADMIN_MASTER_KEY || 'emran@admin7541';
+
+// Rate limiting map for AI Chat: IP -> { count, resetAt }
+const chatRateLimits = new Map();
+const CHAT_RATE_LIMIT = 10; // max 10 requests
+const CHAT_WINDOW_MS = 60 * 1000; // per 1 minute
+
+function isChatRateLimited(ip) {
+  const now = Date.now();
+  const record = chatRateLimits.get(ip);
+  if (!record || now > record.resetAt) {
+    chatRateLimits.set(ip, { count: 1, resetAt: now + CHAT_WINDOW_MS });
+    return false;
+  }
+  if (record.count >= CHAT_RATE_LIMIT) {
+    return true;
+  }
+  record.count++;
+  return false;
+}
+
+// Helper: Dispatch instant notification to Telegram Bot
+function dispatchTelegramNotification(inquiry) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId || token.startsWith('[[') || chatId.startsWith('[[')) {
+    return Promise.resolve(false);
+  }
+
+  const text = `🚨 *New Portfolio Lead / Inquiry*\n\n` +
+    `👤 *Name:* ${inquiry.name}\n` +
+    `📧 *Email:* ${inquiry.email}\n` +
+    `💼 *Service:* ${inquiry.service || 'General'}\n` +
+    `🕒 *Time:* ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' })} (Dhaka)\n\n` +
+    `📝 *Message:*\n${inquiry.message}\n\n` +
+    `🌐 *Source:* Emran Hosen Portfolio Platform`;
+
+  const payload = JSON.stringify({
+    chat_id: chatId,
+    text: text,
+    parse_mode: 'Markdown'
+  });
+
+  return new Promise((resolve) => {
+    try {
+      const req = https.request(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(payload)
+        },
+        timeout: 4000
+      }, (res) => {
+        let respData = '';
+        res.on('data', chunk => respData += chunk);
+        res.on('end', () => resolve(res.statusCode === 200));
+      });
+      req.on('error', () => resolve(false));
+      req.on('timeout', () => { req.destroy(); resolve(false); });
+      req.write(payload);
+      req.end();
+    } catch (e) {
+      resolve(false);
+    }
+  });
+}
+
+// Helper: AI Knowledge & Gemini Query Handler
+async function queryEmranAI(userMessage, history = []) {
+  let knowledge = null;
+  if (fs.existsSync(AI_KNOWLEDGE_FILE)) {
+    try {
+      knowledge = JSON.parse(fs.readFileSync(AI_KNOWLEDGE_FILE, 'utf-8'));
+    } catch (e) {}
+  }
+
+  const geminiKey = process.env.GEMINI_API_KEY;
+  const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+
+  // If Gemini API Key is configured, query Google Gemini API
+  if (geminiKey && !geminiKey.startsWith('[[')) {
+    try {
+      const systemPrompt = `You are "Emran AI", the autonomous portfolio ambassador and technical representative for Emran Hosen.
+Emran Hosen is a Senior Full-Stack AI Engineer and Autonomous Agent Architect based in Dhaka, Bangladesh, working with global clients.
+His core skills: Autonomous AI Agents (NVIDIA NIM, Google Antigravity SDK, Hermes, Strix, OpenClaw), WebGL 3D (Three.js, GLSL Shaders, 400K Particle Worlds), Full-Stack (Node.js 22, Next.js 15, PostgreSQL, Docker, Cloudflare Pages).
+Flagship works:
+1. Next Label: 400K Particle 3D WebGL World (https://next-label-portfolio.pages.dev)
+2. AI-Agents-Hub: Multi-cloud persistent orchestrator running 248+ skills (https://github.com/Imran7541/AI-Agents-Hub)
+3. Autonomous Video Production Engine: Playwright + Neural Edge-TTS + FFmpeg 2-Pass pipeline (https://github.com/Imran7541/as-sunnah-reel)
+4. Enterprise Student-to-Career Platform (Private System)
+5. Autonomous Multi-Agent FinTech Settlement Core (bKash/Nagad/Stripe)
+6. Real-Time Spatial 3D Showroom (Three.js PBR configurator)
+
+Answer questions concisely, professionally, and warmly. If asked in Bengali, respond in fluent Bengali. If in English, respond in English. Keep answers under 120 words. Offer to connect via the Contact page.`;
+
+      const contents = [];
+      if (Array.isArray(history)) {
+        for (const item of history.slice(-4)) {
+          if (item && item.role && item.content) {
+            contents.push({
+              role: item.role === 'assistant' ? 'model' : 'user',
+              parts: [{ text: item.content }]
+            });
+          }
+        }
+      }
+      contents.push({
+        role: 'user',
+        parts: [{ text: userMessage }]
+      });
+
+      const bodyData = JSON.stringify({
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        contents: contents,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 250
+        }
+      });
+
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`;
+
+      const reply = await new Promise((resolve, reject) => {
+        const parsed = url.parse(geminiUrl);
+        const req = https.request({
+          hostname: parsed.hostname,
+          path: parsed.path,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(bodyData)
+          },
+          timeout: 4500
+        }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              try {
+                const parsedRes = JSON.parse(data);
+                const text = parsedRes?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) return resolve(text.trim());
+              } catch (e) {}
+            }
+            reject(new Error(`Gemini HTTP ${res.statusCode}`));
+          });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('Gemini Timeout')); });
+        req.write(bodyData);
+        req.end();
+      });
+
+      return { ok: true, reply, model: geminiModel, engine: 'gemini' };
+    } catch (err) {
+      console.warn('⚠️ Gemini API fallback to local semantic knowledge matcher:', err.message);
+    }
+  }
+
+  // Local Semantic Knowledge Matcher Fallback
+  const lower = userMessage.toLowerCase();
+  if (knowledge && Array.isArray(knowledge.faqMatchers)) {
+    for (const item of knowledge.faqMatchers) {
+      if (item.keywords.some(kw => lower.includes(kw))) {
+        return { ok: true, reply: item.answer, model: 'local-knowledge-core', engine: 'semantic-matcher' };
+      }
+    }
+  }
+
+  // Default Fallback
+  return {
+    ok: true,
+    reply: "Hello! I am Emran's AI Portfolio Ambassador. Emran Hosen is a Senior Full-Stack AI Engineer specializing in Autonomous Multi-Agent Systems, WebGL 3D Interactive Worlds (like Next Label), and Enterprise Cloud Platforms. Feel free to explore his Flagship Projects, or drop a message via the Contact page to collaborate directly!",
+    model: 'local-knowledge-core',
+    engine: 'default'
+  };
+}
 
 // In-memory zero-trust admin session registry (Token -> Expiration)
 const adminSessions = new Map();
@@ -387,6 +565,11 @@ const server = http.createServer((req, res) => {
 
         console.log(`📩 [INQUIRY RECEIVED] From: ${name} <${email}> | Service: ${service}`);
 
+        // Async non-blocking Telegram notification dispatch
+        dispatchTelegramNotification(inquiryRecord).catch(err => {
+          console.warn('⚠️ Telegram notification dispatch error:', err.message);
+        });
+
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
           ok: true,
@@ -396,6 +579,59 @@ const server = http.createServer((req, res) => {
       } catch (err) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: false, error: 'Invalid JSON payload.' }));
+      }
+    });
+    return;
+  }
+
+  // 4b. POST /api/chat (Emran AI Interactive Ambassador)
+  if (pathname === '/api/chat' && req.method === 'POST') {
+    const clientIp = req.socket.remoteAddress || 'unknown';
+    if (isChatRateLimited(clientIp)) {
+      res.writeHead(429, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        ok: false,
+        error: 'Too many messages sent. Please wait a minute before asking another question.'
+      }));
+      return;
+    }
+
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > 50000) req.destroy();
+    });
+
+    req.on('end', async () => {
+      try {
+        const data = JSON.parse(body || '{}');
+        const message = (data.message || '').trim();
+        const history = Array.isArray(data.history) ? data.history : [];
+
+        if (!message || message.length < 1 || message.length > 500) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            ok: false,
+            error: 'Message must be between 1 and 500 characters.'
+          }));
+          return;
+        }
+
+        const result = await queryEmranAI(message, history);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ok: true,
+          reply: result.reply,
+          model: result.model,
+          engine: result.engine
+        }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ok: false,
+          error: 'Failed to process AI chat query.'
+        }));
       }
     });
     return;

@@ -78,6 +78,20 @@
     4. Hardened `404.html` smart reconciler to redirect extensionless routes (`/gallery`, `/contact`) to real `.html` files instead of looping.
   - Synced to Coolify container (`3lolil9okyxy5wz6ophjozt1-20261031T093304`) and pushed to GitHub `origin main`.
 
+- [x] **Cloudflare Pages Edge Connection, "Emran AI" Ambassador & Instant Telegram Notification Core (Spec 018 - Phase 9)**:
+  - Formulated comprehensive SDD specification in `specs/018-cloudflare-ai-agent-and-instant-notification-system.md` and dependency-tracked execution plan in `tasks.md` (T031–T040 all verified).
+  - Configured native Cloudflare Pages edge delivery: `_headers` (sub-50ms caching, HSTS, CORS, CSP) and `_routes.json` ensuring 0ms latency from nearest DAC edge with zero Fastly CDN rate limits.
+  - Authored verified AI knowledge matrix `data/ai-knowledge.json` covering Emran's background, flagship WebGL projects (`Next Label`), multi-agent systems (`AI-Agents-Hub`), and contact channels.
+  - Implemented dual-engine conversational AI core:
+    - Node.js backend route `POST /api/chat` in `server.js` with sliding-window rate limit (10 req/min/IP), 500-char input clamp, Google Gemini 2.5 Flash API proxy, and local semantic knowledge fallback matcher.
+    - Cloudflare Pages serverless Function `functions/api/chat.js` providing edge AI execution on `*.pages.dev`.
+  - Implemented dual-engine Instant Telegram Notification Core:
+    - Node.js `POST /api/contact` dispatching async non-blocking Telegram push alerts (`dispatchTelegramNotification`) and logging to `data/inquiries.jsonl`.
+    - Cloudflare Pages serverless Function `functions/api/contact.js` handling edge contact requests and non-blocking `context.waitUntil()` Telegram webhooks.
+  - Created modern glassmorphic "Emran AI" floating assistant widget in `js/ai-widget.js`, mounted across `index.html`, `gallery.html`, `contact.html`, and static entrypoints (`gallery/index.html`, `contact/index.html`).
+  - Authored automated test suite `tests/test_ai_and_telegram.py` verifying 10/10 test assertions (chat query responses, input clamping, rate limiting, inquiry logging, edge function contracts, and DOM script inclusion). Regression suites (`test_stealth_admin.py` and `test_video_management.py`) all pass (27/27 total passing).
+  - Synced all updates to Coolify Docker container (`3lolil9okyxy5wz6ophjozt1-20261031T093304`, port 8088) and restarted container.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

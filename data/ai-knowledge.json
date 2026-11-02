@@ -1,0 +1,98 @@
+{
+  "assistant": {
+    "name": "Emran AI",
+    "role": "Autonomous Portfolio Ambassador & Technical Representative",
+    "developer": "Emran Hosen",
+    "tagline": "Senior Full-Stack AI Engineer, Autonomous Agent Specialist & WebGL 3D Architect"
+  },
+  "profile": {
+    "name": "Emran Hosen",
+    "title": "Software Developer & AI Agent Architect",
+    "location": "Dhaka, Bangladesh (Serving Global Clients Remotely)",
+    "experience": "5+ Years Engineering Production Web Systems, Multi-Agent Autonomous Workflows & High-Performance WebGL Worlds",
+    "responseSla": "< 2 Hours Guaranteed",
+    "availability": "Available for Select Contracts, Autonomous Pipeline Development & Enterprise Full-Stack Engagements",
+    "socialLinks": {
+      "github": "https://github.com/Imran7541",
+      "linkedin": "https://www.linkedin.com/in/imran-fullstack/",
+      "facebook": "https://www.facebook.com/share/12G6XqD6m5B/",
+      "nextLabel3D": "https://next-label-portfolio.pages.dev"
+    }
+  },
+  "competencies": [
+    {
+      "category": "Autonomous AI & LLM Systems",
+      "skills": ["Multi-Agent Orchestration", "NVIDIA NIM", "Google Antigravity SDK", "Hermes Agent", "Strix", "OpenClaw", "Prompt Architecture", "RAG Systems", "Zero-Trust Agent Guardrails"]
+    },
+    {
+      "category": "High-Performance 3D & Graphics",
+      "skills": ["Three.js", "WebGL GPGPU", "GLSL Custom Shaders", "Particle Physics (400K+ particles)", "PBR Material Systems", "GSAP Motion Choreography"]
+    },
+    {
+      "category": "Production Full-Stack & Cloud",
+      "skills": ["Node.js 22", "TypeScript", "Next.js 15 (Turborepo)", "PostgreSQL", "Drizzle ORM", "Docker Containerization", "Cloudflare Pages Edge", "Coolify", "REST APIs", "Redis Streams"]
+    }
+  ],
+  "flagshipProjects": [
+    {
+      "name": "Next Label: 400K Particle Interactive World",
+      "type": "Public Open Source (WebGL GPGPU)",
+      "liveUrl": "https://next-label-portfolio.pages.dev",
+      "githubUrl": "https://github.com/Imran7541/Next_Label_protfolio",
+      "description": "High-performance WebGL showcase with 409,600 simultaneous particles morphing through four seasons. Zero third-party bloat, sub-50ms Cloudflare Edge streaming, and custom post-processing bloom shader pipeline."
+    },
+    {
+      "name": "AI-Agents-Hub: Multi-Cloud Persistent Gateway",
+      "type": "Public Open Source (Autonomous Orchestrator)",
+      "githubUrl": "https://github.com/Imran7541/AI-Agents-Hub",
+      "description": "24/7 cloud orchestration for autonomous agents (Hermes, OpenClaw, Strix) running on Render and Vercel. Ingests 248+ specialized engineering skills with real-time Discord & Telegram bidirectional gateways."
+    },
+    {
+      "name": "Autonomous Video Production Engine",
+      "type": "Public Open Source (Automated Studio)",
+      "githubUrl": "https://github.com/Imran7541/as-sunnah-reel",
+      "description": "End-to-end programmatic video pipeline. Generates AI structured scripts, synthesizes neural voiceovers with Edge-TTS, drives Playwright headless web slides, and renders 1080x1920 MP4 reels via FFmpeg."
+    },
+    {
+      "name": "Enterprise Student-to-Career Platform",
+      "type": "Enterprise Private System (NDA)",
+      "description": "High-concurrency student-to-career ecosystem with division-level faceted search, real-time CV analytics, verified employer matrices, and Zero-Trust RBAC security with automated database backups."
+    },
+    {
+      "name": "Autonomous Multi-Agent FinTech Settlement Core",
+      "type": "Enterprise Private System (NDA)",
+      "description": "Distributed financial reconciliation engine coordinating autonomous payment verification agents across bKash, Nagad, and Stripe APIs. Real-time idempotent ledger, fraud anomaly detection, and automated audit logs."
+    },
+    {
+      "name": "Real-Time Spatial 3D Showroom & Configurator",
+      "type": "Enterprise Private System (NDA)",
+      "description": "Bespoke 3D spatial product configurator with real-time PBR material swap, dynamic soft shadows, HDRI lighting rotation, and procedural camera tracks. 60 FPS mobile WebGL fluid motion."
+    }
+  ],
+  "faqMatchers": [
+    {
+      "keywords": ["3d", "threejs", "webgl", "particle", "next label", "shader"],
+      "answer": "Emran is an expert in real-time WebGL and Three.js 3D development! His flagship project 'Next Label' renders 409,600 simultaneous GPU particles with custom bloom post-processing shaders and sub-50ms edge streaming. You can experience it live right now at https://next-label-portfolio.pages.dev."
+    },
+    {
+      "keywords": ["agent", "ai", "autonomous", "hermes", "strix", "openclaw", "nim"],
+      "answer": "Emran specializes in building production autonomous AI agent systems. He engineered 'AI-Agents-Hub'—a 24/7 multi-cloud gateway running on Render and Vercel that orchestrates Hermes, OpenClaw, and Strix agents with 248+ engineering skills and bidirectional Discord/Telegram gateways."
+    },
+    {
+      "keywords": ["video", "ffmpeg", "reel", "production", "youtube", "tiktok", "shorts"],
+      "answer": "Emran designed an end-to-end programmatic video pipeline using TypeScript, Playwright, neural Edge-TTS, and FFmpeg 2-Pass rendering that generates 1080x1920 60FPS vertical reels completely autonomously without manual editing. Check out his Media Gallery on the portfolio!"
+    },
+    {
+      "keywords": ["hire", "rate", "cost", "price", "contact", "collaborate", "freelance", "job", "project"],
+      "answer": "Emran is available for select freelance contracts, technical advisory, and full-stack software development engagements. You can submit an inquiry directly via the Contact page or email him, and he guarantees a personal response within 2 hours. Would you like to leave a quick message or email address for him?"
+    },
+    {
+      "keywords": ["stack", "technology", "tech", "languages", "tools", "skills"],
+      "answer": "Emran's core production stack includes Node.js 22, TypeScript, Next.js 15, Three.js & GLSL Shaders, PostgreSQL & Drizzle ORM, Docker containerization, Cloudflare Pages Edge, and Multi-Agent AI Frameworks (NVIDIA NIM, Google Antigravity SDK)."
+    },
+    {
+      "keywords": ["who are you", "who is emran", "about", "bio", "background"],
+      "answer": "Emran Hosen is a Software Developer and AI Agent Architect based in Dhaka, Bangladesh, working with global clients. He specializes in full-stack cloud systems, autonomous agent workflows, and award-grade WebGL 3D web applications."
+    }
+  ]
+}

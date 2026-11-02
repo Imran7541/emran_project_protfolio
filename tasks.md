@@ -46,3 +46,16 @@
 - [x] T029 [US5] Write automated test suite in `tests/test_stealth_admin.py` verifying stealth protection, authentication gates, and DOM sanitization
 - [x] T030 Polish, commit to `origin main`, sync with Coolify container, and verify live status
 
+## Phase 9: Cloudflare Pages Edge, "Emran AI" Ambassador & Telegram Notification Core (Spec 018)
+- [x] T031 [US7] Configure native Cloudflare Pages edge architecture: create `_headers` (caching, security, CORS, CSP) and `_routes.json` in project root
+- [x] T032 [US8] Update `.env.example` with `GEMINI_API_KEY`, `TELEGRAM_BOT_TOKEN`, and `TELEGRAM_CHAT_ID` placeholders
+- [x] T033 [US8] Implement instant Telegram push notification dispatch in `server.js` (`POST /api/contact`) with async non-blocking webhook and persistent ledger logging (`data/inquiries.jsonl`)
+- [x] T034 [P] [US8] Create Cloudflare Pages Function `functions/api/contact.js` mirroring the Telegram contact dispatch for serverless edge execution
+- [x] T035 [US9] Author "Emran AI" Knowledge Base & System Prompt Matrix in `data/ai-knowledge.json` detailing Emran's verified bio, WebGL/AI Agent projects, skill stack, and contact channels
+- [x] T036 [US9] Implement secure `POST /api/chat` endpoint in `server.js` with sliding-window rate limit (10 req/min/IP), input sanitization, Google Gemini 2.5 Flash API integration, and local semantic fallback matcher
+- [x] T037 [P] [US9] Create Cloudflare Pages Function `functions/api/chat.js` for edge AI streaming and execution on Cloudflare Pages
+- [x] T038 [US9] Build modern glassmorphic "Emran AI" floating assistant widget (`#emran-ai-widget`) across `index.html`, `gallery.html`, and `contact.html` with toggle trigger, message bubble history, typing indicators, quick prompt chips, and responsive drawer on mobile
+- [x] T039 [US9] Write comprehensive automated test suite `tests/test_ai_and_telegram.py` verifying `/api/chat` rate-limiting, response formatting, prompt safety, and `/api/contact` Telegram dispatch
+- [x] T040 Polish, verify locally on port 5225, sync to Coolify container (port 8088), commit to Git, and push to GitHub `main` for instant Cloudflare Pages edge deployment
+
+
