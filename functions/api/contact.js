@@ -91,6 +91,43 @@ export async function onRequestPost(context) {
       }
     }
 
+    // Asynchronously dispatch notification to Discord if configured
+    const discordWebhook = context.env?.DISCORD_WEBHOOK_URL;
+    if (discordWebhook && !discordWebhook.startsWith('[[') && discordWebhook.startsWith('https://discord.com/api/webhooks/')) {
+      const timeStr = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
+      const discordPromise = fetch(discordWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: 'Emran Portfolio Lead Core',
+          avatar_url: 'https://raw.githubusercontent.com/Imran7541/emran_project_protfolio/main/emran_suit.jpg',
+          embeds: [
+            {
+              title: '🚨 New Client Inquiry Received',
+              description: 'A new prospective client submitted a project transmission via the Portfolio Contact Page.',
+              color: 16740699, // #FF715B
+              fields: [
+                { name: '👤 Client Name', value: name || 'Anonymous', inline: true },
+                { name: '📧 Email Address', value: email || 'N/A', inline: true },
+                { name: '💼 Selected Service', value: service || 'General Inquiry', inline: true },
+                { name: '🕒 Timestamp (Dhaka)', value: timeStr + ' (BST)', inline: false },
+                { name: '📝 Project Message', value: message || 'No message provided.', inline: false }
+              ],
+              footer: {
+                text: 'Emran Hosen Portfolio Platform • Cloudflare Pages Edge (DAC)'
+              }
+            }
+          ]
+        })
+      }).catch(err => {
+        console.error('Discord dispatch error on edge:', err);
+      });
+
+      if (context.waitUntil) {
+        context.waitUntil(discordPromise);
+      }
+    }
+
     return new Response(JSON.stringify({
       ok: true,
       message: 'Thank you! Your message has been received. Emran Hosen will connect with you within 12 hours.',

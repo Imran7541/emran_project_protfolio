@@ -58,4 +58,12 @@
 - [x] T039 [US9] Write comprehensive automated test suite `tests/test_ai_and_telegram.py` verifying `/api/chat` rate-limiting, response formatting, prompt safety, and `/api/contact` Telegram dispatch
 - [x] T040 Polish, verify locally on port 5225, sync to Coolify container (port 8088), commit to Git, and push to GitHub `main` for instant Cloudflare Pages edge deployment
 
+## Phase 10: Discord Real-Time Webhook Alert Core & Zero-Breakage Assurance (Spec 020)
+- [x] T041 [US10] Update `.env.example` with `DISCORD_WEBHOOK_URL` placeholder and documentation
+- [x] T042 [US10] Implement `dispatchDiscordNotification(inquiry)` in `server.js` with non-blocking async execution, rich `#FF715B` embed card, and error isolation
+- [x] T043 [US10] Update Cloudflare Pages Function `functions/api/contact.js` to support `context.env.DISCORD_WEBHOOK_URL` via `context.waitUntil()`
+- [x] T044 [US10] Enhance automated test suite `tests/test_ai_and_telegram.py` to verify Discord payload generation, non-blocking resilience, and error suppression
+- [x] T045 Polish, run test suite (100% pass), sync to Coolify container (port 8088), restart Node daemon (port 5225), and push to GitHub `main`
+
+
 

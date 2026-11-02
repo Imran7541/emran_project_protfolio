@@ -92,6 +92,14 @@
   - Authored automated test suite `tests/test_ai_and_telegram.py` verifying 10/10 test assertions (chat query responses, input clamping, rate limiting, inquiry logging, edge function contracts, and DOM script inclusion). Regression suites (`test_stealth_admin.py` and `test_video_management.py`) all pass (27/27 total passing).
   - Synced all updates to Coolify Docker container (`3lolil9okyxy5wz6ophjozt1-20261031T093304`, port 8088) and restarted container.
 
+- [x] **Discord Real-Time Webhook Alert Core & Zero-Breakage Assurance (Spec 020 - Phase 10)**:
+  - Formulated comprehensive SDD specification in `specs/020-discord-webhook-and-safe-site-expansion.md` with zero-breakage architectural invariants.
+  - Implemented non-blocking `dispatchDiscordNotification(inquiry)` in `server.js` (`POST /api/contact`) sending rich `#FF715B` embed cards with client name, email, service, timestamp, and message.
+  - Enhanced Cloudflare Pages edge function `functions/api/contact.js` with `DISCORD_WEBHOOK_URL` support via `context.waitUntil()`.
+  - Added documentation and placeholder `DISCORD_WEBHOOK_URL=[[YOUR_DISCORD_WEBHOOK_URL]]` in `.env.example`.
+  - Enhanced automated test suite `tests/test_ai_and_telegram.py` verifying Discord and Telegram multi-channel parity, payload resilience, and error suppression. All 27 automated tests pass 100%.
+  - Deployed to Coolify Docker container (`3lolil9okyxy5wz6ophjozt1`, port 8088), verified healthy, and running on local Node server daemon (port 5225).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

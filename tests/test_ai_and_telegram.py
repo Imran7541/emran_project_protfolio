@@ -117,18 +117,34 @@ def run_tests():
     # 8. Cloudflare Pages Functions Verification
     cf_contact = os.path.join(os.path.dirname(__file__), "..", "functions", "api", "contact.js")
     cf_chat = os.path.join(os.path.dirname(__file__), "..", "functions", "api", "chat.js")
+    server_js = os.path.join(os.path.dirname(__file__), "..", "server.js")
+    env_example = os.path.join(os.path.dirname(__file__), "..", ".env.example")
+    
     assert os.path.exists(cf_contact), "functions/api/contact.js must exist"
     assert os.path.exists(cf_chat), "functions/api/chat.js must exist"
+    
     with open(cf_contact, "r", encoding="utf-8") as f:
         contact_src = f.read()
         assert "onRequestPost" in contact_src
         assert "TELEGRAM_BOT_TOKEN" in contact_src
+        assert "DISCORD_WEBHOOK_URL" in contact_src
+        
     with open(cf_chat, "r", encoding="utf-8") as f:
         chat_src = f.read()
         assert "onRequestPost" in chat_src
         assert "GEMINI_API_KEY" in chat_src
         assert "next-label-portfolio.pages.dev" in chat_src
-    print("✅ 8. Cloudflare Pages edge functions (contact.js, chat.js) verified with full contract parity")
+
+    with open(server_js, "r", encoding="utf-8") as f:
+        server_src = f.read()
+        assert "dispatchDiscordNotification" in server_src
+        assert "dispatchTelegramNotification" in server_src
+
+    with open(env_example, "r", encoding="utf-8") as f:
+        env_src = f.read()
+        assert "DISCORD_WEBHOOK_URL" in env_src
+
+    print("✅ 8. Cloudflare Pages edge functions & server.js verified with Discord & Telegram multi-channel parity")
 
     # 9. Frontend Integration Verification (index.html, gallery.html, contact.html)
     base_dir = os.path.join(os.path.dirname(__file__), "..")

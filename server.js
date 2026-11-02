@@ -109,6 +109,63 @@ function dispatchTelegramNotification(inquiry) {
   });
 }
 
+// Helper: Dispatch instant notification to Discord Webhook
+function dispatchDiscordNotification(inquiry) {
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl || webhookUrl.startsWith('[[') || !webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
+    return Promise.resolve(false);
+  }
+
+  const timeStr = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
+  const embedPayload = JSON.stringify({
+    username: 'Emran Portfolio Lead Core',
+    avatar_url: 'https://raw.githubusercontent.com/Imran7541/emran_project_protfolio/main/emran_suit.jpg',
+    embeds: [
+      {
+        title: '🚨 New Client Inquiry Received',
+        description: 'A new prospective client submitted a project transmission via the Portfolio Contact Page.',
+        color: 16740699, // #FF715B
+        fields: [
+          { name: '👤 Client Name', value: inquiry.name || 'Anonymous', inline: true },
+          { name: '📧 Email Address', value: inquiry.email || 'N/A', inline: true },
+          { name: '💼 Selected Service', value: inquiry.service || 'General Inquiry', inline: true },
+          { name: '🕒 Timestamp (Dhaka)', value: timeStr + ' (BST)', inline: false },
+          { name: '📝 Project Message', value: inquiry.message || 'No message provided.', inline: false }
+        ],
+        footer: {
+          text: 'Emran Hosen Portfolio Platform • Cloudflare Edge / Node Core'
+        }
+      }
+    ]
+  });
+
+  return new Promise((resolve) => {
+    try {
+      const parsed = url.parse(webhookUrl);
+      const req = https.request({
+        hostname: parsed.hostname,
+        path: parsed.path,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(embedPayload)
+        },
+        timeout: 4000
+      }, (res) => {
+        let respData = '';
+        res.on('data', chunk => respData += chunk);
+        res.on('end', () => resolve(res.statusCode >= 200 && res.statusCode < 300));
+      });
+      req.on('error', () => resolve(false));
+      req.on('timeout', () => { req.destroy(); resolve(false); });
+      req.write(embedPayload);
+      req.end();
+    } catch (e) {
+      resolve(false);
+    }
+  });
+}
+
 // Helper: AI Knowledge & Gemini Query Handler
 async function queryEmranAI(userMessage, history = []) {
   let knowledge = null;
@@ -568,6 +625,11 @@ const server = http.createServer((req, res) => {
         // Async non-blocking Telegram notification dispatch
         dispatchTelegramNotification(inquiryRecord).catch(err => {
           console.warn('⚠️ Telegram notification dispatch error:', err.message);
+        });
+
+        // Async non-blocking Discord notification dispatch
+        dispatchDiscordNotification(inquiryRecord).catch(err => {
+          console.warn('⚠️ Discord notification dispatch error:', err.message);
         });
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
