@@ -59,6 +59,13 @@
   - `tests/test_stealth_admin.py`: 12/12 automated checks verified (auth flow, token grant, endpoint protection, DOM sanitization, project filtering).
   - `tests/test_video_management.py`: 5/5 automated checks verified with authenticated ingest & teardown.
 
+- [x] **Verified & Integrated Cloudflare Pages Live 3D Experience for Next Label (Spec 017)**:
+  - Discovered verified live production deployment on Cloudflare Pages: `https://next-label-portfolio.pages.dev` (Dhaka DAC Edge, HTTP/2 200).
+  - Replaced Vercel references with Cloudflare Pages for sub-50ms global edge streaming and zero cold start lag.
+  - Added primary "Live 3D Experience ↗" action button with glowing purple styling and pulsing Cloudflare Edge indicator to Project 2 card in `index.html`.
+  - Updated `data/projects.json` with `liveDemoUrl: "https://next-label-portfolio.pages.dev"` and `Cloudflare Pages Edge` telemetry.
+  - Confirmed omission of legacy `digitools-projects` per user directive.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

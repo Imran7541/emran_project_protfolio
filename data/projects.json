@@ -31,17 +31,18 @@
     "period": "WebGL GPGPU",
     "badge": "Public Open Source",
     "badgeColor": "purple",
-    "status": "Award-Grade WebGL",
+    "status": "Cloudflare Edge Live",
     "statusColor": "purple",
-    "description": "High-performance WebGL showcase with 409,600 simultaneous particles morphing through four seasons. Zero third-party bloat, sub-50ms Edge streaming, and custom post-processing bloom shader pipeline.",
-    "tags": ["Three.js", "GLSL Shaders", "Web Audio", "GSAP"],
+    "description": "High-performance WebGL showcase with 409,600 simultaneous particles morphing through four seasons. Zero third-party bloat, sub-50ms Cloudflare Edge streaming, and custom post-processing bloom shader pipeline.",
+    "tags": ["Three.js", "GLSL Shaders", "Web Audio", "GSAP", "Cloudflare Pages"],
     "repoUrl": "https://github.com/Imran7541/Next_Label_protfolio",
     "hasPublicRepo": true,
     "confidentiality": null,
-    "liveDemoUrl": null,
+    "liveDemoUrl": "https://next-label-portfolio.pages.dev",
     "liveTelemetry": {
       "particles": 409600,
       "fps": "60 FPS Fluid",
+      "hosting": "Cloudflare Pages Edge",
       "pipeline": "Custom GLSL GPGPU"
     }
   },
