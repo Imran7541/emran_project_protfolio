@@ -1,0 +1,15 @@
+.git/
+.env
+.env.example
+node_modules/
+tests/
+specs/
+notes/
+docs/
+config/
+server.js
+server.log
+tasks.md
+README.md
+*.py
+*.pem

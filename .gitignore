@@ -21,3 +21,6 @@ marquee_*.png
 stack_marquee_*.png
 gallery_*.png
 
+# Cloudflare Wrangler Cache
+.wrangler/
+

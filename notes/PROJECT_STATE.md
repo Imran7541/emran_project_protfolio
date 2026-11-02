@@ -98,7 +98,16 @@
   - Enhanced Cloudflare Pages edge function `functions/api/contact.js` with `DISCORD_WEBHOOK_URL` support via `context.waitUntil()`.
   - Added documentation and placeholder `DISCORD_WEBHOOK_URL=[[YOUR_DISCORD_WEBHOOK_URL]]` in `.env.example`.
   - Enhanced automated test suite `tests/test_ai_and_telegram.py` verifying Discord and Telegram multi-channel parity, payload resilience, and error suppression. All 27 automated tests pass 100%.
-  - Deployed to Coolify Docker container (`3lolil9okyxy5wz6ophjozt1`, port 8088), verified healthy, and running on local Node server daemon (port 5225).
+- [x] **Live Production Deployment to Cloudflare Pages (`https://emran-portfolio.pages.dev`)**:
+  - Successfully created Cloudflare Pages project `emran-portfolio` on user's authenticated Cloudflare account (`3060a7fcc7ede1aafb669c2b8eaed1e1`).
+  - Configured Cloudflare Pages encrypted secret: `DISCORD_WEBHOOK_URL` for real-time contact push alerts.
+  - Deployed static assets, `_headers`, `_routes.json`, and serverless edge functions (`functions/api/contact.js`, `functions/api/chat.js`).
+  - Verified live across Dhaka Edge (DAC) with HTTP/2 200:
+    - Root: `https://emran-portfolio.pages.dev` (200 OK, CF-Ray DAC)
+    - Gallery: `https://emran-portfolio.pages.dev/gallery` (200 OK, CF-Ray DAC)
+    - Contact: `https://emran-portfolio.pages.dev/contact` (200 OK, CF-Ray DAC)
+    - Edge AI Chat: `https://emran-portfolio.pages.dev/api/chat` (200 OK)
+    - Edge Discord Contact Webhook: `https://emran-portfolio.pages.dev/api/contact` (200 OK, dispatched live notification).
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
