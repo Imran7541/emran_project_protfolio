@@ -5,21 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — Page Not Found | Emran Hosen</title>
   
-  <!-- Smart Route Reconciler for GitHub Pages Clean URLs -->
+  <!-- Smart Route Reconciler for GitHub Pages Static Hosting -->
   <script>
     (function() {
       try {
         var p = window.location.pathname;
-        // Check for trailing slashes or legacy .html extensions
-        if (p.endsWith('/gallery/') || p.endsWith('/gallery.html')) {
-          var clean = p.replace(/\/gallery(\/|\.html)?$/, '/gallery') + window.location.search + window.location.hash;
-          window.location.replace(clean);
-        } else if (p.endsWith('/contact/') || p.endsWith('/contact.html')) {
-          var clean = p.replace(/\/contact(\/|\.html)?$/, '/contact') + window.location.search + window.location.hash;
-          window.location.replace(clean);
-        } else if (p.endsWith('/index.html')) {
-          var clean = p.replace(/\/index\.html$/, '/') + window.location.search + window.location.hash;
-          window.location.replace(clean);
+        // Redirect extensionless routes to existing .html files on GitHub Pages
+        if (p.endsWith('/gallery') || p.endsWith('/gallery/')) {
+          var target = p.replace(/\/gallery(\/)?$/, '/gallery.html') + window.location.search + window.location.hash;
+          window.location.replace(target);
+          return;
+        } else if (p.endsWith('/contact') || p.endsWith('/contact/')) {
+          var target = p.replace(/\/contact(\/)?$/, '/contact.html') + window.location.search + window.location.hash;
+          window.location.replace(target);
+          return;
+        } else if (p.endsWith('/index') || p.endsWith('/home')) {
+          var target = p.replace(/\/(index|home)(\/)?$/, '/') + window.location.search + window.location.hash;
+          window.location.replace(target);
+          return;
         }
       } catch (e) {}
     })();

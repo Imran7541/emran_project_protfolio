@@ -47,9 +47,17 @@
     }
     window.scrollTo(0, 0);
 
-    // Clean URL: Automatically strip .html and index.html from URL bar
+    // Clean URL: Automatically strip .html on servers with routing, but preserve on GitHub Pages
     (function() {
       try {
+        if (window.location.hostname.includes('github.io')) {
+          // On GitHub Pages static hosting, reconcile links to .html files so static navigation never 404s
+          document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href="gallery"]').forEach(function(a) { a.href = 'gallery.html'; });
+            document.querySelectorAll('a[href="contact"]').forEach(function(a) { a.href = 'contact.html'; });
+          });
+          return;
+        }
         var p = window.location.pathname;
         if (p.endsWith('/index.html')) {
           var clean = p.slice(0, -10) + (p.length === 11 ? '/' : '') + window.location.search + window.location.hash;
