@@ -59,13 +59,19 @@
   - `tests/test_stealth_admin.py`: 12/12 automated checks verified (auth flow, token grant, endpoint protection, DOM sanitization, project filtering).
   - `tests/test_video_management.py`: 5/5 automated checks verified with authenticated ingest & teardown.
 
-- [x] **Verified & Integrated Cloudflare Pages Live 3D Experience for Next Label (Spec 017)**:
-  - Discovered verified live production deployment on Cloudflare Pages: `https://next-label-portfolio.pages.dev` (Dhaka DAC Edge, HTTP/2 200).
-  - Replaced Vercel references with Cloudflare Pages for sub-50ms global edge streaming and zero cold start lag.
-  - Added primary "Live 3D Experience ↗" action button with glowing purple styling and pulsing Cloudflare Edge indicator to Project 2 card in `index.html`.
-  - Updated `data/projects.json` with `liveDemoUrl: "https://next-label-portfolio.pages.dev"` and `Cloudflare Pages Edge` telemetry.
-  - Confirmed omission of legacy `digitools-projects` per user directive.
+- [x] **Visual Project Preview Windows & Top Telemetry Ribbon Removal (Spec 018 / User Feedback)**:
+  - Removed top telemetry ribbon bar above `#projects-grid` (`Backend: PORT 5225 ONLINE | 248 Skills Active...`) as requested in user's image 2 to ensure a clean, executive visual hierarchy.
+  - Injected dedicated 16:9 visual preview containers with hover zoom (`group-hover:scale-105`), subtle dark glass border, and gradient vignette into all 6 project cards in `#projects-grid`:
+    1. `AI-Agents-Hub`: Multi-cloud orchestrator dashboard (`assets/ai_agents_hub_preview.png`).
+    2. `Next Label`: 400K particle 3D WebGL interactive world (`assets/next_label_preview.png`) with direct Cloudflare Pages link (`https://next-label-portfolio.pages.dev`).
+    3. `Autonomous Video Production Engine`: Playwright + Neural Edge-TTS + FFmpeg 2-Pass pipeline with vertical reel preview (`assets/autonomous_video_preview.png`).
+    4. `Enterprise Student-to-Career Platform`: Next.js 15 Turborepo platform with faceted division search (`assets/education_platform_preview.png`).
+    5. `Autonomous Multi-Agent FinTech Settlement Core`: Real-time bKash/Nagad/Stripe ledger reconciliation matrix (`assets/fintech_settlement_preview.png`).
+    6. `Real-Time Spatial 3D Showroom & Configurator`: WebGL Three.js PBR configurator studio (`assets/spatial_showroom_preview.png`).
+  - Synced changes to Coolify live container (`3lolil9okyxy5wz6ophjozt1-20261031T093304`, port 8088) and pushed to GitHub `origin main`.
+  - Verified 12/12 checks in `tests/test_stealth_admin.py` and 5/5 checks in `tests/test_video_management.py`.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
+
 
