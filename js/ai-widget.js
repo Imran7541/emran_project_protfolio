@@ -42,7 +42,11 @@
     },
     {
       keywords: ["hire", "contact", "pricing", "rate", "freelance", "contract", "email", "যোগাযোগ", "হায়ার"],
-      answer: "Emran is available for select high-impact enterprise contracts, autonomous agent systems, and custom 3D WebGL experiences. You can send a direct inquiry via the <a href='contact.html' class='text-[#FF715B] underline hover:text-[#ff8c77]'>Contact page</a> or email him at <a href='mailto:emranhosen7541@gmail.com' class='text-[#FF715B] underline hover:text-[#ff8c77]'>emranhosen7541@gmail.com</a>."
+      answer: "Emran is available for select high-impact enterprise contracts, autonomous agent systems, and custom 3D WebGL experiences. You can connect via WhatsApp at <a href='https://wa.me/8801706754148' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>+880 1706-754148</a>, join his <a href='https://discord.gg/VxDzexfEN' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>Discord Server</a>, or email <a href='mailto:imrandt2001@gmail.com' class='text-[#FF715B] underline hover:text-[#ff8c77]'>imrandt2001@gmail.com</a>."
+    },
+    {
+      keywords: ["whatsapp", "phone", "number", "discord", "কল", "নাম্বার", "হোয়াটসঅ্যাপ", "ডিসকর্ড"],
+      answer: "Direct channels for Emran Hosen:<br/>• <strong>WhatsApp:</strong> <a href='https://wa.me/8801706754148' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>+880 1706-754148</a><br/>• <strong>Discord Community:</strong> <a href='https://discord.gg/VxDzexfEN' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>discord.gg/VxDzexfEN</a><br/>• <strong>Email:</strong> <a href='mailto:imrandt2001@gmail.com' class='text-[#FF715B] underline hover:text-[#ff8c77]'>imrandt2001@gmail.com</a>"
     }
   ];
 

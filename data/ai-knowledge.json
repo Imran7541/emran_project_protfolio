@@ -12,6 +12,12 @@
     "experience": "5+ Years Engineering Production Web Systems, Multi-Agent Autonomous Workflows & High-Performance WebGL Worlds",
     "responseSla": "< 2 Hours Guaranteed",
     "availability": "Available for Select Contracts, Autonomous Pipeline Development & Enterprise Full-Stack Engagements",
+    "contactChannels": {
+      "email": "imrandt2001@gmail.com",
+      "whatsapp": "+880 1706-754148",
+      "whatsappLink": "https://wa.me/8801706754148",
+      "discordCommunity": "https://discord.gg/VxDzexfEN"
+    },
     "socialLinks": {
       "github": "https://github.com/Imran7541",
       "linkedin": "https://www.linkedin.com/in/imran-fullstack/",
@@ -84,7 +90,11 @@
     },
     {
       "keywords": ["hire", "rate", "cost", "price", "contact", "collaborate", "freelance", "job", "project"],
-      "answer": "Emran is available for select freelance contracts, technical advisory, and full-stack software development engagements. You can submit an inquiry directly via the Contact page or email him, and he guarantees a personal response within 2 hours. Would you like to leave a quick message or email address for him?"
+      "answer": "Emran is available for select freelance contracts, technical advisory, and full-stack software development engagements. You can reach him via WhatsApp at +880 1706-754148 (https://wa.me/8801706754148), join his Discord Community at https://discord.gg/VxDzexfEN, or email imrandt2001@gmail.com. He guarantees a response within 2 hours!"
+    },
+    {
+      "keywords": ["whatsapp", "phone", "number", "discord", "email", "call", "reach"],
+      "answer": "You can connect with Emran directly on WhatsApp at +880 1706-754148 (https://wa.me/8801706754148), join his developer Discord at https://discord.gg/VxDzexfEN, or email him at imrandt2001@gmail.com."
     },
     {
       "keywords": ["stack", "technology", "tech", "languages", "tools", "skills"],

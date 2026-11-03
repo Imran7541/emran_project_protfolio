@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="coralGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF715B" />
+      <stop offset="100%" stop-color="#FF8C68" />
+    </linearGradient>
+    <linearGradient id="bgDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#162430" />
+      <stop offset="100%" stop-color="#0B131A" />
+    </linearGradient>
+    <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#FF715B" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Dark Obsidian Base Circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#bgDark)" />
+
+  <!-- Outer Coral Gradient Accent Ring -->
+  <circle cx="64" cy="64" r="56" fill="none" stroke="url(#coralGlow)" stroke-width="4.5" filter="url(#subtleShadow)" />
+
+  <!-- Monogram: EH (Emran Hosen) -->
+  <text 
+    x="64" 
+    y="78" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Montserrat', 'Segoe UI', Roboto, sans-serif" 
+    font-size="44" 
+    font-weight="900" 
+    fill="#FFFFFF" 
+    text-anchor="middle" 
+    letter-spacing="-1.5"
+  >
+    EH
+  </text>
+
+  <!-- Accent Coral Sparkle Dot -->
+  <circle cx="98" cy="40" r="5" fill="#FF715B" />
+</svg>

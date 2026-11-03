@@ -109,6 +109,19 @@
     - Edge AI Chat: `https://emran-portfolio.pages.dev/api/chat` (200 OK)
     - Edge Discord Contact Webhook: `https://emran-portfolio.pages.dev/api/contact` (200 OK, dispatched live notification).
 
+- [x] **Real Contact Channels, Discord Direct Community & OpenGraph SEO Integration (Spec 021 - Phase 11)**:
+  - Designed and deployed custom SVG favicon `favicon.svg` with obsidian base, `#FF715B` gradient ring, and "EH" monogram. Linked in `index.html`, `gallery.html`, `contact.html`, and `404.html`.
+  - Added rich OpenGraph, Twitter Cards, and canonical URL metadata across all pages for optimal social share previews on Discord, Facebook, and Twitter.
+  - Updated verified direct communication channels across the entire site:
+    - WhatsApp: `+880 1706-754148` (`https://wa.me/8801706754148`).
+    - Discord Community: `https://discord.gg/VxDzexfEN` ("Emran's Dev Swarm").
+    - Email: `imrandt2001@gmail.com`.
+    - Completely purged all outdated placeholder numbers (`+880 1900-000000`).
+  - Injected real contact channels into `data/ai-knowledge.json` and `js/ai-widget.js` so "Emran AI" serves verified links.
+  - Synchronized static mirrors `contact/index.html` and `gallery/index.html`.
+  - Authored automated test suite `tests/test_channels_and_seo.py` passing 100% (7/7 checks). Full regression test suite passing 34/34 checks.
+  - Deployed latest production release to Cloudflare Pages (`https://emran-portfolio.pages.dev`), synced to Coolify Docker container (port 8088), and pushed to GitHub `origin main`.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 
