@@ -122,6 +122,18 @@
   - Authored automated test suite `tests/test_channels_and_seo.py` passing 100% (7/7 checks). Full regression test suite passing 34/34 checks.
   - Deployed latest production release to Cloudflare Pages (`https://emran-portfolio.pages.dev`), synced to Coolify Docker container (port 8088), and pushed to GitHub `origin main`.
 
+- [x] **Stealth Admin Client Inquiry Inbox & Management Portal (Spec 022 - Phase 12)**:
+  - Formulated SDD specification in `specs/022-stealth-admin-inquiry-inbox.md` and executed all tasks T053–T059.
+  - Zero-Trust backend APIs in `server.js`: `GET /api/admin/inquiries` and `DELETE /api/admin/inquiries/:id` protected with Bearer crypto session token, master passcode verification (`ADMIN_MASTER_KEY`), client IP redaction, newest-first sorting, and atomic updates to `data/inquiries.jsonl`.
+  - Cloudflare Pages edge functions: `functions/api/admin/inquiries.js`, `functions/api/admin/inquiries/[id].js`, and `functions/api/health.js` for edge parity.
+  - Glassmorphic Executive UI in `gallery.html`:
+    - Added "Inquiries" action button with live count badge (`#admin-inbox-badge`) in `#admin-control-bar`.
+    - Added `#admin-inbox-modal` with real-time keyword search, human-readable Dhaka timestamp (`GMT+6`), 1-click `mailto:` reply action, and delete confirmation.
+    - Synchronized static mirror `gallery/index.html`.
+  - Authored automated test suite `tests/test_admin_inbox.py` with 11 checks (401 gating, session issuance, inquiry ingestion, IP redaction, deletion, and DOM sanitization) passing 100%.
+  - Full test regression passing 100% (45/45 total checks).
+  - Deployed to Cloudflare Pages (`https://emran-portfolio.pages.dev`), synchronized to Coolify container (`66e50e9a45e9`, port 8088), and pushed to GitHub `origin main`.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

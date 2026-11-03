@@ -506,6 +506,96 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 0d. GET /api/admin/inquiries (Stealth Admin Inquiry Inbox)
+  if (pathname === '/api/admin/inquiries' && req.method === 'GET') {
+    if (!isRequestAdminAuthenticated(req)) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: 'Unauthorized access.' }));
+      return;
+    }
+
+    try {
+      let inquiries = [];
+      if (fs.existsSync(INQUIRIES_FILE)) {
+        const fileContent = fs.readFileSync(INQUIRIES_FILE, 'utf-8');
+        const lines = fileContent.split('\n').filter(l => l.trim().length > 0);
+        inquiries = lines.map(line => {
+          try {
+            const item = JSON.parse(line);
+            const { ip, ...safeItem } = item;
+            return safeItem;
+          } catch (e) {
+            return null;
+          }
+        }).filter(Boolean);
+        inquiries.sort((a, b) => new Date(b.receivedAt || 0) - new Date(a.receivedAt || 0));
+      }
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        ok: true,
+        total: inquiries.length,
+        inquiries
+      }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: 'Failed to read inquiries.' }));
+    }
+    return;
+  }
+
+  // 0e. DELETE /api/admin/inquiries/:id
+  if (pathname.startsWith('/api/admin/inquiries/') && req.method === 'DELETE') {
+    if (!isRequestAdminAuthenticated(req)) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: 'Unauthorized access.' }));
+      return;
+    }
+
+    const inquiryId = pathname.replace('/api/admin/inquiries/', '').trim();
+    if (!inquiryId) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: 'Missing inquiry ID.' }));
+      return;
+    }
+
+    try {
+      if (fs.existsSync(INQUIRIES_FILE)) {
+        const fileContent = fs.readFileSync(INQUIRIES_FILE, 'utf-8');
+        const lines = fileContent.split('\n').filter(l => l.trim().length > 0);
+        const filteredLines = [];
+        let deleted = false;
+        for (const line of lines) {
+          try {
+            const item = JSON.parse(line);
+            if (item.id === inquiryId) {
+              deleted = true;
+            } else {
+              filteredLines.push(line);
+            }
+          } catch (e) {
+            filteredLines.push(line);
+          }
+        }
+        fs.writeFileSync(INQUIRIES_FILE, filteredLines.length > 0 ? filteredLines.join('\n') + '\n' : '', 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ok: true,
+          deleted,
+          id: inquiryId,
+          message: deleted ? 'Inquiry deleted successfully.' : 'Inquiry not found.'
+        }));
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'No inquiries found.' }));
+      }
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: 'Failed to delete inquiry.' }));
+    }
+    return;
+  }
+
   // 1. GET /api/health
   if (pathname === '/api/health' && req.method === 'GET') {
     const mem = process.memoryUsage();

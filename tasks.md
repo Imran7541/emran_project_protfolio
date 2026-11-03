@@ -74,6 +74,15 @@
 - [x] T051 [US11] Update static mirror entrypoints (`gallery/index.html` and `contact/index.html`)
 - [x] T052 [US11] Write automated test verifications in `tests/test_channels_and_seo.py`, run all test suites (100% pass), deploy to Cloudflare Pages (`emran-portfolio.pages.dev`), sync to Coolify container (port 8088), and push to GitHub `main`
 
+## Phase 12: Stealth Admin Client Inquiry Inbox & Management Portal (Spec 022)
+- [x] T053 [US12] Draft and finalize feature architecture in `specs/022-stealth-admin-inquiry-inbox.md`
+- [x] T054 [US12] Implement `GET /api/admin/inquiries` and `DELETE /api/admin/inquiries/:id` in `server.js` with Bearer auth verification and atomic file updates
+- [x] T055 [P] [US12] Create Cloudflare Pages serverless edge function `functions/api/admin/inquiries.js` for edge parity
+- [x] T056 [US12] Build `#admin-inbox-modal` and "📬 Client Inquiries (N)" trigger in `#admin-control-bar` in `gallery.html` with real-time keyword search, mailto quick action, and delete confirmation
+- [x] T057 [US12] Synchronize static mirrors (`gallery/index.html`) with inbox components
+- [x] T058 [US12] Write automated test suite `tests/test_admin_inbox.py` verifying 401 unauthenticated rejection, 200 authenticated listing, inquiry deletion, and DOM sanitization
+- [x] T059 [US12] Polish, run all 45+ automated test checks (100% pass), deploy to Cloudflare Pages (`emran-portfolio.pages.dev`), sync to Coolify container (port 8088), and push to GitHub `main`
+
 
 
 

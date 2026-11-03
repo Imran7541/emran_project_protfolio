@@ -24,3 +24,7 @@ gallery_*.png
 # Cloudflare Wrangler Cache
 .wrangler/
 
+# Python Cache
+__pycache__/
+*.pyc
+
