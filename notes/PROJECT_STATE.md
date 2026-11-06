@@ -132,7 +132,13 @@
     - Synchronized static mirror `gallery/index.html`.
   - Authored automated test suite `tests/test_admin_inbox.py` with 11 checks (401 gating, session issuance, inquiry ingestion, IP redaction, deletion, and DOM sanitization) passing 100%.
   - Full test regression passing 100% (45/45 total checks).
-  - Deployed to Cloudflare Pages (`https://emran-portfolio.pages.dev`), synchronized to Coolify container (`66e50e9a45e9`, port 8088), and pushed to GitHub `origin main`.
+- [x] **Added Familio Bazar Enterprise Fast-Commerce & POS Suite to Flagship Projects**:
+  - Ingested new premier production project: Familio Bazar (https://familio-bazar.onrender.com, https://github.com/Imran7541/e-commerce-fast).
+  - Generated dedicated 16:9 preview asset assets/familio_bazar_preview.png (1280x720).
+  - Updated data/projects.json with 7 total projects (4 Public OSS, 3 Private Enterprise) and sequential ID renumbering.
+  - Injected glassmorphic project showcase card with live cloud store link, GitHub repo link, and 24/7 cloud live telemetry badge in index.html.
+  - Updated category filter counters to All Flagship Works (7) and Public Open Source (4).
+  - Ingested project and commerce FAQ triggers into data/ai-knowledge.json for AI chatbot coverage.
 
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.

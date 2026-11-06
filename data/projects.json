@@ -1,6 +1,31 @@
 [
   {
     "id": 1,
+    "slug": "familio-bazar-ecommerce",
+    "title": "Familio Bazar: Enterprise E-Commerce & POS Suite",
+    "category": "Full-Stack Fast-Commerce, POS & Logistics Platform",
+    "projectType": "public",
+    "period": "2026 Production",
+    "badge": "Public Open Source",
+    "badgeColor": "accent",
+    "status": "Live in Production",
+    "statusColor": "emerald",
+    "previewImage": "assets/familio_bazar_preview.png",
+    "description": "24/7 cloud fast-commerce platform with automated multi-channel POS, SQLite dynamic persistence, Cloudflare edge acceleration, sub-100ms API response, automated database migrations, and 16/16 verified test suites.",
+    "tags": ["Node.js 22", "Docker", "Render Cloud", "Cloudflare", "React 18", "SQLite"],
+    "repoUrl": "https://github.com/Imran7541/e-commerce-fast",
+    "hasPublicRepo": true,
+    "confidentiality": null,
+    "liveDemoUrl": "https://familio-bazar.onrender.com",
+    "liveTelemetry": {
+      "runtime": "Node.js 22 + SQLite",
+      "deployment": "Render 24/7 + Cloudflare",
+      "uptime": "100% Cloud Active",
+      "responseTime": "< 100ms Sub-Second"
+    }
+  },
+  {
+    "id": 2,
     "slug": "ai-agents-hub",
     "title": "AI-Agents-Hub: Multi-Cloud Persistent Gateway",
     "category": "Autonomous Systems & Cloud Orchestration",
@@ -24,7 +49,7 @@
     }
   },
   {
-    "id": 2,
+    "id": 3,
     "slug": "next-label-3d",
     "title": "Next Label: 400K Particle Interactive World",
     "category": "Creative 3D Web & GLSL Shaders",
@@ -49,7 +74,7 @@
     }
   },
   {
-    "id": 3,
+    "id": 4,
     "slug": "autonomous-video-producer",
     "title": "Autonomous Video Production Engine",
     "category": "Generative Media & Automated Pipelines",
@@ -73,7 +98,7 @@
     }
   },
   {
-    "id": 4,
+    "id": 5,
     "slug": "enterprise-student-platform",
     "title": "Enterprise Student-to-Career Platform",
     "category": "Full-Stack SaaS & Cloud Architecture",
@@ -97,7 +122,7 @@
     }
   },
   {
-    "id": 5,
+    "id": 6,
     "slug": "fintech-autonomous-settlement",
     "title": "Autonomous Multi-Agent FinTech Settlement Core",
     "category": "Enterprise AI & Financial Infrastructure",
@@ -121,7 +146,7 @@
     }
   },
   {
-    "id": 6,
+    "id": 7,
     "slug": "spatial-webgl-showroom",
     "title": "Real-Time Spatial 3D Showroom & Configurator",
     "category": "Interactive 3D Engineering & WebGL",

@@ -41,6 +41,13 @@
   ],
   "flagshipProjects": [
     {
+      "name": "Familio Bazar: Enterprise E-Commerce & POS Suite",
+      "type": "Public Open Source (Fast-Commerce & POS)",
+      "liveUrl": "https://familio-bazar.onrender.com",
+      "githubUrl": "https://github.com/Imran7541/e-commerce-fast",
+      "description": "24/7 cloud fast-commerce platform with automated multi-channel POS, SQLite dynamic persistence, Cloudflare edge acceleration, sub-100ms API response, automated database migrations, and 16/16 verified test suites."
+    },
+    {
       "name": "Next Label: 400K Particle Interactive World",
       "type": "Public Open Source (WebGL GPGPU)",
       "liveUrl": "https://next-label-portfolio.pages.dev",
@@ -76,6 +83,10 @@
     }
   ],
   "faqMatchers": [
+    {
+      "keywords": ["ecommerce", "e-commerce", "familio", "pos", "store", "shop", "bazar", "cart"],
+      "answer": "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration, sub-100ms response times, and automated database persistence. You can test the live store at https://familio-bazar.onrender.com or explore the codebase on GitHub at https://github.com/Imran7541/e-commerce-fast."
+    },
     {
       "keywords": ["3d", "threejs", "webgl", "particle", "next label", "shader"],
       "answer": "Emran is an expert in real-time WebGL and Three.js 3D development! His flagship project 'Next Label' renders 409,600 simultaneous GPU particles with custom bloom post-processing shaders and sub-50ms edge streaming. You can experience it live right now at https://next-label-portfolio.pages.dev."

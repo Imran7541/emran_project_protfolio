@@ -378,18 +378,18 @@
         <h2 class="font-display text-3xl sm:text-5xl font-bold text-white mt-2">Selected Flagship Projects</h2>
       </div>
       <p class="text-slate-400 text-sm max-w-md">
-        Each project represents production-grade architecture, rigorous clean code, and tangible business results (3 OSS • 3 Private).
+        Each project represents production-grade architecture, rigorous clean code, and tangible business results (4 OSS • 3 Private).
       </p>
     </div>
 
     <!-- Project Filter Bar: All Works vs Public Open-Source vs Enterprise Private Systems -->
     <div class="mb-10 flex flex-wrap items-center justify-center sm:justify-start gap-2.5 font-montserrat">
       <button onclick="filterProjects('all')" id="btn-filter-proj-all" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#FF715B] text-white border border-[#FF715B] shadow-lg shadow-accent/20 transition-all cursor-pointer">
-        All Flagship Works (6)
+        All Flagship Works (7)
       </button>
       <button onclick="filterProjects('public')" id="btn-filter-proj-public" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 transition-all cursor-pointer flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        <span>Public Open Source (3)</span>
+        <span>Public Open Source (4)</span>
       </button>
       <button onclick="filterProjects('private')" id="btn-filter-proj-private" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 transition-all cursor-pointer flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
@@ -398,6 +398,65 @@
     </div>
 
     <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Project 1: Familio Bazar Enterprise E-Commerce & POS (Public) -->
+      <div data-project-type="public" class="project-card p-6 sm:p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
+        <div>
+          <!-- Visual Preview Window -->
+          <div class="relative w-full aspect-video rounded-xl overflow-hidden mb-6 border border-amber-500/30 bg-slate-900/60 group/preview shadow-lg">
+            <img src="assets/familio_bazar_preview.png" alt="Familio Bazar Preview" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+            <div class="absolute bottom-2.5 left-3 flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-[10px] font-mono text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> 24/7 Cloud Live
+              </span>
+            </div>
+            <a href="https://familio-bazar.onrender.com" target="_blank" rel="noopener noreferrer" class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-black/60 hover:bg-amber-600/80 backdrop-blur-md text-white text-[11px] font-semibold flex items-center gap-1 border border-white/10 transition-all shadow-md">
+              <span>Live Store</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-slate-400 mb-4 font-montserrat">
+            <span class="px-3 py-1 rounded-full bg-accent/10 text-accent font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Public Open Source
+            </span>
+            <span>2026 Production</span>
+          </div>
+          <h3 class="font-display text-2xl font-bold text-white group-hover:text-accent transition-colors">
+            Familio Bazar: Enterprise E-Commerce & POS Suite
+          </h3>
+          <p class="mt-3 text-slate-400 text-sm leading-relaxed">
+            24/7 cloud fast-commerce platform with automated multi-channel POS, SQLite dynamic persistence, Cloudflare edge acceleration, sub-100ms API response, automated database migrations, and 16/16 verified test suites.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Node.js 22</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Docker</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">Render Cloud</span>
+            <span class="px-2.5 py-1 rounded bg-amber-500/10 text-amber-300 text-xs border border-amber-500/20">Cloudflare Edge</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">React 18</span>
+            <span class="px-2.5 py-1 rounded bg-white/5 text-slate-300 text-xs">SQLite</span>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap items-center justify-between gap-3 font-montserrat">
+          <div class="flex items-center gap-3">
+            <a href="https://familio-bazar.onrender.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-semibold shadow-sm shadow-amber-500/20 transition-all hover:scale-105 active:scale-95">
+              <span>Live Platform</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+            <a href="https://github.com/Imran7541/e-commerce-fast" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <span>GitHub</span>
+            </a>
+          </div>
+          <span class="text-xs text-emerald-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> 24/7 Cloud Active
+          </span>
+        </div>
+      </div>
       
       <!-- Project 1: AI Agents Hub (Public) -->
       <div data-project-type="public" class="project-card p-6 sm:p-8 rounded-2xl bg-card border border-white/5 card-hover flex flex-col justify-between relative overflow-hidden group transition-all duration-300">
