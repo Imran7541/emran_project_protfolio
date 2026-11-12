@@ -21,7 +21,7 @@ export async function onRequestGet(context) {
     'Access-Control-Allow-Origin': '*'
   };
 
-  const masterPasscode = context.env.ADMIN_MASTER_KEY || 'emran@admin7541';
+  const masterPasscode = context.env.ADMIN_MASTER_KEY;
   const authHeader = context.request.headers.get('Authorization') || '';
   const tokenHeader = context.request.headers.get('x-admin-token') || '';
   const passcodeHeader = context.request.headers.get('x-admin-passcode') || '';
@@ -29,7 +29,7 @@ export async function onRequestGet(context) {
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : tokenHeader.trim();
 
   // Validate session token or direct master passcode
-  const isAuthenticated = (passcodeHeader === masterPasscode) || 
+  const isAuthenticated = Boolean(masterPasscode && passcodeHeader === masterPasscode) ||
                           (token && token.length >= 16) || 
                           (token && token.startsWith('static_page_token_'));
 
