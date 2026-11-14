@@ -13,12 +13,13 @@ def test_hero_markup():
     with open(INDEX_PATH, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 1. Verify Executive Cyber Stage and emran_cover_lead.png
+    # 1. Verify Colorful Rounded Circle Stage and emran_cover_lead.png
     assert "emran_cover_lead.png" in content, "Cover lead image not found in index.html"
     assert "animate-float" in content, "Subtle floating animation missing"
     assert "Available for Projects" in content, "Status badge missing"
-    assert "AI & Full-Stack" in content, "Tech stack chip missing"
-    print("  ✓ 1. Hero portrait Executive Cyber Stage and verified cover asset verified")
+    assert "rounded-full overflow-hidden" in content, "Circular overflow-hidden frame missing"
+    assert "paint0_linear_halo" in content, "Colorful rounded halo ring SVG missing"
+    print("  ✓ 1. Hero portrait Colorful Rounded Circle Stage and verified cover asset verified")
 
     # 2. Verify mobile layout optimizations
     assert "flex flex-row items-center gap-3 sm:gap-5 mt-2" in content, "Responsive CTA row missing"
