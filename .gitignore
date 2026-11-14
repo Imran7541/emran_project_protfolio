@@ -31,5 +31,8 @@ __pycache__/
 # Archives & Backups
 *.zip
 *.tar.gz
+emran_portfolio_full_backup/
+indexnow_key.txt
+
 
 
