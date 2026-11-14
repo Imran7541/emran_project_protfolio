@@ -1,0 +1,8 @@
+# Robots.txt for Emran Hosen Portfolio
+User-agent: *
+Allow: /
+Disallow: /api/admin/
+Disallow: /data/
+
+# Official Sitemap Index
+Sitemap: https://emran-portfolio.pages.dev/sitemap.xml

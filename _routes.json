@@ -11,6 +11,8 @@
     "/*.svg",
     "/*.ico",
     "/*.json",
+    "/*.xml",
+    "/*.txt",
     "/favicon.ico"
   ]
 }

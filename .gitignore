@@ -28,3 +28,8 @@ gallery_*.png
 __pycache__/
 *.pyc
 
+# Archives & Backups
+*.zip
+*.tar.gz
+
+
