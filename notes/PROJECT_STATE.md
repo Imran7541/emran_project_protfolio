@@ -148,6 +148,16 @@
   - Used ease-out cubic deceleration curve and `IntersectionObserver` trigger with tabular-nums typography and coral accent branding (`#FF715B`).
   - Authored automated test suite `tests/test_hero_enhancements.py` verifying markup, responsive styling, and JS animation mechanics (100% green).
 
+- [x] **Hero Section 3D Pop-Out Avatar & Illuminated Studio Portal Backdrop (Phase 14 / User Feedback)**:
+  - Eliminated side-overflow / arm clipping by scaling portrait to `w-[74%]` inside the circular sizing frame, giving elbows and shoulders comfortable breathing room.
+  - Solved sunken head by applying `-translate-y-[10%]` with `overflow-visible`, creating the classic 3D Pop-Out Avatar effect where Emran's head and hair pop out proudly over the top rim of the coral halo ring.
+  - Upgraded circular background from a dull dark void into an illuminated studio portal backdrop using a rich radial highlight (`rgba(255, 113, 91, 0.28)` coral backlight + `rgba(38, 198, 218, 0.16)` oceanic cyan glow) seamlessly blending into `#193142` and `#09131a` to match the site's dark palette and Three.js WebGL canvas.
+  - Tailored portrait bottom curve so Emran's suit jacket grounds neatly along the bottom circle rim.
+  - Generated crisp asset `emran_hero_popout.png` and `assets/emran_hero_cropped.png`.
+  - Refined mobile top margin to `mt-8 sm:mt-6 lg:mt-0` for optimal breathing room between CTA buttons and hair.
+  - Updated automated test suite `tests/test_hero_enhancements.py` (all tests passing 100%).
+  - Committed to git (`5b27d08`), pushed to GitHub `origin main`, deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`), and synced to Coolify Docker container (port 8088).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 
