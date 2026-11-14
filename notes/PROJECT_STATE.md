@@ -202,6 +202,17 @@
   - Authored automated test suite `tests/test_single_page_navigation.py` asserting complete absence of Gallery links from nav/drawer/footer and validity of single-page anchors (100% green).
   - Deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`), synchronized with Coolify Docker container (`66e50e9a45e9`, port 8088), and verified full test suite regression passing.
 
+- [x] **Ember Cafe Gulshan Project Ingestion & Flagship Showcase Integration (Spec 024 - Phase 20 / User Request)**:
+  - Formulated comprehensive SDD specification in `specs/024-ember-cafe-project-showcase.md` and dependency plan in `tasks.md` (T065–T070).
+  - Ingested premier production project: **EMBER CAFE | Gulshan Rooftop Dining & Specialty Steaks** (`https://ember-cafe-gulshan.pages.dev`).
+  - Captured high-resolution 16:9 visual preview card `assets/ember_cafe_preview.png` (1280x720, 833KB) showing open-air rooftop ambiance and 22-hour dining banner.
+  - Updated `data/projects.json` with 8 total projects (5 Public Works, 3 Enterprise Private Systems) and sequential ID renumbering.
+  - Injected glassmorphic project card into `#projects-grid` in `index.html` featuring amber backlight aura, 22-hour live telemetry badge, tech stack chips (`Next.js 15`, `Tailwind CSS`, `Cloudflare Edge`, `Lucide Icons`, `Edge Runtime`, `PWA`), and 1-click `Live Platform` action button.
+  - Updated category filter counters to `All Flagship Works (8)` and `Public Works (5)` with real-time responsive DOM filtering.
+  - Ingested Ember Cafe platform data and Q&A triggers into `data/ai-knowledge.json`, `js/ai-widget.js`, `server.js`, and `functions/api/chat.js` for full AI conversational coverage.
+  - Authored automated test suite `tests/test_ember_cafe_integration.py` passing 100% (7/7 checks) across models, DOM elements, and API chat endpoints. Full regression suite passed 100%.
+  - Synced to Coolify Docker container (port 8088) and deployed live to Cloudflare Pages (`emrandev.pages.dev` & `emran-portfolio.pages.dev`).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

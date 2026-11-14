@@ -48,6 +48,13 @@
       "description": "24/7 cloud fast-commerce platform with automated multi-channel POS, SQLite dynamic persistence, Cloudflare edge acceleration, sub-100ms API response, automated database migrations, and 16/16 verified test suites."
     },
     {
+      "name": "EMBER CAFE: 22-Hour Rooftop Dining & Specialty Steaks",
+      "type": "Production Commercial Platform (Hospitality & Food-Tech)",
+      "liveUrl": "https://ember-cafe-gulshan.pages.dev",
+      "githubUrl": null,
+      "description": "Dhaka's premier 22-hour rooftop dining and steakhouse web platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker, table reservation booking engine, and artisan menu ordering with sub-50ms Cloudflare Edge delivery."
+    },
+    {
       "name": "Next Label: 400K Particle Interactive World",
       "type": "Public Open Source (WebGL GPGPU)",
       "liveUrl": "https://next-label-portfolio.pages.dev",
@@ -83,6 +90,10 @@
     }
   ],
   "faqMatchers": [
+    {
+      "keywords": ["ember", "cafe", "restaurant", "gulshan", "steak", "coffee", "rooftop", "food", "dining", "menu"],
+      "answer": "Emran engineered 'EMBER CAFE'—Dhaka's premier 22-hour rooftop cafe and steakhouse platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker (7:00 AM – 5:00 AM daily), interactive table booking modal, and online artisan menu ordering with sub-50ms Cloudflare Edge delivery. You can explore the live experience directly at https://ember-cafe-gulshan.pages.dev."
+    },
     {
       "keywords": ["ecommerce", "e-commerce", "familio", "pos", "store", "shop", "bazar", "cart"],
       "answer": "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration, sub-100ms response times, and automated database persistence. You can test the live store at https://familio-bazar.onrender.com or explore the codebase on GitHub at https://github.com/Imran7541/e-commerce-fast."

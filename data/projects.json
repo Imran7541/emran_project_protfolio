@@ -168,5 +168,30 @@
       "textures": "4K PBR Materials",
       "memory": "< 45MB VRAM"
     }
+  },
+  {
+    "id": 8,
+    "slug": "ember-cafe-gulshan",
+    "title": "EMBER CAFE: 22-Hour Rooftop Dining & Specialty Steaks",
+    "category": "Commercial Hospitality & High-End Food-Tech Platform",
+    "projectType": "public",
+    "period": "2026 Production",
+    "badge": "Production Platform",
+    "badgeColor": "amber",
+    "status": "Cloudflare Edge Live",
+    "statusColor": "amber",
+    "previewImage": "assets/ember_cafe_preview.png",
+    "description": "Dhaka's premier 22-hour rooftop dining and steakhouse web platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker, table reservation booking engine, and artisan menu ordering with sub-50ms Cloudflare Edge delivery.",
+    "tags": ["Next.js 15", "Tailwind CSS", "Cloudflare Pages", "Lucide Icons", "Edge Runtime", "PWA"],
+    "repoUrl": null,
+    "hasPublicRepo": false,
+    "confidentiality": "Commercial Client Production • Live in Gulshan-1",
+    "liveDemoUrl": "https://ember-cafe-gulshan.pages.dev",
+    "liveTelemetry": {
+      "hours": "22-Hour Daily (7 AM – 5 AM)",
+      "architecture": "Next.js 15 App Router",
+      "deployment": "Cloudflare Pages Edge",
+      "speed": "Sub-50ms Edge Response"
+    }
   }
 ]

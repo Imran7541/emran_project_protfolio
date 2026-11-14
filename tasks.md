@@ -87,3 +87,11 @@
 - [x] T062 [US19] Update executive footer Quick Links in `index.html` and `contact.html` (removing separate Gallery link while preserving direct verified social links to FB, LinkedIn, GitHub, Discord)
 - [x] T063 [US19] Create automated regression test `tests/test_single_page_navigation.py` to assert that Gallery is strictly absent from the main navigation and all single-page anchors resolve cleanly
 - [x] T064 [US19] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`
+
+## Phase 20: Ember Cafe Gulshan Project Ingestion & Flagship Showcase Integration (Spec 024)
+- [x] T065 [US20] Capture high-resolution 16:9 visual preview card `assets/ember_cafe_preview.png` (1280x720) from `https://ember-cafe-gulshan.pages.dev`
+- [x] T066 [US20] Update `data/projects.json` with Ember Cafe entry (ID: 8) containing full metadata, live telemetry, and live demo link
+- [x] T067 [US20] Ingest Ember Cafe project card into `#projects-grid` in `index.html`, update section summary text, and refresh category filter button counters to All Flagship Works (8) and Public Works (5)
+- [x] T068 [US20] Synchronize "Emran AI" knowledge base in `data/ai-knowledge.json` and `js/ai-widget.js` with Ember Cafe Gulshan platform data and Q&A triggers
+- [x] T069 [US20] Author automated test suite `tests/test_ember_cafe_integration.py` verifying data models, DOM card presence, category filtering, image assets, and live chatbot responses
+- [x] T070 [US20] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`

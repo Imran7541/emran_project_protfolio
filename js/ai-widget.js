@@ -25,6 +25,14 @@
       answer: "Emran Hosen is a Software Developer and AI Agent Architect based in Dhaka, Bangladesh, working with global clients. He specializes in full-stack cloud systems, autonomous agent workflows, and award-grade WebGL 3D web applications."
     },
     {
+      keywords: ["ember", "cafe", "restaurant", "gulshan", "steak", "coffee", "rooftop", "food", "dining", "ক্যাফে", "রেস্টুরেন্ট"],
+      answer: "Emran engineered 'EMBER CAFE'—Dhaka's premier 22-hour rooftop cafe and steakhouse platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker, interactive table booking modal, and online artisan menu ordering with sub-50ms Cloudflare Edge delivery. Experience it live at <a href='https://ember-cafe-gulshan.pages.dev' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>ember-cafe-gulshan.pages.dev</a>."
+    },
+    {
+      keywords: ["familio", "ecommerce", "e-commerce", "pos", "shop", "store", "bazar", "ইকমার্স"],
+      answer: "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration and SQLite persistence. Test the live store at <a href='https://familio-bazar.onrender.com' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>familio-bazar.onrender.com</a>."
+    },
+    {
       keywords: ["next label", "3d", "particle", "webgl", "canvas", "three.js", "threejs", "৩ডি"],
       answer: "Emran is an expert in real-time WebGL and Three.js 3D development! His flagship project 'Next Label' renders 409,600 simultaneous GPU particles with custom bloom post-processing shaders and sub-50ms edge streaming. You can experience it live right now at <a href='https://next-label-portfolio.pages.dev' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>next-label-portfolio.pages.dev</a>."
     },

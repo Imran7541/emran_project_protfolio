@@ -9,6 +9,14 @@ const KNOWLEDGE_FAQ = [
     answer: "Emran Hosen is a Software Developer and AI Agent Architect based in Dhaka, Bangladesh, working with global clients. He specializes in full-stack cloud systems, autonomous agent workflows, and award-grade WebGL 3D web applications."
   },
   {
+    keywords: ["ember", "cafe", "restaurant", "gulshan", "steak", "coffee", "rooftop", "food", "dining", "ক্যাফে", "রেস্টুরেন্ট"],
+    answer: "Emran engineered 'EMBER CAFE'—Dhaka's premier 22-hour rooftop cafe and steakhouse platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker, interactive table booking modal, and online artisan menu ordering with sub-50ms Cloudflare Edge delivery. Experience it live at https://ember-cafe-gulshan.pages.dev."
+  },
+  {
+    keywords: ["familio", "ecommerce", "e-commerce", "pos", "shop", "store", "bazar", "ইকমার্স"],
+    answer: "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration and SQLite persistence. Test the live store at https://familio-bazar.onrender.com."
+  },
+  {
     keywords: ["next label", "3d", "particle", "webgl", "canvas", "three.js", "threejs", "৩ডি"],
     answer: "Emran is an expert in real-time WebGL and Three.js 3D development! His flagship project 'Next Label' renders 409,600 simultaneous GPU particles with custom bloom post-processing shaders and sub-50ms edge streaming. You can experience it live right now at https://next-label-portfolio.pages.dev."
   },
@@ -69,12 +77,14 @@ export async function onRequestPost(context) {
 Emran Hosen is a Senior Full-Stack AI Engineer and Autonomous Agent Architect based in Dhaka, Bangladesh, working with global clients.
 His core skills: Autonomous AI Agents (NVIDIA NIM, Google Antigravity SDK, Hermes, Strix, OpenClaw), WebGL 3D (Three.js, GLSL Shaders, 400K Particle Worlds), Full-Stack (Node.js 22, Next.js 15, PostgreSQL, Docker, Cloudflare Pages).
 Flagship works:
-1. Next Label: 400K Particle 3D WebGL World (https://next-label-portfolio.pages.dev)
-2. AI-Agents-Hub: Multi-cloud persistent orchestrator running 248+ skills (https://github.com/Imran7541/AI-Agents-Hub)
-3. Autonomous Video Production Engine: Playwright + Neural Edge-TTS + FFmpeg 2-Pass pipeline (https://github.com/Imran7541/as-sunnah-reel)
-4. Enterprise Student-to-Career Platform (Private System)
-5. Autonomous Multi-Agent FinTech Settlement Core (bKash/Nagad/Stripe)
-6. Real-Time Spatial 3D Showroom (Three.js PBR configurator)
+1. Familio Bazar: Enterprise Fast-Commerce & POS Suite (https://familio-bazar.onrender.com)
+2. EMBER CAFE: 22-Hour Rooftop Dining & Specialty Steaks in Gulshan-1 (https://ember-cafe-gulshan.pages.dev)
+3. Next Label: 400K Particle 3D WebGL World (https://next-label-portfolio.pages.dev)
+4. AI-Agents-Hub: Multi-cloud persistent orchestrator running 248+ skills (https://github.com/Imran7541/AI-Agents-Hub)
+5. Autonomous Video Production Engine: Playwright + Neural Edge-TTS + FFmpeg 2-Pass pipeline (https://github.com/Imran7541/as-sunnah-reel)
+6. Enterprise Student-to-Career Platform (Private System)
+7. Autonomous Multi-Agent FinTech Settlement Core (bKash/Nagad/Stripe)
+8. Real-Time Spatial 3D Showroom (Three.js PBR configurator)
 
 Answer questions concisely, professionally, and warmly. If asked in Bengali, respond in fluent Bengali. If in English, respond in English. Keep answers under 120 words. Offer to connect via the Contact page.`;
 
