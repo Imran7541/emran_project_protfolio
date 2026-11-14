@@ -140,6 +140,14 @@
   - Updated category filter counters to All Flagship Works (7) and Public Open Source (4).
   - Ingested project and commerce FAQ triggers into data/ai-knowledge.json for AI chatbot coverage.
 
+- [x] **Hero Section Executive Portrait Grounding & Dynamic Metric Counters (Phase 13 / User Feedback)**:
+  - Eliminated awkward dark floating gap under Emran's arms and hands in the hero circular halo ring (`index.html`).
+  - Sized and grounded portrait cutout flush against bottom arc of circle stage (`w-[126%] translate-y-3 rounded-full overflow-hidden`) with subtle inner shadow (`shadow-[inset_0_0_35px_rgba(0,0,0,0.8)]`).
+  - Balanced mobile layout spacing (`pt-24 sm:pt-32 pb-8 sm:pb-16`) and refactored CTA buttons to a responsive side-by-side row (`flex-row gap-3 whitespace-nowrap`), ensuring headline, buttons, and portrait fit seamlessly in standard mobile viewports.
+  - Implemented 60fps dynamic ticker counter animation (`initMetricCounters`) for all 4 hero stats (`24/7` with 24 counting up 0->24 and /7 stationary; `300+` with 300 counting 0->300 and + stationary; `100%` with 100 counting 0->100 and % stationary; `< 2h` with 2 counting 0->2 and < ... h stationary).
+  - Used ease-out cubic deceleration curve and `IntersectionObserver` trigger with tabular-nums typography and coral accent branding (`#FF715B`).
+  - Authored automated test suite `tests/test_hero_enhancements.py` verifying markup, responsive styling, and JS animation mechanics (100% green).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 
