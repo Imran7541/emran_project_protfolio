@@ -13,12 +13,12 @@ def test_hero_markup():
     with open(INDEX_PATH, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 1. Verify 3D Pop-Out portrait and illuminated backdrop
-    assert "emran_hero_popout.png" in content, "Popout image not found in index.html"
-    assert "translate-y-[10%]" in content or "translate-y" in content, "Head popout translation missing"
-    assert "radial-gradient" in content, "Portal illuminated background missing"
-    assert "w-[74%]" in content, "Framed width 74% to prevent arm overflow missing"
-    print("  ✓ 1. Hero portrait 3D pop-out and illuminated studio backdrop verified")
+    # 1. Verify Executive Cyber Stage and emran_cover_lead.png
+    assert "emran_cover_lead.png" in content, "Cover lead image not found in index.html"
+    assert "animate-float" in content, "Subtle floating animation missing"
+    assert "Available for Projects" in content, "Status badge missing"
+    assert "AI & Full-Stack" in content, "Tech stack chip missing"
+    print("  ✓ 1. Hero portrait Executive Cyber Stage and verified cover asset verified")
 
     # 2. Verify mobile layout optimizations
     assert "flex flex-row items-center gap-3 sm:gap-5 mt-2" in content, "Responsive CTA row missing"
