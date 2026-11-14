@@ -16,10 +16,10 @@ def test_hero_markup():
     # 1. Verify Colorful Rounded Circle Stage and emran_cover_lead.png
     assert "emran_cover_lead.png" in content, "Cover lead image not found in index.html"
     assert "animate-float" in content, "Subtle floating animation missing"
-    assert "Available for Projects" in content, "Status badge missing"
+    assert "Available for Projects" not in content, "Available for Projects badge should be removed as requested"
     assert "rounded-full overflow-hidden" in content, "Circular overflow-hidden frame missing"
     assert "paint0_linear_halo" in content, "Colorful rounded halo ring SVG missing"
-    print("  ✓ 1. Hero portrait Colorful Rounded Circle Stage and verified cover asset verified")
+    print("  ✓ 1. Hero portrait Colorful Rounded Circle Stage verified with centered asset and badge removed")
 
     # 2. Verify mobile layout optimizations
     assert "flex flex-row items-center gap-3 sm:gap-5 mt-2" in content, "Responsive CTA row missing"
