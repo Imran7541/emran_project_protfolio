@@ -213,6 +213,18 @@
   - Authored automated test suite `tests/test_ember_cafe_integration.py` passing 100% (7/7 checks) across models, DOM elements, and API chat endpoints. Full regression suite passed 100%.
   - Synced to Coolify Docker container (port 8088) and deployed live to Cloudflare Pages (`emrandev.pages.dev` & `emran-portfolio.pages.dev`).
 
+- [x] **Bistro Élysée Gulshan Project Ingestion & Flagship Showcase Integration (Spec 025 - Phase 21 / User Request)**:
+  - Formulated comprehensive SDD specification in `specs/025-bistro-elysee-project-showcase.md` and dependency plan in `tasks.md` (T071–T076).
+  - Ingested premier production project: **Bistro Élysée | Contemporary European Bistro & Artisan Patisserie** (`https://bistro-elysee-gulshan.pages.dev`).
+  - Captured crystal-clear 16:9 visual preview card `assets/bistro_elysee_preview.png` (1280x720, 836KB) with PWA install modal programmatically dismissed via CDP, highlighting the unobstructed hero typography and lake ambiance.
+  - Updated `data/projects.json` with 9 total projects (6 Public Works, 3 Enterprise Private Systems) and sequential ID renumbering (ID: 9).
+  - Injected luxury amber-glassmorphic project card into `#projects-grid` in `index.html` featuring amber backlight aura, "Lakeside Promenade Live" badge, tech stack chips (`React 18`, `Vite`, `Framer Motion`, `Tailwind CSS`, `Cloudflare Edge`, `PWA Ready`), and 1-click `Visit Bistro` / `Live Platform` action buttons.
+  - Updated category filter counters to `All Flagship Works (9)` and `Public Works (6)` with section summary `(6 Public • 3 Private)` and verified responsive DOM filtering.
+  - Ingested Bistro Élysée platform data and Q&A triggers into `data/ai-knowledge.json`, `js/ai-widget.js`, `server.js`, and `functions/api/chat.js` for full AI conversational coverage across Node.js and Cloudflare Pages edge runtimes.
+  - Authored automated test suite `tests/test_bistro_elysee_integration.py` passing 100% (7/7 checks) across data models, DOM elements, 16:9 aspect ratio, and API chat endpoints. Full regression suites (7 suites) passed 100%.
+  - Synced to Coolify Docker container (`66e50e9a45e9`, port 8088) and deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`).
+  - Captured desktop and mobile verification artifacts (`live_bistro_elysee_desktop.png`, `live_bistro_elysee_mobile.png`, `live_bistro_elysee_card_focused.png`).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

@@ -193,5 +193,30 @@
       "deployment": "Cloudflare Pages Edge",
       "speed": "Sub-50ms Edge Response"
     }
+  },
+  {
+    "id": 9,
+    "slug": "bistro-elysee-gulshan",
+    "title": "Bistro Élysée: European Bistro & Artisan Patisserie",
+    "category": "Commercial European Fine Dining & Artisan Patisserie Platform",
+    "projectType": "public",
+    "period": "2026 Production",
+    "badge": "Production Platform",
+    "badgeColor": "amber",
+    "status": "Cloudflare Edge Live",
+    "statusColor": "amber",
+    "previewImage": "assets/bistro_elysee_preview.png",
+    "description": "Contemporary European fine dining and artisanal patisserie along Gulshan-2 Lakeside Promenade. Engineered with React 18, Vite, Tailwind CSS, Framer Motion, and sub-50ms Cloudflare Edge delivery with PWA offline-ready dining catalog.",
+    "tags": ["React 18", "Vite", "Framer Motion", "Tailwind CSS", "Cloudflare Pages", "Lucide Icons", "PWA"],
+    "repoUrl": null,
+    "hasPublicRepo": false,
+    "confidentiality": "Commercial Client Production • Live in Gulshan-2",
+    "liveDemoUrl": "https://bistro-elysee-gulshan.pages.dev",
+    "liveTelemetry": {
+      "location": "Gulshan-2 Lakeside Promenade",
+      "architecture": "React 18 + Vite + Framer Motion",
+      "deployment": "Cloudflare Pages Edge",
+      "speed": "Sub-50ms Edge Response"
+    }
   }
 ]

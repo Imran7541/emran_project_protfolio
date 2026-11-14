@@ -95,3 +95,11 @@
 - [x] T068 [US20] Synchronize "Emran AI" knowledge base in `data/ai-knowledge.json` and `js/ai-widget.js` with Ember Cafe Gulshan platform data and Q&A triggers
 - [x] T069 [US20] Author automated test suite `tests/test_ember_cafe_integration.py` verifying data models, DOM card presence, category filtering, image assets, and live chatbot responses
 - [x] T070 [US20] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`
+
+## Phase 21: Bistro Élysée Gulshan Project Ingestion & Flagship Showcase Integration (Spec 025)
+- [x] T071 [US21] Capture crystal-clear 16:9 visual preview card `assets/bistro_elysee_preview.png` (1280x720) from `https://bistro-elysee-gulshan.pages.dev` with PWA overlay dismissal
+- [x] T072 [US21] Update `data/projects.json` with Bistro Élysée entry (ID: 9) containing full metadata, live telemetry, and live demo link
+- [x] T073 [US21] Ingest Bistro Élysée project card into `#projects-grid` in `index.html`, update section summary text, and refresh category filter button counters to All Flagship Works (9) and Public Works (6)
+- [x] T074 [US21] Synchronize "Emran AI" knowledge base in `data/ai-knowledge.json`, `js/ai-widget.js`, `server.js`, and `functions/api/chat.js` with Bistro Élysée Gulshan data and Q&A triggers
+- [x] T075 [US21] Author automated test suite `tests/test_bistro_elysee_integration.py` verifying data models, DOM card presence, category filtering, image assets, and live chatbot responses
+- [x] T076 [US21] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`

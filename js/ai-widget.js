@@ -29,6 +29,10 @@
       answer: "Emran engineered 'EMBER CAFE'—Dhaka's premier 22-hour rooftop cafe and steakhouse platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker, interactive table booking modal, and online artisan menu ordering with sub-50ms Cloudflare Edge delivery. Experience it live at <a href='https://ember-cafe-gulshan.pages.dev' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>ember-cafe-gulshan.pages.dev</a>."
     },
     {
+      keywords: ["bistro", "elysee", "élysée", "french", "patisserie", "bakery", "lakeside", "gulshan 2", "croissant", "pastry", "বিস্ট্রো"],
+      answer: "Emran engineered 'Bistro Élysée'—a premier contemporary European fine dining bistro and artisan patisserie platform on the Gulshan 2 Lakeside Promenade. Built with React 18, Tailwind CSS, Framer Motion, real-time table concierge, interactive menu explorer, and sub-50ms Cloudflare Edge runtime. Experience it live at <a href='https://bistro-elysee-gulshan.pages.dev' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>bistro-elysee-gulshan.pages.dev</a>."
+    },
+    {
       keywords: ["familio", "ecommerce", "e-commerce", "pos", "shop", "store", "bazar", "ইকমার্স"],
       answer: "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration and SQLite persistence. Test the live store at <a href='https://familio-bazar.onrender.com' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>familio-bazar.onrender.com</a>."
     },

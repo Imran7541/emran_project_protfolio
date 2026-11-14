@@ -55,6 +55,13 @@
       "description": "Dhaka's premier 22-hour rooftop dining and steakhouse web platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker, table reservation booking engine, and artisan menu ordering with sub-50ms Cloudflare Edge delivery."
     },
     {
+      "name": "Bistro Élysée: European Bistro & Artisan Patisserie",
+      "type": "Production Commercial Platform (European Fine Dining & Patisserie)",
+      "liveUrl": "https://bistro-elysee-gulshan.pages.dev",
+      "githubUrl": null,
+      "description": "Upscale contemporary European fine dining and artisanal bakery along Gulshan-2 Lakeside Promenade. Engineered with React 18, Vite, Framer Motion, Tailwind CSS, table reservation booking engine, and sub-50ms Cloudflare Edge delivery with PWA offline-ready catalog."
+    },
+    {
       "name": "Next Label: 400K Particle Interactive World",
       "type": "Public Open Source (WebGL GPGPU)",
       "liveUrl": "https://next-label-portfolio.pages.dev",
@@ -90,6 +97,10 @@
     }
   ],
   "faqMatchers": [
+    {
+      "keywords": ["bistro", "elysee", "élysée", "french", "patisserie", "bakery", "lakeside", "gulshan 2", "croissant", "pastry"],
+      "answer": "Emran engineered 'Bistro Élysée'—Dhaka's premier contemporary European bistro and artisan patisserie along Gulshan-2 Lakeside Promenade. Built with React 18, Vite, Tailwind CSS, Framer Motion, interactive table reservation system, and curated fine dining menu with sub-50ms Cloudflare Edge delivery. You can explore the live experience directly at https://bistro-elysee-gulshan.pages.dev."
+    },
     {
       "keywords": ["ember", "cafe", "restaurant", "gulshan", "steak", "coffee", "rooftop", "food", "dining", "menu"],
       "answer": "Emran engineered 'EMBER CAFE'—Dhaka's premier 22-hour rooftop cafe and steakhouse platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker (7:00 AM – 5:00 AM daily), interactive table booking modal, and online artisan menu ordering with sub-50ms Cloudflare Edge delivery. You can explore the live experience directly at https://ember-cafe-gulshan.pages.dev."
