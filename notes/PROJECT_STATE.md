@@ -175,6 +175,15 @@
   - Tested 100% green across automated test suites `tests/test_hero_enhancements.py` and `tests/test_channels_and_seo.py`.
   - Pushed to GitHub `origin main` (`d78d382`), deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`), and synced to Coolify Docker container (port 8088).
 
+- [x] **Hero Section Portrait Centering & Badge Removal (Phase 17 / User Feedback)**:
+  - Addressed user feedback to remove the "Available for Projects" button badge and center the portrait horizontally.
+  - Removed floating badge container completely from `index.html` for a cleaner, unobstructed view of the golden cyber particle wave.
+  - Calculated exact pixel coordinates of `emran_cover_lead.png` (576x565) and discovered an 18px leftward offset (optical center was 270px vs 288px).
+  - Applied an exact +18px rightward shift with edge synthesis via Python PIL, shifting the combined optical center to exactly 288px (576 / 2, dead center) with equal margins on both sides.
+  - Synchronized updated asset to root `emran_cover_lead.png` and `assets/emran_cover_lead.png`.
+  - Updated test suite `tests/test_hero_enhancements.py` to assert badge removal (100% green).
+  - Committed to git (`cd83919`), pushed to GitHub `origin main`, synced to Coolify Docker container (`66e50e9a45e9`, port 8088), and deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 
