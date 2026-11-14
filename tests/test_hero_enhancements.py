@@ -13,14 +13,12 @@ def test_hero_markup():
     with open(INDEX_PATH, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 1. Verify portrait grounding
-    assert "emran_suit_cutout.png" in content, "Cutout image not found in index.html"
-    assert "rounded-full overflow-hidden" in content, "Circular overflow-hidden frame missing"
-    assert "translate-y-3" in content, "Portrait ground translate-y-3 missing"
-    assert "mask-image: linear-gradient(to bottom, black 84%, transparent 100%)" not in content, (
-        "Old clipping mask that cut off the suit still present"
-    )
-    print("  ✓ 1. Hero portrait frame is grounded to bottom curve with zero gap")
+    # 1. Verify 3D Pop-Out portrait and illuminated backdrop
+    assert "emran_hero_popout.png" in content, "Popout image not found in index.html"
+    assert "translate-y-[10%]" in content or "translate-y" in content, "Head popout translation missing"
+    assert "radial-gradient" in content, "Portal illuminated background missing"
+    assert "w-[74%]" in content, "Framed width 74% to prevent arm overflow missing"
+    print("  ✓ 1. Hero portrait 3D pop-out and illuminated studio backdrop verified")
 
     # 2. Verify mobile layout optimizations
     assert "flex flex-row items-center gap-3 sm:gap-5 mt-2" in content, "Responsive CTA row missing"
