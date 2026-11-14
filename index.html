@@ -238,6 +238,24 @@
       box-shadow: 0 10px 25px -5px rgba(255, 113, 91, 0.35);
     }
 
+    /* Live Metric Strip Card & Animated Counter Styles */
+    .stat-card {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -8px rgba(255, 113, 91, 0.28);
+      border-color: rgba(255, 113, 91, 0.45) !important;
+    }
+    .stat-counting {
+      color: #FF8A75 !important;
+      text-shadow: 0 0 18px rgba(255, 113, 91, 0.75);
+    }
+    .stat-suffix, .stat-prefix {
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: transform;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .animate-marquee-lane1,
       .animate-marquee-lane2 {
@@ -389,42 +407,42 @@
   <!-- ==================== LIVE METRICS STRIP (Interactive Dynamic Counters) ==================== -->
   <div id="hero-metrics-strip" class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 border-y border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
     <!-- Stat 1: 24/7 (24 counts 0->24, /7 stationary) -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group">
+    <div class="stat-card p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group cursor-pointer select-none">
       <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF715B]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div class="flex items-baseline font-bold text-2xl sm:text-4xl tracking-tight text-white font-montserrat">
-        <span class="stat-counter tabular-nums text-white" data-target="24">24</span>
-        <span class="text-[#FF715B] font-bold ml-0.5">/7</span>
+        <span class="stat-counter tabular-nums text-white" data-target="24">0</span>
+        <span class="stat-suffix text-[#FF715B] font-bold ml-0.5 inline-block">/7</span>
       </div>
       <span class="text-[11px] sm:text-xs text-slate-400 mt-1.5 block font-montserrat font-medium tracking-wide">Autonomous Cloud Uptime</span>
     </div>
 
     <!-- Stat 2: 300+ (Counts 0->300, + stationary) -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group">
+    <div class="stat-card p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group cursor-pointer select-none">
       <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF715B]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div class="flex items-baseline font-bold text-2xl sm:text-4xl tracking-tight text-white font-montserrat">
-        <span class="stat-counter tabular-nums text-white" data-target="300">300</span>
-        <span class="text-[#FF715B] font-bold ml-0.5">+</span>
+        <span class="stat-counter tabular-nums text-white" data-target="300">0</span>
+        <span class="stat-suffix text-[#FF715B] font-bold ml-0.5 inline-block">+</span>
       </div>
       <span class="text-[11px] sm:text-xs text-slate-400 mt-1.5 block font-montserrat font-medium tracking-wide">Active AI Agent Skills</span>
     </div>
 
     <!-- Stat 3: 100% (Counts 0->100, % stationary) -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group">
+    <div class="stat-card p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group cursor-pointer select-none">
       <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF715B]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div class="flex items-baseline font-bold text-2xl sm:text-4xl tracking-tight text-white font-montserrat">
-        <span class="stat-counter tabular-nums text-white" data-target="100">100</span>
-        <span class="text-[#FF715B] font-bold ml-0.5">%</span>
+        <span class="stat-counter tabular-nums text-white" data-target="100">0</span>
+        <span class="stat-suffix text-[#FF715B] font-bold ml-0.5 inline-block">%</span>
       </div>
       <span class="text-[11px] sm:text-xs text-slate-400 mt-1.5 block font-montserrat font-medium tracking-wide">Production Precision</span>
     </div>
 
     <!-- Stat 4: < 2h (< stationary, 2 counts 0->2, h stationary) -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group">
+    <div class="stat-card p-4 sm:p-5 rounded-2xl bg-card border border-white/5 card-hover relative overflow-hidden group cursor-pointer select-none">
       <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF715B]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div class="flex items-baseline font-bold text-2xl sm:text-4xl tracking-tight text-white font-montserrat">
-        <span class="text-[#FF715B] font-bold mr-1">&lt;</span>
-        <span class="stat-counter tabular-nums text-white" data-target="2">2</span>
-        <span class="text-[#FF715B] font-bold ml-0.5">h</span>
+        <span class="stat-prefix text-[#FF715B] font-bold mr-1 inline-block">&lt;</span>
+        <span class="stat-counter tabular-nums text-white" data-target="2">0</span>
+        <span class="stat-suffix text-[#FF715B] font-bold ml-0.5 inline-block">h</span>
       </div>
       <span class="text-[11px] sm:text-xs text-slate-400 mt-1.5 block font-montserrat font-medium tracking-wide">Client Response Time</span>
     </div>
@@ -1508,60 +1526,142 @@
       const container = document.getElementById('hero-metrics-strip');
       if (!container) return;
 
+      const cards = container.querySelectorAll('.stat-card');
       const counters = container.querySelectorAll('.stat-counter');
       if (!counters.length) return;
 
-      let animated = false;
+      const activeFrames = new WeakMap();
 
-      function startCounting() {
-        if (animated) return;
-        animated = true;
+      function animateSingleCounter(counter) {
+        const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
+        const parentCard = counter.closest('.stat-card') || counter.parentElement;
+        const suffix = parentCard ? parentCard.querySelector('.stat-suffix') : null;
+        const prefix = parentCard ? parentCard.querySelector('.stat-prefix') : null;
 
-        const duration = 1800; // 1.8s silky smooth deceleration
+        // Cancel running frame if already animating this counter
+        if (activeFrames.has(counter)) {
+          cancelAnimationFrame(activeFrames.get(counter));
+        }
+
+        counter.textContent = '0';
+        counter.classList.add('stat-counting');
+        counter.classList.remove('text-white');
+
+        const duration = target > 50 ? 1500 : (target > 10 ? 1200 : 800);
         const startTime = performance.now();
-
-        // Initialize counters to 0 before rolling up
-        counters.forEach(counter => {
-          counter.textContent = '0';
-        });
 
         function update(currentTime) {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-
           // Ease-out cubic: decelerates smoothly toward target
           const easeProgress = 1 - Math.pow(1 - progress, 3);
 
-          counters.forEach(counter => {
-            const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
-            counter.textContent = Math.round(target * easeProgress);
-          });
+          let currentVal;
+          if (target === 2) {
+            // Visible progression for small number: 0 -> 1 -> 2
+            if (progress < 0.45) {
+              currentVal = 0;
+            } else if (progress < 0.85) {
+              currentVal = 1;
+            } else {
+              currentVal = 2;
+            }
+          } else {
+            currentVal = Math.round(target * easeProgress);
+          }
+
+          counter.textContent = currentVal;
 
           if (progress < 1) {
-            requestAnimationFrame(update);
+            const frameId = requestAnimationFrame(update);
+            activeFrames.set(counter, frameId);
           } else {
-            counters.forEach(counter => {
-              counter.textContent = counter.getAttribute('data-target');
-            });
+            counter.textContent = target;
+            counter.classList.remove('stat-counting');
+            counter.classList.add('text-white');
+            activeFrames.delete(counter);
+
+            // Bouncy celebration on suffix and prefix
+            if (suffix) {
+              suffix.style.transform = 'scale(1.22)';
+              setTimeout(() => { suffix.style.transform = 'scale(1)'; }, 220);
+            }
+            if (prefix) {
+              prefix.style.transform = 'scale(1.22)';
+              setTimeout(() => { prefix.style.transform = 'scale(1)'; }, 220);
+            }
           }
         }
 
-        requestAnimationFrame(update);
+        const firstFrame = requestAnimationFrame(update);
+        activeFrames.set(counter, firstFrame);
       }
 
+      let isBatchRunning = false;
+      let lastBatchTime = 0;
+
+      function startCounting(force = false) {
+        const now = performance.now();
+        if (!force && isBatchRunning) return;
+        if (!force && now - lastBatchTime < 1400) return; // 1.4s cooldown to prevent flutter
+        lastBatchTime = now;
+        isBatchRunning = true;
+
+        counters.forEach((counter, idx) => {
+          // Staggered cascade: 0ms, 120ms, 240ms, 360ms
+          setTimeout(() => {
+            animateSingleCounter(counter);
+          }, idx * 120);
+        });
+
+        setTimeout(() => {
+          isBatchRunning = false;
+        }, 1800);
+      }
+
+      // Re-trigger individual card on hover or click/tap
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          const counter = card.querySelector('.stat-counter');
+          if (counter) animateSingleCounter(counter);
+        });
+        card.addEventListener('click', () => {
+          const counter = card.querySelector('.stat-counter');
+          if (counter) animateSingleCounter(counter);
+        });
+      });
+
+      function checkVisibility() {
+        const rect = container.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top < vh * 0.92 && rect.bottom > 0) {
+          startCounting();
+        }
+      }
+
+      // IntersectionObserver: Re-triggers when the metrics strip enters the viewport
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               startCounting();
-              observer.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.1, rootMargin: '0px 0px 50px 0px' });
         observer.observe(container);
       } else {
         startCounting();
       }
+
+      // Direct scroll listener for 100% cross-browser reliability (iOS/Android/Safari/Chrome)
+      window.addEventListener('scroll', checkVisibility, { passive: true });
+      window.addEventListener('resize', checkVisibility, { passive: true });
+
+      // Immediate check if strip is already within viewport on load
+      checkVisibility();
+
+      // Expose globally for testing/verification
+      window.__triggerHeroMetrics = startCounting;
     })();
 
     // --- Next Label Inspired Ocean Abyss & Caustics WebGL Engine (No Jellyfish) ---

@@ -184,6 +184,16 @@
   - Updated test suite `tests/test_hero_enhancements.py` to assert badge removal (100% green).
   - Committed to git (`cd83919`), pushed to GitHub `origin main`, synced to Coolify Docker container (`66e50e9a45e9`, port 8088), and deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`).
 
+- [x] **Live Metric Strip Interactive Dynamic Counters & Ticker Animations (Phase 18 / User Feedback)**:
+  - Addressed user feedback to animate the numbers ("1 2 3 4 করে এনিমেট হবে") in the metric cards following the hero section.
+  - Initialized counter digits to 0 in `index.html` with tabular-nums typography and structured `.stat-card`, `.stat-counter`, `.stat-suffix`, and `.stat-prefix` elements.
+  - Engineered 60fps cascading stagger animation engine (`initMetricCounters`): Card 1 (0ms), Card 2 (120ms), Card 3 (240ms), Card 4 (360ms) counting up smoothly with ease-out cubic deceleration.
+  - Styled active counting glow (`.stat-counting` with `#FF8A75` neon text aura) and celebration micro-bounce on static suffixes (`/7`, `+`, `%`, `h`) upon reaching targets.
+  - Added interactive re-trigger on hover (`mouseenter`) and mobile tap (`click`) on each `.stat-card` with elevation lift and coral accent glow (`box-shadow: 0 16px 36px -8px rgba(255,113,91,0.28)`).
+  - Implemented multi-layered scroll detection (IntersectionObserver with `threshold: 0.1` & `rootMargin: 50px` plus passive `scroll` and `resize` listeners) ensuring reliable playback across mobile, tablet, and desktop viewports.
+  - Built automated CDP test suite `tests/verify_counters.js` verifying progression across time samples, final targets, and hover re-trigger (100% green).
+  - Synchronized and verified across Cloudflare Pages and Coolify Docker.
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 
