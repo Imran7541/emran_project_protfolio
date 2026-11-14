@@ -81,8 +81,9 @@
 - [x] T056 [US12] Build `#admin-inbox-modal` and "📬 Client Inquiries (N)" trigger in `#admin-control-bar` in `gallery.html` with real-time keyword search, mailto quick action, and delete confirmation
 - [x] T057 [US12] Synchronize static mirrors (`gallery/index.html`) with inbox components
 - [x] T058 [US12] Write automated test suite `tests/test_admin_inbox.py` verifying 401 unauthenticated rejection, 200 authenticated listing, inquiry deletion, and DOM sanitization
-- [x] T059 [US12] Polish, run all 45+ automated test checks (100% pass), deploy to Cloudflare Pages (`emran-portfolio.pages.dev`), sync to Coolify container (port 8088), and push to GitHub `main`
-
-
-
-
+## Phase 19: Unified Single-Page Architecture & Gallery Consolidation (Spec 023)
+- [x] T060 [US19] Remove "Gallery" link from desktop navbar (`nav .hidden.md:flex`) in `index.html`
+- [x] T061 [US19] Remove "Gallery" link from mobile drawer (`#mobile-drawer`) in `index.html`
+- [x] T062 [US19] Update executive footer Quick Links in `index.html` and `contact.html` (removing separate Gallery link while preserving direct verified social links to FB, LinkedIn, GitHub, Discord)
+- [x] T063 [US19] Create automated regression test `tests/test_single_page_navigation.py` to assert that Gallery is strictly absent from the main navigation and all single-page anchors resolve cleanly
+- [x] T064 [US19] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`
