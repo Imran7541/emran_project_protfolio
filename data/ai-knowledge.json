@@ -43,7 +43,7 @@
     {
       "name": "Familio Bazar: Enterprise E-Commerce & POS Suite",
       "type": "Public Open Source (Fast-Commerce & POS)",
-      "liveUrl": "https://familio-bazar.onrender.com",
+      "liveUrl": "https://familio-bazar.pages.dev",
       "githubUrl": "https://github.com/Imran7541/e-commerce-fast",
       "description": "24/7 cloud fast-commerce platform with automated multi-channel POS, SQLite dynamic persistence, Cloudflare edge acceleration, sub-100ms API response, automated database migrations, and 16/16 verified test suites."
     },
@@ -107,7 +107,7 @@
     },
     {
       "keywords": ["ecommerce", "e-commerce", "familio", "pos", "store", "shop", "bazar", "cart"],
-      "answer": "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration, sub-100ms response times, and automated database persistence. You can test the live store at https://familio-bazar.onrender.com or explore the codebase on GitHub at https://github.com/Imran7541/e-commerce-fast."
+      "answer": "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Cloudflare Pages Edge with Render Cloud backend, sub-50ms response times, and automated database persistence. You can test the live store at https://familio-bazar.pages.dev or explore the codebase on GitHub at https://github.com/Imran7541/e-commerce-fast."
     },
     {
       "keywords": ["3d", "threejs", "webgl", "particle", "next label", "shader"],

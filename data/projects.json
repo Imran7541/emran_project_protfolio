@@ -16,10 +16,10 @@
     "repoUrl": "https://github.com/Imran7541/e-commerce-fast",
     "hasPublicRepo": true,
     "confidentiality": null,
-    "liveDemoUrl": "https://familio-bazar.onrender.com",
+    "liveDemoUrl": "https://familio-bazar.pages.dev",
     "liveTelemetry": {
       "runtime": "Node.js 22 + SQLite",
-      "deployment": "Render 24/7 + Cloudflare",
+      "deployment": "Cloudflare Pages Edge + Render Cloud",
       "uptime": "100% Cloud Active",
       "responseTime": "< 100ms Sub-Second"
     }
