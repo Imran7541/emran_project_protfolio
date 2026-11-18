@@ -225,6 +225,18 @@
   - Synced to Coolify Docker container (`66e50e9a45e9`, port 8088) and deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`).
   - Captured desktop and mobile verification artifacts (`live_bistro_elysee_desktop.png`, `live_bistro_elysee_mobile.png`, `live_bistro_elysee_card_focused.png`).
 
+- [x] **Atelier Vesper Luxury Architecture Project Ingestion & Showcase Integration (Spec 026 - Phase 22 / User Request)**:
+  - Formulated comprehensive SDD specification in `specs/026-atelier-vesper-project-showcase.md` and dependency plan in `tasks.md` (T077–T082).
+  - Ingested premier production project: **Atelier Vesper | Luxury Interior Architecture & Spatial Design** (`https://atelier-vesper-marketing.imranrband100.workers.dev` and GitHub repository `https://github.com/Imran7541/atelier-vesper`).
+  - Captured crystal-clear 16:9 visual preview card `assets/atelier_vesper_preview.png` (1280x720, 376KB) via CDP showcasing the procedural Three.js WebGL travertine atrium, editorial typography, and live metrics.
+  - Updated `data/projects.json` with 10 total projects (7 Public Works, 3 Enterprise Private Systems) and sequential ID renumbering (ID: 10).
+  - Injected warm architectural bronze-glassmorphic project card into `#projects-grid` in `index.html` featuring bronze backlight aura, "Three.js WebGL Live" badge, tech stack chips (`React 19`, `Three.js`, `TypeScript`, `Vite 6`, `Framer Motion`, `Cloudflare Workers`, `SQLite`), 1-click `Visit Atelier` preview action, and bottom `Live Platform` + `GitHub` action links.
+  - Updated category filter counters to `All Flagship Works (10)` and `Public Works (7)` with section summary `(7 Public • 3 Private)` and verified responsive DOM filtering.
+  - Ingested Atelier Vesper platform data and Q&A triggers into `data/ai-knowledge.json`, `js/ai-widget.js`, `server.js`, and `functions/api/chat.js` for full AI conversational coverage across Node.js and Cloudflare Pages edge runtimes.
+  - Authored automated test suite `tests/test_atelier_vesper_integration.py` passing 100% (7/7 checks) across data models, DOM elements, 16:9 aspect ratio, and API chat endpoints. Full regression suites (8 suites) passed 100%.
+  - Synced to Coolify Docker container (`66e50e9a45e9`, port 8088) and deployed live to Cloudflare Pages (`https://emrandev.pages.dev` and `https://emran-portfolio.pages.dev`).
+  - Captured desktop verification artifact (`live_atelier_vesper_desktop.png`).
+
 ## Pending Items
 - [ ] Connect "My Resume" button to user's real CV/resume link or PDF when uploaded.
 

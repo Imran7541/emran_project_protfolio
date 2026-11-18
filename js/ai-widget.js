@@ -33,6 +33,10 @@
       answer: "Emran engineered 'Bistro Élysée'—a premier contemporary European fine dining bistro and artisan patisserie platform on the Gulshan 2 Lakeside Promenade. Built with React 18, Tailwind CSS, Framer Motion, real-time table concierge, interactive menu explorer, and sub-50ms Cloudflare Edge runtime. Experience it live at <a href='https://bistro-elysee-gulshan.pages.dev' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>bistro-elysee-gulshan.pages.dev</a>."
     },
     {
+      keywords: ["atelier", "vesper", "interior", "architecture", "spatial", "architectural", "atrium", "furniture", "residence", "ইন্টেরিয়র", "আর্কিটেকচার"],
+      answer: "Emran engineered 'Atelier Vesper'—a premier luxury interior architecture and spatial design platform deployed on Cloudflare Workers. It features a procedural Three.js WebGL architectural atrium, scroll-scrubbed camera choreography, an instant turnkey investment estimator in BDT, and a persistent SQLite backend. Experience it live at <a href='https://atelier-vesper-marketing.imranrband100.workers.dev' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>atelier-vesper-marketing.imranrband100.workers.dev</a> or inspect the code at <a href='https://github.com/Imran7541/atelier-vesper' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>github.com/Imran7541/atelier-vesper</a>."
+    },
+    {
       keywords: ["familio", "ecommerce", "e-commerce", "pos", "shop", "store", "bazar", "ইকমার্স"],
       answer: "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration and SQLite persistence. Test the live store at <a href='https://familio-bazar.onrender.com' target='_blank' class='text-[#FF715B] underline hover:text-[#ff8c77]'>familio-bazar.onrender.com</a>."
     },

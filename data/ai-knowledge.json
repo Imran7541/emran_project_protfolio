@@ -62,6 +62,13 @@
       "description": "Upscale contemporary European fine dining and artisanal bakery along Gulshan-2 Lakeside Promenade. Engineered with React 18, Vite, Framer Motion, Tailwind CSS, table reservation booking engine, and sub-50ms Cloudflare Edge delivery with PWA offline-ready catalog."
     },
     {
+      "name": "Atelier Vesper: Luxury Interior Architecture & Spatial Design",
+      "type": "Public Open Source (Architectural WebGL & Turnkey Estimator)",
+      "liveUrl": "https://atelier-vesper-marketing.imranrband100.workers.dev",
+      "githubUrl": "https://github.com/Imran7541/atelier-vesper",
+      "description": "High-performance editorial platform engineered for luxury interior architecture, bespoke millwork, and turnkey residential spaces. Combines procedural Three.js WebGL architectural modeling, scroll-scrubbed camera choreography, an instant turnkey investment estimator, and sub-50ms Cloudflare Workers edge delivery."
+    },
+    {
       "name": "Next Label: 400K Particle Interactive World",
       "type": "Public Open Source (WebGL GPGPU)",
       "liveUrl": "https://next-label-portfolio.pages.dev",
@@ -104,6 +111,10 @@
     {
       "keywords": ["ember", "cafe", "restaurant", "gulshan", "steak", "coffee", "rooftop", "food", "dining", "menu"],
       "answer": "Emran engineered 'EMBER CAFE'—Dhaka's premier 22-hour rooftop cafe and steakhouse platform in Gulshan-1. Built with Next.js 15 App Router, Tailwind CSS, real-time live hours tracker (7:00 AM – 5:00 AM daily), interactive table booking modal, and online artisan menu ordering with sub-50ms Cloudflare Edge delivery. You can explore the live experience directly at https://ember-cafe-gulshan.pages.dev."
+    },
+    {
+      "keywords": ["atelier", "vesper", "interior", "architecture", "spatial", "architectural", "atrium", "furniture", "residence"],
+      "answer": "Emran engineered 'Atelier Vesper'—a premier luxury interior architecture and spatial design platform deployed on Cloudflare Workers. It features a procedural Three.js WebGL architectural atrium, scroll-scrubbed camera choreography, an instant turnkey investment estimator in BDT, and a persistent SQLite backend. Explore the live experience at https://atelier-vesper-marketing.imranrband100.workers.dev or review the open-source code on GitHub at https://github.com/Imran7541/atelier-vesper."
     },
     {
       "keywords": ["ecommerce", "e-commerce", "familio", "pos", "store", "shop", "bazar", "cart"],

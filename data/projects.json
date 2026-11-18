@@ -218,5 +218,31 @@
       "deployment": "Cloudflare Pages Edge",
       "speed": "Sub-50ms Edge Response"
     }
+  },
+  {
+    "id": 10,
+    "slug": "atelier-vesper-architecture",
+    "title": "Atelier Vesper: Luxury Interior Architecture & Spatial Design",
+    "category": "Architectural WebGL, Spatial 3D & Turnkey Estimator Platform",
+    "projectType": "public",
+    "period": "2026 Production",
+    "badge": "Public Open Source",
+    "badgeColor": "accent",
+    "status": "Cloudflare Workers Live",
+    "statusColor": "emerald",
+    "previewImage": "assets/atelier_vesper_preview.png",
+    "description": "High-performance editorial platform engineered for luxury interior architecture, bespoke millwork, and turnkey residential spaces. Combines procedural Three.js WebGL architectural modeling, scroll-scrubbed camera choreography, an instant turnkey investment estimator, and sub-50ms Cloudflare Workers edge delivery.",
+    "tags": ["React 19", "Three.js", "TypeScript", "Vite 6", "Framer Motion", "Tailwind CSS", "Cloudflare Workers", "SQLite"],
+    "repoUrl": "https://github.com/Imran7541/atelier-vesper",
+    "hasPublicRepo": true,
+    "confidentiality": null,
+    "liveDemoUrl": "https://atelier-vesper-marketing.imranrband100.workers.dev",
+    "liveTelemetry": {
+      "rendering": "Three.js Procedural Atrium",
+      "framework": "React 19 + Vite 6",
+      "deployment": "Cloudflare Workers Edge",
+      "speed": "Sub-50ms Global Response",
+      "repo": "Public Open Source"
+    }
   }
 ]

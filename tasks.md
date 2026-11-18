@@ -103,3 +103,11 @@
 - [x] T074 [US21] Synchronize "Emran AI" knowledge base in `data/ai-knowledge.json`, `js/ai-widget.js`, `server.js`, and `functions/api/chat.js` with Bistro Élysée Gulshan data and Q&A triggers
 - [x] T075 [US21] Author automated test suite `tests/test_bistro_elysee_integration.py` verifying data models, DOM card presence, category filtering, image assets, and live chatbot responses
 - [x] T076 [US21] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`
+
+## Phase 22: Atelier Vesper Luxury Architecture Project Ingestion & Showcase Integration (Spec 026)
+- [x] T077 [US22] Capture high-resolution 16:9 visual preview card `assets/atelier_vesper_preview.png` (1280x720) from `https://atelier-vesper-marketing.imranrband100.workers.dev`
+- [x] T078 [US22] Update `data/projects.json` with Atelier Vesper entry (ID: 10) containing full metadata, live telemetry, and live demo/repo links
+- [x] T079 [US22] Ingest Atelier Vesper project card into `#projects-grid` in `index.html`, update section summary text, and refresh category filter button counters to All Flagship Works (10) and Public Works (7)
+- [x] T080 [US22] Synchronize "Emran AI" knowledge base in `data/ai-knowledge.json`, `js/ai-widget.js`, `server.js`, and `functions/api/chat.js` with Atelier Vesper platform data and Q&A triggers
+- [x] T081 [US22] Author automated test suite `tests/test_atelier_vesper_integration.py` verifying data models, DOM card presence, category filtering, image assets, and live chatbot responses
+- [x] T082 [US22] Run full automated test suite (100% green), deploy live to Cloudflare Pages (`emrandev` & `emran-portfolio`), sync to Coolify Docker container (port 8088), and push to GitHub `origin main`

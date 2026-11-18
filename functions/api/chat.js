@@ -17,6 +17,10 @@ const KNOWLEDGE_FAQ = [
     answer: "Emran engineered 'Bistro Élysée'—a premier contemporary European fine dining bistro and artisan patisserie platform on the Gulshan 2 Lakeside Promenade. Built with React 18, Tailwind CSS, Framer Motion, real-time table concierge, interactive menu explorer, and sub-50ms Cloudflare Edge runtime. Experience it live at https://bistro-elysee-gulshan.pages.dev."
   },
   {
+    keywords: ["atelier", "vesper", "interior", "architecture", "spatial", "architectural", "atrium", "furniture", "residence", "ইন্টেরিয়র", "আর্কিটেকচার"],
+    answer: "Emran engineered 'Atelier Vesper'—a premier luxury interior architecture and spatial design platform deployed on Cloudflare Workers. It features a procedural Three.js WebGL architectural atrium, scroll-scrubbed camera choreography, an instant turnkey investment estimator in BDT, and a persistent SQLite backend. Experience it live at https://atelier-vesper-marketing.imranrband100.workers.dev or inspect the code at https://github.com/Imran7541/atelier-vesper."
+  },
+  {
     keywords: ["familio", "ecommerce", "e-commerce", "pos", "shop", "store", "bazar", "ইকমার্স"],
     answer: "Emran engineered 'Familio Bazar'—an enterprise-grade 24/7 fast-commerce and POS platform deployed on Render Cloud with Cloudflare Edge acceleration and SQLite persistence. Test the live store at https://familio-bazar.onrender.com."
   },
@@ -84,12 +88,13 @@ Flagship works:
 1. Familio Bazar: Enterprise Fast-Commerce & POS Suite (https://familio-bazar.onrender.com)
 2. EMBER CAFE: 22-Hour Rooftop Dining & Specialty Steaks in Gulshan-1 (https://ember-cafe-gulshan.pages.dev)
 3. Bistro Élysée: European Bistro & Artisan Patisserie in Gulshan-2 (https://bistro-elysee-gulshan.pages.dev)
-4. Next Label: 400K Particle 3D WebGL World (https://next-label-portfolio.pages.dev)
-5. AI-Agents-Hub: Multi-cloud persistent orchestrator running 248+ skills (https://github.com/Imran7541/AI-Agents-Hub)
-6. Autonomous Video Production Engine: Playwright + Neural Edge-TTS + FFmpeg 2-Pass pipeline (https://github.com/Imran7541/as-sunnah-reel)
-7. Enterprise Student-to-Career Platform (Private System)
-8. Autonomous Multi-Agent FinTech Settlement Core (bKash/Nagad/Stripe)
-9. Real-Time Spatial 3D Showroom (Three.js PBR configurator)
+4. Atelier Vesper: Luxury Interior Architecture & Spatial Design (https://atelier-vesper-marketing.imranrband100.workers.dev)
+5. Next Label: 400K Particle 3D WebGL World (https://next-label-portfolio.pages.dev)
+6. AI-Agents-Hub: Multi-cloud persistent orchestrator running 248+ skills (https://github.com/Imran7541/AI-Agents-Hub)
+7. Autonomous Video Production Engine: Playwright + Neural Edge-TTS + FFmpeg 2-Pass pipeline (https://github.com/Imran7541/as-sunnah-reel)
+8. Enterprise Student-to-Career Platform (Private System)
+9. Autonomous Multi-Agent FinTech Settlement Core (bKash/Nagad/Stripe)
+10. Real-Time Spatial 3D Showroom (Three.js PBR configurator)
 
 Answer questions concisely, professionally, and warmly. If asked in Bengali, respond in fluent Bengali. If in English, respond in English. Keep answers under 120 words. Offer to connect via the Contact page.`;
 
